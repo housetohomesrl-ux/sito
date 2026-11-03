@@ -150,6 +150,8 @@ select{font:400 16px var(--body);color:var(--ink);border:2px solid #D9D6C8;borde
 .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 @media (max-width:360px){.two{grid-template-columns:1fr}}
 .cta-box{display:flex;flex-direction:column;gap:12px;align-items:center;padding-top:6px}
+.cta-row{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.calc-pair{display:flex;flex-direction:column;gap:10px}
 form{display:flex;flex-direction:column;gap:12px;background:var(--paper);border-radius:16px;padding:18px}
 form h3{font-size:19px}
 label{font:600 14px var(--body);display:flex;flex-direction:column;gap:6px}
@@ -452,14 +454,14 @@ function solVendita(){
     el("p",{class:"doubt"},"«Prima devo vendere casa mia, e i tempi giocano contro di me.»"),
     personal ? el("p",{class:"personal"},personal) : null,
     el("h4",{},"Il problema, detto chiaro"),
-    el("p",{},"Trovi la casa giusta, però non puoi comprarla finché non hai venduto la tua. Chi la vende non accetta una data di rogito così lontana, e intanto un altro acquirente può prendertela. E quando vendi, devi ancora comprare, ristrutturare e traslocare: tra ristrutturazione e trasloco passano quattro mesi e più, mentre chi ha comprato casa tua aspetta di entrare. Con noi quei mesi non esistono: la tua casa nuova si ristruttura mentre tu vendi. L'unica attesa è quella della tua vendita, e quando arriva la casa è già pronta."),
+    el("p",{},"Trovi la casa giusta, però non puoi comprarla finché non hai venduto la tua. Chi la vende non accetta una data di rogito così lontana, e intanto un altro acquirente può prendertela. E quando vendi, devi ancora comprare, ristrutturare e traslocare: tra ristrutturazione e trasloco passano quattro mesi, mentre chi ha comprato casa tua aspetta di entrare. Con noi quei mesi non esistono: la tua casa nuova si ristruttura mentre tu vendi. L'unica attesa è quella della tua vendita, e quando arriva la casa è già pronta."),
     el("div",{class:"timeline"},
       el("div",{class:"tl"},el("b",{},"Da solo"),el("ol",{},
         el("li",{},"Fai una proposta, però prima devi vendere la tua"),
         el("li",{},"Il venditore non accetta un rogito così lontano"),
         el("li",{},"La proposta salta e perdi la casa che volevi"),
         el("li",{},"Vendi, poi compri e inizi i lavori"),
-        el("li",{},"Quattro mesi e più tra ristrutturazione e trasloco"))),
+        el("li",{},"Aspetti 4 mesi tra ristrutturazione e trasloco"))),
       el("div",{class:"tl us"},el("b",{},"Con HOUSETOHOME"),el("ol",{},
         el("li",{},"Noi acquistiamo la casa che hai scelto"),
         el("li",{},"La ristrutturiamo mentre tu vendi la tua"),
@@ -693,7 +695,10 @@ function calcCasa(opts){
   let trovata = "si";
   const prezzo = el("input",{id:"cc-prezzo",inputmode:"numeric",placeholder:"es. 220.000",autocomplete:"off"});
   const segT = el("div",{class:"seg",role:"group","aria-label":"Hai già individuato la casa?"});
-  const boxSi = el("label",{for:"cc-prezzo"},"Prezzo dell'annuncio (€)", prezzo);
+  const dove = el("input",{id:"cc-dove",placeholder:"es. via Mazzini, Bologna",autocomplete:"off"});
+  const boxSi = el("div",{class:"calc-pair"},
+    el("label",{for:"cc-dove"},"Dove si trova (via o zona)", dove),
+    el("label",{for:"cc-prezzo"},"Prezzo dell'annuncio (€)", prezzo));
   const boxNo = el("label",{for:"cc-zona",hidden:""},"Zona", zona);
   [["si","Sì, l'ho trovata"],["no","Non ancora"]].forEach(([v,t])=>{
     const b = el("button",{type:"button",class:"seg-b","aria-pressed":v===trovata?"true":"false"},t);
@@ -708,7 +713,7 @@ function calcCasa(opts){
     if(trovata!=="si" && DA_VALUTARE.has(Z)){ out.append(boxInsieme(Z)); return; }
     if(Q===0){ out.append(el("p",{class:"calc-empty"},"Scegli i lavori che vuoi fare per vedere il risultato.")); return; }
     const V = trovata==="si" ? vic(PA*0.97 + M*K_L*Q) : vic(valoreMq(Z,Q)*M);
-    LAST.casa = {zona:Z, mq:M, lavori: Q>=1 ? "completa" : "parziale", V};
+    LAST.casa = {zona: trovata==="si" ? "" : Z, dove: trovata==="si" ? dove.value.trim() : "", prezzo: trovata==="si" ? PA : 0, mq:M, lavori: Q>=1 ? "completa" : "parziale", V};
     const yes = el("button",{class:"btn",type:"button"},"Ho questa cifra: partiamo");
     const msg = el("p",{class:"calc-ok",hidden:""},"Perfetto: hai la base per realizzare il tuo sogno.");
     yes.addEventListener("click",()=>{ confetti(); msg.hidden=false; yes.disabled=true; if(opts.onYes) setTimeout(opts.onYes, reduce?300:1800); else msg.textContent += " Lasciaci il tuo contatto qui sotto e partiamo."; });
@@ -776,7 +781,7 @@ function calcCasa(opts){
     );
   }
 
-  zona.addEventListener("change",update); mq.addEventListener("input",update); prezzo.addEventListener("input",update); update();
+  zona.addEventListener("change",update); mq.addEventListener("input",update); prezzo.addEventListener("input",update); dove.addEventListener("input",update); update();
   return el("div",{class:"calc-wrap"},
     el("div",{class:"calc"},
       el("h4",{},"Quanto ti serve davvero"),
@@ -949,8 +954,11 @@ function messaggioWA(nome){
   const pv = LAST.piano && LAST.piano.V ? LAST.piano : null;
   const quota = pv && pv.mutuo ? Math.round(pv.mutuo/pv.V*100) : 0;
   const banca = A.m_banca==="pre" ? " (ho già una pre-delibera)" : A.m_banca==="no" ? " (non sono ancora andato in banca)" : "";
+  const art = q => (/^(8|11)\d?$/.test(String(q)) ? "l'" : "il ")+q+"%";
+  const passoBanca = A.m_banca==="pre" ? "ho già una pre-delibera" : "devo andare in banca per informarmi e chiedere la pre-delibera";
   if(pv){
-    if(quota>80) r.push("- mutuo: il mutuo che mi servirebbe supera l'80% del valore della casa"+banca);
+    if(quota>80) r.push("- mutuo: il mutuo che mi servirebbe è "+art(quota)+" del valore della casa, oltre l'80% che la banca finanzia di solito; "+passoBanca);
+    else if(quota>0) r.push("- mutuo: mi serve un mutuo basso, "+art(quota)+" del valore della casa; "+passoBanca);
   } else if(R.m){
     r.push(A.soldi==="nonso"
       ? "- mutuo: non so ancora se con mutuo e risparmi arrivo al prezzo della casa che vorrei"+banca
@@ -970,9 +978,16 @@ function messaggioWA(nome){
     if(rc) r.push("- "+rc);
   }
   if(R.none) r.push("- una consulenza per la casa che sto cercando");
-  if(LAST.casa) r.push("Casa che mi interessa: "+(LAST.casa.zona ? "zona "+zonaBreve(LAST.casa.zona)+", " : "")+LAST.casa.mq+" m², ristrutturazione "+LAST.casa.lavori+" (valore stimato "+eur(LAST.casa.V)+").");
+  if(LAST.casa){
+    const c=LAST.casa, w=[];
+    if(c.dove) w.push(c.dove); else if(c.zona) w.push("zona "+zonaBreve(c.zona));
+    w.push(c.mq+" m²");
+    if(c.prezzo) w.push("prezzo dell'annuncio "+eur(c.prezzo));
+    w.push("ristrutturazione "+c.lavori);
+    r.push((c.prezzo ? "Ho già trovato la casa: " : "Casa che cerco: ")+w.join(", ")+" (valore stimato da finita "+eur(c.V)+").");
+  }
   else if(LAST.inverso) r.push("Ho "+eur(LAST.inverso.liq)+" di liquidità e cerco in zona "+zonaBreve(LAST.inverso.zona)+".");
-  if(LAST.piano) r.push("Vendo la mia casa a "+eur(LAST.piano.P)+(LAST.piano.D?" (mutuo residuo "+eur(LAST.piano.D)+")":"")+", ho "+eur(LAST.piano.S)+" di risparmi"+(LAST.piano.mutuo?" e mi servirebbe un mutuo di "+eur(LAST.piano.mutuo)+(quota?", "+(/^(8|11)\d?$/.test(String(quota))?"l'":"il ")+quota+"% del valore della casa":""):" e non mi servirebbe un mutuo")+".");
+  if(LAST.piano) r.push("Vendo la mia casa a "+eur(LAST.piano.P)+(LAST.piano.D?" (mutuo residuo "+eur(LAST.piano.D)+")":"")+", ho "+eur(LAST.piano.S)+" di risparmi"+(LAST.piano.mutuo?" e mi servirebbe un mutuo di "+eur(LAST.piano.mutuo):" e non mi servirebbe un mutuo")+".");
   const liq = {si:"sì", forse:"più o meno, devo fare bene i conti", no:"non ancora"}[A.liquidita];
   if(liq) r.push("Risparmi per la caparra: "+liq+".");
   r.push("Quando possiamo sentirci?");
@@ -1025,8 +1040,10 @@ function contactBlock(){
   return [
     form, thanks,
     el("div",{class:"cta-box"},
-      el("a",{class:"btn",href:METODO_URL,target:"_blank",rel:"noopener"},"Scopri chi ti segue"),
-      el("p",{class:"small"},"Chi siamo, come lavoriamo e le case che abbiamo già trasformato."))
+      el("p",{class:"small"},"Intanto scopri chi siamo, come lavoriamo e le case che abbiamo già trasformato."),
+      el("div",{class:"cta-row"},
+        el("a",{class:"btn",href:"/",target:"_blank",rel:"noopener"},"Visita il sito"),
+        el("a",{class:"btn ghost",href:METODO_URL,target:"_blank",rel:"noopener"},"Il nostro metodo")))
   ];
 }
 
@@ -1041,7 +1058,7 @@ function cardButton(k, main){
     el("span",{class:"scard-body"},
       el("span",{class:"tag"},c.tag),
       el("span",{class:"scard-title"},c.title),
-      main ? el("span",{class:"scard-doubt"},c.doubt) : null,
+      main ? el("span",{class:"scard-doubt"},(k==="m" && A.soldi==="nonso") ? "«Non so ancora se con mutuo e risparmi ci arrivo.»" : c.doubt) : null,
       el("span",{class:"scard-sum"},c.sum),
       el("span",{class:"scard-go"},"Approfondisci ", arrow())
     ));
