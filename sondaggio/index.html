@@ -1,0 +1,1086 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sondaggio HOUSETOHOME</title>
+<link rel="stylesheet" href="../assets/fonts.css">
+<style>
+/* Layout: una domanda diretta per schermata su fondo giallo; il logo HOUSETOHOME si disegna a ogni risposta; alla fine solo le soluzioni che servono */
+:root{
+  --yellow:#F8E07E; --ink:#3F4042; --ink-soft:#5E5F62;
+  --paper:#FFFFFF; --paper-hover:#FFFBE3; --line:#4A4B4D; --soft:#FFF6C4; --rule:#E7E1C2;
+  --display:'Merriweather', Georgia, 'Times New Roman', serif;
+  --body:'Open Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  color-scheme: light;
+}
+[hidden]{display:none!important}
+html,body{height:100%}
+body{background:var(--yellow);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.55;
+  padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));box-sizing:border-box}
+.app{max-width:560px;margin:0 auto;min-height:100%;display:flex;flex-direction:column;padding-block:16px 32px;box-sizing:border-box;gap:16px}
+.top{position:relative;display:flex;justify-content:center;align-items:center;min-height:56px}
+.logo{width:170px;height:auto;display:block}
+.back{position:absolute;left:0;top:50%;transform:translateY(-50%);font:600 14px var(--body);color:var(--ink);background:none;border:0;padding:10px 4px;min-height:44px;cursor:pointer;display:flex;align-items:center;gap:4px}
+.back:focus-visible,.opt:focus-visible,.btn:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+@media (max-width:420px){ .logo{width:140px} .back span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)} }
+.house{width:100%;max-width:300px;height:auto;margin:0 auto;display:block;overflow:visible}
+.house .lp{transition:stroke-dashoffset 2200ms linear}
+.screen{display:flex;flex-direction:column;gap:18px;animation:in 520ms cubic-bezier(.2,.7,.2,1) both}
+@keyframes in{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+h1,h2,h3,h4{font-family:var(--display);font-weight:700;color:var(--ink);text-wrap:balance;margin:0}
+h1,h2{text-align:center}
+h1{font-size:clamp(27px,7vw,36px);line-height:1.2}
+h2{font-size:clamp(22px,5.6vw,29px);line-height:1.28}
+p{margin:0}
+.lead{font-size:17px;text-align:center;margin:0 auto;max-width:36ch;text-wrap:pretty}
+.hint{font-size:14px;text-align:center;color:var(--ink-soft);margin-top:-8px}
+.opts{display:flex;flex-direction:column;gap:10px}
+.opt{display:flex;align-items:center;gap:14px;width:100%;text-align:left;background:var(--paper);color:var(--ink);border:2px solid transparent;border-radius:14px;
+  padding:14px 16px;min-height:56px;font:400 16px/1.35 var(--body);cursor:pointer;box-shadow:0 1px 0 rgba(63,64,66,.12);transition:border-color 160ms, background 160ms, transform 160ms}
+.opt:hover{background:var(--paper-hover)}
+.opt:active{transform:scale(.99)}
+.opt .mark{flex:none;width:22px;height:22px;border:2px solid var(--ink-soft);border-radius:50%;display:grid;place-items:center}
+.opt.multi .mark{border-radius:6px}
+.opt[aria-pressed="true"]{border-color:var(--ink)}
+.opt[aria-pressed="true"] .mark{background:var(--ink);border-color:var(--ink)}
+.opt[aria-pressed="true"] .mark::after{content:"";width:9px;height:5px;border:2.5px solid var(--paper);border-top:0;border-right:0;transform:rotate(-45deg) translate(1px,-1px)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:54px;padding:0 28px;border-radius:999px;border:0;cursor:pointer;
+  font:700 16px var(--body);background:var(--ink);color:var(--yellow);text-decoration:none;align-self:center;text-align:center;transition:transform 160ms, opacity 160ms}
+.btn:hover{transform:translateY(-1px)}
+.btn[disabled]{opacity:.35;cursor:default;transform:none}
+.btn.ghost{background:transparent;color:var(--ink);border:2px solid var(--ink)}
+.small{font-size:13px;text-align:center;color:var(--ink-soft)}
+.kicker{font-family:var(--display);font-style:italic;font-size:19px;text-align:center}
+/* soluzioni */
+.sol{background:var(--paper);border-radius:18px;padding:22px 20px;display:flex;flex-direction:column;gap:14px}
+.tag{font:700 12px var(--body);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)}
+.sol h3{font-size:22px;line-height:1.25}
+.doubt{font-family:var(--display);font-style:italic;font-size:16px;background:var(--soft);border-radius:12px;padding:12px 14px}
+.sol h4{font:700 13px var(--body);letter-spacing:.1em;text-transform:uppercase;border-top:1px solid var(--rule);padding-top:14px}
+.personal{font-weight:600}
+.cmp-wrap{overflow-x:auto;margin:0 -4px}
+table.cmp{width:100%;border-collapse:collapse;font-size:14px;font-variant-numeric:tabular-nums;min-width:320px}
+.cmp th,.cmp td{padding:10px 8px;text-align:left;vertical-align:top;border-bottom:1px solid var(--rule)}
+.cmp thead th{font:700 12px var(--body);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
+.cmp thead th.us{color:var(--ink)}
+.cmp td.us{background:var(--soft);font-weight:700}
+.cmp tbody th{font-weight:600;width:34%}
+.fine{font-size:12px;color:var(--ink-soft)}
+.timeline{display:grid;grid-template-columns:1fr;gap:12px}
+.tl{border:1px solid var(--rule);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:8px}
+.tl.us{background:var(--soft);border-color:transparent}
+.tl b{font-size:14px;letter-spacing:.06em;text-transform:uppercase}
+.tl ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px}
+.todo{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px}
+.todo li{display:grid;grid-template-columns:32px 1fr;gap:12px;align-items:start}
+.todo .n{width:32px;height:32px;border-radius:50%;background:var(--yellow);display:grid;place-items:center;font:700 15px var(--display)}
+.todo div{min-width:0;padding-top:4px;display:flex;flex-direction:column;gap:2px}
+.todo small{font-size:14px;color:var(--ink-soft)}
+.plus{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.plus li{display:grid;grid-template-columns:20px 1fr;gap:10px;align-items:start}
+.plus svg{margin-top:3px}
+.plus span{min-width:0}
+.faq{display:flex;flex-direction:column;gap:12px}
+.faq p b{display:block}
+select{font:400 16px var(--body);color:var(--ink);border:2px solid #D9D6C8;border-radius:10px;padding:10px 12px;background:var(--paper);min-height:48px;width:100%}
+.sv-tipo{display:flex;flex-direction:column;gap:6px}
+.sv-lab{font:600 14px var(--body)}
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:6px;background:var(--paper);border-radius:12px;padding:4px}
+.seg-b{min-height:44px;border:0;border-radius:9px;background:transparent;font:600 15px var(--body);color:var(--ink);cursor:pointer}
+.seg-b[aria-pressed="true"]{background:var(--ink);color:var(--yellow)}
+.seg-b:focus-visible,select:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+.extras{display:flex;flex-direction:column;gap:8px;background:var(--paper);border-radius:12px;padding:12px}
+.extras .check{font-size:15px}
+.help .calc{margin-top:10px}
+.help-or{font-weight:700;margin-top:12px}
+.calc-wrap{display:flex;flex-direction:column;gap:14px}
+.calc-slot{display:flex;flex-direction:column}
+.extras-t{font:700 12px var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft)}
+.calc-actions{display:flex;flex-direction:column;gap:10px;align-items:stretch;margin-top:6px}
+.calc-actions .btn{align-self:stretch}
+.calc-rows .plus-row{color:var(--ink);font-weight:700}
+.why{background:var(--soft);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:6px;font-size:14px}
+.calc-ok-box{background:var(--paper);border:2px solid var(--ink);border-radius:12px;padding:12px 14px;font-weight:700;margin:0}
+.calc-warn{background:var(--paper);border:2px dashed var(--ink-soft);border-radius:12px;padding:12px 14px;margin:0}
+.calc-ok{font-weight:700;text-align:center}
+.confetti{position:fixed;inset:0;pointer-events:none;z-index:50}
+.help{background:var(--paper);border-radius:14px;padding:12px 16px;font-size:15px}
+.help summary{font-weight:700;cursor:pointer;min-height:28px}
+.help ol{margin:10px 0 2px;padding-left:20px;display:flex;flex-direction:column;gap:8px}
+.calc{background:var(--soft);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:12px}
+.calc h4{border-top:0;padding-top:0}
+.calc-out{background:var(--paper);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:8px;font-variant-numeric:tabular-nums}
+.calc-empty{color:var(--ink-soft);font-size:14px}
+.calc-label{font-size:14px;color:var(--ink-soft)}
+.calc-mid{font:700 22px/1.1 var(--display)}
+.calc-big{font:700 30px/1.1 var(--display)}
+.calc-rows{display:grid;grid-template-columns:1fr auto;gap:6px 12px;margin:4px 0 0;font-size:14px}
+.calc-rows dt{color:var(--ink-soft);min-width:0}
+.calc-rows dd{margin:0;font-weight:700;text-align:right}
+.calc-note{font-size:14px}
+.calc-time{font-size:15px;font-weight:700}
+.calc-how-t{font:700 13px var(--body);letter-spacing:.08em;text-transform:uppercase;margin-top:6px}
+.calc-how{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;font-size:14px}
+.scards{display:flex;flex-direction:column;gap:12px}
+.scard{display:grid;grid-template-columns:96px 1fr;gap:14px;align-items:stretch;text-align:left;width:100%;background:var(--paper);color:var(--ink);border:2px solid transparent;border-radius:18px;padding:12px;cursor:pointer;font:inherit;box-shadow:0 1px 0 rgba(63,64,66,.12);transition:border-color 160ms, transform 160ms}
+.scard:hover{border-color:var(--ink)}
+.scard:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+.scard-img{border-radius:12px;overflow:hidden;background:var(--soft);min-height:120px}
+.scard-img img{width:100%;height:100%;object-fit:cover;display:block}
+.scard-body{display:flex;flex-direction:column;gap:6px;min-width:0;padding-block:2px}
+.scard-title{font:700 18px/1.25 var(--display)}
+.scard-doubt{font:italic 14px/1.4 var(--display);color:var(--ink-soft)}
+.scard-sum{font-size:14px;line-height:1.45}
+.scard-go{margin-top:auto;font-weight:700;font-size:14px;display:inline-flex;align-items:center;gap:4px}
+.scard.other{grid-template-columns:72px 1fr}
+.scard.other .scard-img{min-height:84px}
+.others-title{font-size:18px;text-align:center;margin-top:8px}
+.personal.center{text-align:center}
+.beforeafter{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.beforeafter figure{margin:0;display:flex;flex-direction:column;gap:6px}
+.beforeafter img{width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:14px;display:block;max-width:100%}
+.beforeafter figcaption{font:600 13px var(--body);text-align:center}
+.beforeafter .after figcaption{font-weight:700}
+.wa-box{background:var(--paper);border-radius:18px;padding:20px;display:flex;flex-direction:column;gap:12px}
+.wa-box h3{font-size:21px}
+.wa-prev{white-space:pre-line;font-size:14px;background:var(--soft);border-radius:12px;padding:12px 14px;margin:0}
+.btn.wa{align-self:stretch}
+.wa-box .btn.ghost{align-self:stretch}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media (max-width:360px){.two{grid-template-columns:1fr}}
+.cta-box{display:flex;flex-direction:column;gap:12px;align-items:center;padding-top:6px}
+form{display:flex;flex-direction:column;gap:12px;background:var(--paper);border-radius:16px;padding:18px}
+form h3{font-size:19px}
+label{font:600 14px var(--body);display:flex;flex-direction:column;gap:6px}
+input,textarea{font:400 16px var(--body);color:var(--ink);border:2px solid #D9D6C8;border-radius:10px;padding:12px;background:var(--paper);min-height:48px;box-sizing:border-box;width:100%}
+textarea{min-height:84px;resize:vertical}
+.check{flex-direction:row;align-items:flex-start;gap:10px;font-weight:400;font-size:13px;line-height:1.45}
+.check input{width:22px;height:22px;min-height:0;flex:none;margin:1px 0 0;accent-color:var(--ink)}
+.note{font-size:12px;color:var(--ink-soft)}
+.thanks{text-align:center;font-size:16px}
+@media (prefers-reduced-motion: reduce){
+  .screen{animation:none}
+  .house .lp,.opt,.btn{transition:none}
+}
+</style>
+</head>
+<body>
+
+
+<div class="app">
+  <div class="top">
+    <button class="back" id="back" type="button" hidden aria-label="Torna indietro">
+      <svg width="18" height="18" viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 5 8l5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Indietro</span>
+    </button>
+  </div>
+
+  <svg class="house" id="house" viewBox="0 0 640 292" role="img" aria-label="HOUSETOHOME S.r.l.: il logo si disegna mentre rispondi">
+    <defs><mask id="sdraw" maskUnits="userSpaceOnUse" x="0" y="0" width="640" height="292" fill="none" stroke="#fff" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"><path class="lp" d="M6,276 L9,275 L12,275 L15,275 L18,276 L21,276 L24,276" data-t0="0.0" data-t1="0.201" style="stroke-dasharray:20.3 40.3;stroke-dashoffset:21.3" data-l="20.3"/><path class="lp" d="M24,276 L27,276 L30,276 L33,276 L36,276 L39,276 L42,276" data-t0="0.201" data-t1="0.402" style="stroke-dasharray:20.0 40.0;stroke-dashoffset:21.0" data-l="20.0"/><path class="lp" d="M42,276 L45,276 L48,276 L51,276 L54,276 L57,276 L60,276" data-t0="0.402" data-t1="0.603" style="stroke-dasharray:20.0 40.0;stroke-dashoffset:21.0" data-l="20.0"/><path class="lp" d="M60,276 L63,276 L66,276 L69,276 L72,276 L75,276 L78,276" data-t0="0.603" data-t1="0.804" style="stroke-dasharray:20.0 40.0;stroke-dashoffset:21.0" data-l="20.0"/><path class="lp" d="M78,276 L81,276 L84,276 L87,276 L90,276 L93,276 L96,276" data-t0="0.804" data-t1="1.005" style="stroke-dasharray:20.0 40.0;stroke-dashoffset:21.0" data-l="20.0"/><path class="lp" d="M96,276 L99,276 L102,276 L105,276 L108,275 L111,275 L114,275" data-t0="1.005" data-t1="1.206" style="stroke-dasharray:20.2 40.2;stroke-dashoffset:21.2" data-l="20.2"/><path class="lp" d="M114,275 L117,275 L120,275 L123,275 L126,275 L129,275 L132,275" data-t0="1.206" data-t1="1.407" style="stroke-dasharray:20.0 40.0;stroke-dashoffset:21.0" data-l="20.0"/><path class="lp" d="M132,275 L135,274 L138,274 L141,274 L144,273 L147,273 L150,273" data-t0="1.407" data-t1="1.608" style="stroke-dasharray:20.3 40.3;stroke-dashoffset:21.3" data-l="20.3"/><path class="lp" d="M150,273 L153,273 L156,272 L159,272 L162,271 L165,271 L168,271" data-t0="1.608" data-t1="1.809" style="stroke-dasharray:20.3 40.3;stroke-dashoffset:21.3" data-l="20.3"/><path class="lp" d="M168,271 L171,270 L174,270 L177,270 L180,269 L183,268 L186,266" data-t0="1.809" data-t1="2.01" style="stroke-dasharray:21.1 41.1;stroke-dashoffset:22.1" data-l="21.1"/><path class="lp" d="M186,266 L189,265 L192,262 L194,260 L196,257 L196,257" data-t0="2.01" data-t1="2.123" style="stroke-dasharray:15.8 35.8;stroke-dashoffset:16.8" data-l="15.8"/><path class="lp" d="M204,197 L204,197 L204,194 L204,191 L204,188 L204,185 L204,182" data-t0="2.211" data-t1="2.31" style="stroke-dasharray:17.0 37.0;stroke-dashoffset:18.0" data-l="17.0"/><path class="lp" d="M204,182 L204,179 L204,176 L204,173 L204,170 L204,167 L204,164" data-t0="2.31" data-t1="2.428" style="stroke-dasharray:20.0 40.0;stroke-dashoffset:21.0" data-l="20.0"/><path class="lp" d="M204,164 L204,161 L204,158 L203,155 L203,152 L203,149 L203,146" data-t0="2.428" data-t1="2.548" style="stroke-dasharray:20.2 40.2;stroke-dashoffset:21.2" data-l="20.2"/><path class="lp" d="M203,146 L202,143 L201,140 L199,137 L196,136 L193,135 L190,135" data-t0="2.548" data-t1="2.675" style="stroke-dasharray:21.3 41.3;stroke-dashoffset:22.3" data-l="21.3"/><path class="lp" d="M190,135 L187,135 L184,135 L181,134 L182,131 L183,128 L186,126" data-t0="2.675" data-t1="2.801" style="stroke-dasharray:21.1 41.1;stroke-dashoffset:22.1" data-l="21.1"/><path class="lp" d="M186,126 L188,124 L191,121 L194,118 L196,115 L199,112 L202,110" data-t0="2.801" data-t1="2.952" style="stroke-dasharray:24.8 44.8;stroke-dashoffset:25.8" data-l="24.8"/><path class="lp" d="M202,110 L204,107 L207,105 L210,102 L213,99 L216,96 L219,93" data-t0="2.952" data-t1="3.111" style="stroke-dasharray:26.2 46.2;stroke-dashoffset:27.2" data-l="26.2"/><path class="lp" d="M219,93 L222,90 L225,87 L228,84 L230,82 L233,79 L234,76" data-t0="3.111" data-t1="3.263" style="stroke-dasharray:25.0 45.0;stroke-dashoffset:26.0" data-l="25.0"/><path class="lp" d="M234,76 L234,73 L234,70 L234,67 L234,64 L234,61 L234,58" data-t0="3.263" data-t1="3.381" style="stroke-dasharray:20.0 40.0;stroke-dashoffset:21.0" data-l="20.0"/><path class="lp" d="M234,58 L234,55 L234,52 L234,49 L234,46 L234,43 L234,40" data-t0="3.381" data-t1="3.5" style="stroke-dasharray:20.0 40.0;stroke-dashoffset:21.0" data-l="20.0"/><path class="lp" d="M234,40 L234,37 L234,34 L234,31 L236,28 L238,25 L241,24" data-t0="3.5" data-t1="3.628" style="stroke-dasharray:21.4 41.4;stroke-dashoffset:22.4" data-l="21.4"/><path class="lp" d="M241,24 L244,24 L247,25 L250,24 L253,24 L256,24 L259,24" data-t0="3.628" data-t1="3.749" style="stroke-dasharray:20.3 40.3;stroke-dashoffset:21.3" data-l="20.3"/><path class="lp" d="M259,24 L262,25 L265,28 L266,31 L266,34 L266,37 L267,40" data-t0="3.749" data-t1="3.879" style="stroke-dasharray:21.7 41.7;stroke-dashoffset:22.7" data-l="21.7"/><path class="lp" d="M267,40 L269,41 L272,40 L275,38 L278,35 L281,32 L284,29" data-t0="3.879" data-t1="4.023" style="stroke-dasharray:23.7 43.7;stroke-dashoffset:24.7" data-l="23.7"/><path class="lp" d="M284,29 L287,26 L290,24 L292,21 L295,18 L298,15 L301,12" data-t0="4.023" data-t1="4.182" style="stroke-dasharray:26.2 46.2;stroke-dashoffset:27.2" data-l="26.2"/><path class="lp" d="M301,12 L304,10 L307,9 L310,9 L313,10 L316,13 L319,16" data-t0="4.182" data-t1="4.324" style="stroke-dasharray:23.4 43.4;stroke-dashoffset:24.4" data-l="23.4"/><path class="lp" d="M319,16 L322,19 L325,22 L328,25 L331,28 L334,31 L337,34" data-t0="4.324" data-t1="4.492" style="stroke-dasharray:27.5 47.5;stroke-dashoffset:28.5" data-l="27.5"/><path class="lp" d="M337,34 L340,37 L343,40 L346,43 L349,46 L352,49 L355,52" data-t0="4.492" data-t1="4.66" style="stroke-dasharray:27.5 47.5;stroke-dashoffset:28.5" data-l="27.5"/><path class="lp" d="M355,52 L358,55 L361,58 L364,60 L367,63 L370,66 L373,69" data-t0="4.66" data-t1="4.824" style="stroke-dasharray:26.8 46.8;stroke-dashoffset:27.8" data-l="26.8"/><path class="lp" d="M373,69 L376,72 L379,75 L382,78 L385,81 L388,84 L391,87" data-t0="4.824" data-t1="4.992" style="stroke-dasharray:27.5 47.5;stroke-dashoffset:28.5" data-l="27.5"/><path class="lp" d="M391,87 L394,90 L397,93 L400,96 L403,99 L406,102 L409,105" data-t0="4.992" data-t1="5.16" style="stroke-dasharray:27.5 47.5;stroke-dashoffset:28.5" data-l="27.5"/><path class="lp" d="M409,105 L412,107 L415,110 L418,113 L421,116 L424,119 L427,122" data-t0="5.16" data-t1="5.323" style="stroke-dasharray:26.8 46.8;stroke-dashoffset:27.8" data-l="26.8"/><path class="lp" d="M427,122 L430,125 L433,128 L435,131 L435,134 L432,135 L429,136" data-t0="5.323" data-t1="5.465" style="stroke-dasharray:23.4 43.4;stroke-dashoffset:24.4" data-l="23.4"/><path class="lp" d="M429,136 L426,136 L423,136 L420,136 L417,137 L415,140 L414,143" data-t0="5.465" data-t1="5.59" style="stroke-dasharray:20.9 40.9;stroke-dashoffset:21.9" data-l="20.9"/><path class="lp" d="M414,143 L414,146 L414,149 L414,152 L414,155 L414,158 L414,161" data-t0="5.59" data-t1="5.708" style="stroke-dasharray:20.0 40.0;stroke-dashoffset:21.0" data-l="20.0"/><path class="lp" d="M414,161 L414,164 L414,167 L414,170 L414,173 L414,176 L414,179" data-t0="5.708" data-t1="5.827" style="stroke-dasharray:20.0 40.0;stroke-dashoffset:21.0" data-l="20.0"/><path class="lp" d="M414,179 L414,182 L414,185 L414,188 L414,191 L414,194 L413,197" data-t0="5.827" data-t1="5.947" style="stroke-dasharray:20.2 40.2;stroke-dashoffset:21.2" data-l="20.2"/><path class="lp" d="M212,260 L212,263 L213,266 L216,269 L219,270 L222,270 L225,270" data-t0="2.3" data-t1="2.445" style="stroke-dasharray:21.6 41.6;stroke-dashoffset:22.6" data-l="21.6"/><path class="lp" d="M225,270 L228,270 L231,270 L234,270 L237,270 L240,270 L243,270" data-t0="2.445" data-t1="2.646" style="stroke-dasharray:20.0 40.0;stroke-dashoffset:21.0" data-l="20.0"/><path class="lp" d="M243,270 L246,270 L249,270 L252,270 L255,270 L258,269 L259,266" data-t0="2.646" data-t1="2.834" style="stroke-dasharray:20.3 40.3;stroke-dashoffset:21.3" data-l="20.3"/><path class="lp" d="M259,266 L256,264 L253,263 L250,262 L247,261 L244,260 L241,259" data-t0="2.834" data-t1="2.962" style="stroke-dasharray:21.4 41.4;stroke-dashoffset:22.4" data-l="21.4"/><path class="lp" d="M241,259 L238,259 L235,258 L232,257 L229,256 L226,256 L223,256" data-t0="2.962" data-t1="3.084" style="stroke-dasharray:20.5 40.5;stroke-dashoffset:21.5" data-l="20.5"/><path class="lp" d="M223,256 L220,256 L217,256 L214,258 L213,259" data-t0="3.084" data-t1="3.157" style="stroke-dasharray:13.0 33.0;stroke-dashoffset:14.0" data-l="13.0"/><path class="lp" d="M260,268 L263,268 L266,268 L269,269 L272,269 L275,270 L278,270" data-t0="2.836" data-t1="3.037" style="stroke-dasharray:20.3 40.3;stroke-dashoffset:21.3" data-l="20.3"/><path class="lp" d="M278,270 L281,270 L284,270 L287,271 L290,271 L293,271 L296,272" data-t0="3.037" data-t1="3.238" style="stroke-dasharray:20.3 40.3;stroke-dashoffset:21.3" data-l="20.3"/><path class="lp" d="M296,272 L299,272 L302,272 L305,272 L308,273 L311,273 L314,274" data-t0="3.238" data-t1="3.439" style="stroke-dasharray:20.3 40.3;stroke-dashoffset:21.3" data-l="20.3"/><path class="lp" d="M314,274 L317,272 L320,271 L323,271 L326,271 L329,270 L332,270" data-t0="3.439" data-t1="3.64" style="stroke-dasharray:20.9 40.9;stroke-dashoffset:21.9" data-l="20.9"/><path class="lp" d="M332,270 L335,270 L338,270 L341,270 L344,270 L347,270 L350,270" data-t0="3.64" data-t1="3.841" style="stroke-dasharray:20.0 40.0;stroke-dashoffset:21.0" data-l="20.0"/><path class="lp" d="M350,270 L353,270 L356,270 L359,270 L362,270 L365,270 L368,270" data-t0="3.841" data-t1="4.041" style="stroke-dasharray:20.0 40.0;stroke-dashoffset:21.0" data-l="20.0"/><path class="lp" d="M368,270 L371,270 L374,270 L377,270 L380,270 L383,270 L386,270" data-t0="4.041" data-t1="4.242" style="stroke-dasharray:20.0 40.0;stroke-dashoffset:21.0" data-l="20.0"/><path class="lp" d="M386,270 L389,270 L392,270 L395,270 L398,270 L401,270 L404,270" data-t0="4.242" data-t1="4.443" style="stroke-dasharray:20.0 40.0;stroke-dashoffset:21.0" data-l="20.0"/><path class="lp" d="M404,270 L407,270 L410,271 L412,269 L413,266 L414,263 L414,260" data-t0="4.443" data-t1="4.594" style="stroke-dasharray:20.3 40.3;stroke-dashoffset:21.3" data-l="20.3"/><path class="lp" d="M414,260 L413,257 L413,256" data-t0="4.594" data-t1="4.622" style="stroke-dasharray:6.2 26.2;stroke-dashoffset:7.2" data-l="6.2"/><path class="lp" d="M316,275 L317,277 L320,278 L323,278 L326,279 L329,279 L332,280" data-t0="3.461" data-t1="3.64" style="stroke-dasharray:19.7 39.7;stroke-dashoffset:20.7" data-l="19.7"/><path class="lp" d="M332,280 L335,281 L338,281 L341,281 L344,282 L347,282 L350,282" data-t0="3.64" data-t1="3.841" style="stroke-dasharray:20.3 40.3;stroke-dashoffset:21.3" data-l="20.3"/><path class="lp" d="M350,282 L353,282 L356,282 L359,283 L362,283 L365,283 L368,283" data-t0="3.841" data-t1="4.041" style="stroke-dasharray:20.2 40.2;stroke-dashoffset:21.2" data-l="20.2"/><path class="lp" d="M368,283 L371,283 L374,283 L377,283 L380,283 L383,283 L386,283" data-t0="4.041" data-t1="4.242" style="stroke-dasharray:20.0 40.0;stroke-dashoffset:21.0" data-l="20.0"/><path class="lp" d="M386,283 L389,283 L392,282 L395,282 L398,282 L401,282 L404,281" data-t0="4.242" data-t1="4.443" style="stroke-dasharray:20.3 40.3;stroke-dashoffset:21.3" data-l="20.3"/><path class="lp" d="M404,281 L407,281 L410,280 L413,279" data-t0="4.443" data-t1="4.544" style="stroke-dasharray:11.3 31.3;stroke-dashoffset:12.3" data-l="11.3"/><path class="lp" d="M414,278 L417,277 L420,277 L423,277 L426,276 L429,275 L432,274" data-t0="4.555" data-t1="4.756" style="stroke-dasharray:20.6 40.6;stroke-dashoffset:21.6" data-l="20.6"/><path class="lp" d="M432,274 L435,274 L438,273 L441,271 L444,270 L447,270 L450,269" data-t0="4.756" data-t1="4.957" style="stroke-dasharray:21.1 41.1;stroke-dashoffset:22.1" data-l="21.1"/><path class="lp" d="M450,269 L453,267 L456,266 L459,266 L462,264 L465,263 L468,262" data-t0="4.957" data-t1="5.158" style="stroke-dasharray:21.7 41.7;stroke-dashoffset:22.7" data-l="21.7"/><path class="lp" d="M468,262 L471,262 L474,260 L477,259 L480,259 L483,258 L486,257" data-t0="5.158" data-t1="5.359" style="stroke-dasharray:21.1 41.1;stroke-dashoffset:22.1" data-l="21.1"/><path class="lp" d="M486,257 L489,257 L492,256 L495,256 L498,256 L501,256 L504,256" data-t0="5.359" data-t1="5.56" style="stroke-dasharray:20.2 40.2;stroke-dashoffset:21.2" data-l="20.2"/><path class="lp" d="M504,256 L507,256 L510,256 L513,256 L516,256 L519,256 L522,256" data-t0="5.56" data-t1="5.761" style="stroke-dasharray:20.0 40.0;stroke-dashoffset:21.0" data-l="20.0"/><path class="lp" d="M522,256 L525,256 L528,257 L531,257 L534,257 L537,258 L540,259" data-t0="5.761" data-t1="5.962" style="stroke-dasharray:20.5 40.5;stroke-dashoffset:21.5" data-l="20.5"/><path class="lp" d="M540,259 L543,259 L546,260 L549,260 L552,261 L555,262 L558,262" data-t0="5.962" data-t1="6.163" style="stroke-dasharray:20.5 40.5;stroke-dashoffset:21.5" data-l="20.5"/><path class="lp" d="M558,262 L561,263 L564,263 L567,265 L570,265 L573,266 L576,266" data-t0="6.163" data-t1="6.364" style="stroke-dasharray:20.9 40.9;stroke-dashoffset:21.9" data-l="20.9"/><path class="lp" d="M576,266 L579,267 L582,267 L585,268 L588,269 L591,270 L594,270" data-t0="6.364" data-t1="6.565" style="stroke-dasharray:20.6 40.6;stroke-dashoffset:21.6" data-l="20.6"/><path class="lp" d="M594,270 L597,270 L600,271 L603,271 L606,271 L609,272 L612,272" data-t0="6.565" data-t1="6.766" style="stroke-dasharray:20.3 40.3;stroke-dashoffset:21.3" data-l="20.3"/><path class="lp" d="M612,272 L615,273 L618,273 L621,274 L624,274 L627,274 L630,274" data-t0="6.766" data-t1="6.967" style="stroke-dasharray:20.3 40.3;stroke-dashoffset:21.3" data-l="20.3"/><path class="lp" d="M630,274 L633,275 L633,275" data-t0="6.967" data-t1="7.0" style="stroke-dasharray:5.2 25.2;stroke-dashoffset:6.2" data-l="5.2"/></mask></defs>
+    <image href="../assets/logo-house.png" width="640" height="292" mask="url(#sdraw)"/>
+    <image href="../assets/logo-text.png" width="640" height="292"/>
+  </svg>
+
+  <main id="stage" aria-live="polite"></main>
+</div>
+
+<script>
+const METODO_URL = "/metodo/";
+const PRIVACY_URL = "/privacy/";
+
+const QS = {
+  soldi:{ title:"Tra mutuo e risparmi, arrivi al prezzo della casa che vuoi?", opts:[
+    {v:"si", t:"Sì, ci arrivo"},
+    {v:"no", t:"No, non ci arrivo"},
+    {v:"nonso", t:"Non lo so ancora"}
+  ]},
+  vendere:{ title:"Per comprare la casa nuova, devi prima vendere quella in cui vivi?", opts:[
+    {v:"si", t:"Sì"},
+    {v:"no", t:"No"}
+  ]},
+  m_tipo:{ title:"La casa che vuoi, come te la immagini?", opts:[
+    {v:"pronta", t:"Già ristrutturata, pronta da vivere"},
+    {v:"gusto", t:"Da ristrutturare, per farla a mio gusto"},
+    {v:"conta", t:"Non importa com'è oggi: conta come sarà"}
+  ]},
+  m_banca:{ title:"Sai già quanto mutuo ti può concedere la banca?", opts:[
+    {v:"pre", t:"Sì, ho una pre-delibera o una valutazione scritta"},
+    {v:"idea", t:"Ho solo un'idea, niente di scritto"},
+    {v:"no", t:"No, non ancora"}
+  ]},
+  liquidita:{ title:()=>"Hai da parte il "+(devoVendere()?"15":"20")+"% del prezzo della casa finita, cioè acquisto più ristrutturazione?",
+    hint:()=>devoVendere() ? "È la prima parte della caparra, alla firma del preliminare. La seconda parte la versi quando firmi il compromesso della tua casa. A parte servono solo le spese di notaio e le imposte. Non hai il 15%? Non ti preoccupare, ne parliamo insieme." : "È la caparra del contratto preliminare. A parte servono solo le spese di notaio e le imposte. Non hai il 20%? Non ti preoccupare, ne parliamo insieme.",
+    opts:[
+      {v:"si", t:"Sì"},
+      {v:"forse", t:"Più o meno, devo fare bene i conti"},
+      {v:"nonso", t:"Non lo so: voglio calcolarlo", opens:true},
+      {v:"no", t:"No"}
+    ]},
+  v_stato:{ title:"A che punto è la vendita della tua casa?", opts:[
+    {v:"no", t:"Non l'ho ancora messa in vendita"},
+    {v:"invendita", t:"È in vendita"},
+    {v:"acquirente", t:"Ho già un acquirente"}
+  ]},
+  v_trovata:{ title:"Hai già trovato la casa che vorresti?", hint:"Puoi sceglierne più di una", multi:true, opts:[
+    {v:"paura", t:"Sì, e ho paura che qualcun altro la compri prima di me"},
+    {v:"tempi", t:"Sì, e vorrei entrarci appena vendo la mia, senza aspettare mesi di lavori"},
+    {v:"no", t:"Non ancora, sto cercando", only:true}
+  ]},
+  r_paure:{ title:"Cosa ti preoccupa della ristrutturazione?", hint:"Puoi sceglierne più di una", multi:true, opts:[
+    {v:"costi", t:"Non so quanto costerà"},
+    {v:"tempi", t:"Non so quando sarà pronta"},
+    {v:"imprevisti", t:"Ho paura di sorprese e imprevisti"},
+    {v:"chi", t:"Non so a chi affidarmi"},
+    {v:"niente", t:"Niente, non mi preoccupa", only:true}
+  ]},
+  r_casa:{ title:"La casa da ristrutturare è già tua?", opts:[
+    {v:"mia", t:"Sì, è già mia"},
+    {v:"compro", t:"La sto comprando"},
+    {v:"cerco", t:"Sto ancora cercando"}
+  ]}
+};
+
+const A = {};
+let pos = -1;
+let showSolutions = false;
+
+function path(){
+  const p = ["soldi","vendere"];
+  if(!A.soldi || !A.vendere) return p;
+  const m = A.soldi !== "si", v = A.vendere === "si";
+  if(m) p.push("m_tipo","m_banca");
+  if(v) p.push("v_stato","v_trovata");
+  if(m || v) p.push("liquidita");
+  if(!m && !v){
+    p.push("r_paure");
+    if(A.r_paure && !A.r_paure.includes("niente")) p.push("r_casa");
+  }
+  return p;
+}
+function route(){
+  const m = A.soldi && A.soldi !== "si", v = A.vendere === "si";
+  const r = !m && !v && A.r_paure && !A.r_paure.includes("niente");
+  const noCash = (m || v) && A.liquidita === "no";
+  return {m, v, r, noCash, none: !m && !v && !r};
+}
+
+const STEPS = 5;
+const parts = [...document.querySelectorAll("#house .lp")];
+const TMAX = Math.max(...parts.map(p=>+p.dataset.t1));
+function drawHouse(n){
+  // il logo si costruisce da sinistra a destra, in proporzione alle risposte date
+  const t = TMAX*Math.min(1,Math.max(0,n/STEPS));
+  parts.forEach(p=>{ const t0=+p.dataset.t0, t1=+p.dataset.t1; const l=+p.dataset.l; p.style.strokeDashoffset = String((l+1)*(1-Math.min(1,Math.max(0,(t-t0)/(t1-t0))))); });
+}
+
+const stage = document.getElementById("stage");
+const backBtn = document.getElementById("back");
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+function el(tag, attrs={}, ...kids){
+  const e=document.createElement(tag);
+  for(const [k,v] of Object.entries(attrs)){
+    if(k==="class") e.className=v; else if(k.startsWith("on")) e.addEventListener(k.slice(2),v); else e.setAttribute(k,v);
+  }
+  kids.flat().forEach(k=>{ if(k===null||k===undefined||k===false) return; e.append(k instanceof Node?k:document.createTextNode(k)); });
+  return e;
+}
+function tick(){const s=document.createElementNS("http://www.w3.org/2000/svg","svg");s.setAttribute("width","18");s.setAttribute("height","18");s.setAttribute("viewBox","0 0 18 18");s.setAttribute("aria-hidden","true");
+  s.innerHTML='<path d="M3.5 9.5l3.5 3.5 7.5-8" fill="none" stroke="#3F4042" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>';return s;}
+const top0 = ()=>window.scrollTo({top:0,behavior:reduce?"auto":"smooth"});
+
+function render(){
+  stage.replaceChildren();
+  backBtn.hidden = pos < 0;
+  const P = path();
+  if(pos < 0) return welcome();
+  if(pos >= P.length) return showSolutions ? solutions() : finale();
+  question(P[pos], P);
+}
+
+function welcome(){
+  drawHouse(0);
+  stage.append(el("section",{class:"screen"},
+    el("h1",{},"Ogni casa comincia da un sogno."),
+    el("p",{class:"lead"},"Ti facciamo poche domande, dirette. Parliamo di soldi e di tempi, perché è lì che nascono i dubbi. Alla fine ti mostriamo, nero su bianco, come superarli."),
+    el("button",{class:"btn",type:"button",onclick:()=>{pos=0;render();}},"Iniziamo")
+  ));
+}
+
+function question(id, P){
+  const q = QS[id];
+  drawHouse(Math.max(0.6, STEPS * pos / Math.max(P.length,1)));
+  const s = el("section",{class:"screen"},
+    el("h2",{id:"qt"},typeof q.title==="function"?q.title():q.title),
+    q.hint ? el("p",{class:"hint"},typeof q.hint==="function"?q.hint():q.hint) : null
+  );
+  const calcBox = el("div",{class:"calc-slot",hidden:""});
+  const openCalc = ()=>{
+    calcBox.hidden=false;
+    calcBox.replaceChildren(calcCasa({
+      onYes:()=>{ A[id]="si"; cleanup(); pos++; render(); },
+      onContinue:()=>{ A[id]="forse"; cleanup(); pos++; render(); }
+    }));
+  };
+  const list = el("div",{class:"opts",role:"group","aria-labelledby":"qt"});
+  const next = el("button",{class:"btn",type:"button",onclick:()=>{pos++;render();}},"Avanti");
+  const cur = A[id];
+  q.opts.forEach(o=>{
+    const on = q.multi ? (cur||[]).includes(o.v) : cur===o.v;
+    const b = el("button",{class:"opt"+(q.multi?" multi":""),type:"button","aria-pressed":on?"true":"false",id:`${id}-${o.v}`},
+      el("span",{class:"mark","aria-hidden":"true"}), el("span",{},o.t));
+    b.addEventListener("click",()=>{
+      if(q.multi){
+        let arr = A[id] || [];
+        if(arr.includes(o.v)) arr = arr.filter(x=>x!==o.v);
+        else if(o.only) arr = [o.v];
+        else arr = [...arr.filter(x=>!q.opts.find(z=>z.v===x)?.only), o.v];
+        A[id] = arr;
+        list.querySelectorAll(".opt").forEach((x,j)=>x.setAttribute("aria-pressed", arr.includes(q.opts[j].v)?"true":"false"));
+        next.disabled = !arr.length;
+      } else {
+        A[id]=o.v;
+        list.querySelectorAll(".opt").forEach(x=>x.setAttribute("aria-pressed","false"));
+        b.setAttribute("aria-pressed","true");
+        cleanup();
+        if(o.opens){ openCalc(); if(!next.isConnected) s.append(next); calcBox.scrollIntoView({behavior:reduce?"auto":"smooth",block:"start"}); return; }
+        calcBox.hidden=true;
+        setTimeout(()=>{pos++;render();}, reduce?0:360);
+      }
+    });
+    list.append(b);
+  });
+  s.append(list, calcBox);
+  if(!q.multi && q.opts.find(o=>o.opens && o.v===cur)) openCalc();
+  if(q.multi){ next.disabled = !(cur&&cur.length); s.append(next); }
+  else if(cur!==undefined){ s.append(next); }
+  stage.append(s);
+  top0();
+}
+function cleanup(){ const P = path(); Object.keys(A).forEach(k=>{ if(!P.includes(k)) delete A[k]; }); }
+
+function finale(){
+  drawHouse(STEPS);
+  stage.append(el("section",{class:"screen"},
+    el("p",{class:"kicker"},"La tua casa ha preso forma."),
+    el("h1",{},"Quello che ti frena ha una soluzione."),
+    el("button",{class:"btn",type:"button",onclick:()=>{showSolutions=true;render();}},"Scopri chi ti può aiutare")
+  ));
+  top0();
+}
+
+function solMutuo(){
+  let personal = null;
+  if(A.m_banca==="pre") personal = "Hai già una pre-delibera: è proprio il primo documento che ci serve.";
+  else if(A.m_tipo==="pronta") personal = "Vuoi una casa già ristrutturata? È esattamente quella che comprerai: finita, scelta e progettata da te.";
+  else if(A.m_tipo==="gusto") personal = "Vuoi farla a tuo gusto? Il progetto lo decidi tu, e il valore che crea lo usi per il tuo mutuo.";
+  return el("article",{class:"sol"},
+    el("p",{class:"tag"},"Il mutuo"),
+    el("h3",{},"Un mutuo all'altezza della casa che sogni"),
+    el("p",{class:"doubt"},"«Con il mutuo e i miei risparmi non ci arrivo.»"),
+    personal ? el("p",{class:"personal"},personal) : null,
+    el("h4",{},"Come funziona"),
+    el("p",{},"Tu scegli la casa che ti piace, anche se oggi è da ristrutturare. HOUSETOHOME la acquista e la ristruttura secondo il progetto che decidi tu. Poi tu la compri direttamente da noi, finita, al prezzo che conosci fin dal primo giorno."),
+    el("h4",{},"Perché il tuo mutuo sarà più alto"),
+    el("p",{},"La base di tutto è la rata. La banca verifica prima di tutto che, con il tuo reddito, puoi sostenere la rata del mutuo: lo mette per iscritto in una pre-delibera. Solo dopo guarda la casa: il perito la valuta e la banca presta, di solito, fino all'80% di quel valore."),
+    el("p",{},"La tua rata può darti accesso a un mutuo alto. Su una casa da ristrutturare il perito dà un valore basso, il mutuo si ferma all'80% di quel valore e i lavori li paghi tu a parte. Su una casa già ristrutturata il valore è più alto, e il mutuo lo segue."),
+    el("p",{},"Ecco come cambiano i conti, in percentuale:"),
+    el("div",{class:"cmp-wrap"},
+      el("table",{class:"cmp"},
+        el("thead",{},el("tr",{},el("th",{},""),el("th",{},"Da sola"),el("th",{class:"us"},"Con HOUSETOHOME"))),
+        el("tbody",{},
+          el("tr",{},el("th",{},"Casa"),el("td",{},"Da ristrutturare"),el("td",{class:"us"},"Già ristrutturata")),
+          el("tr",{},el("th",{},"Valore del perito"),el("td",{},"Quello della casa da sistemare"),el("td",{class:"us"},"Quello della casa finita, più alto")),
+          el("tr",{},el("th",{},"Mutuo possibile"),el("td",{},"80% del valore attuale"),el("td",{class:"us"},"80% del valore della casa finita")),
+          el("tr",{},el("th",{},"Soldi tuoi"),el("td",{},"20% del prezzo + tutti i lavori"),el("td",{class:"us"},"20% di caparra, lavori compresi")),
+          el("tr",{},el("th",{},"Mutuo che ti serve"),el("td",{},"80% del prezzo, e i lavori a parte"),el("td",{class:"us"},"80% del prezzo della casa finita"))
+        )
+      )
+    ),
+    el("p",{},"Con HOUSETOHOME versi il 20% di caparra sul prezzo della casa finita e la banca ti finanzia l'80%. I lavori sono già nel prezzo: non devi trovare altri soldi per il cantiere."),
+    el("p",{class:"fine"},"Il valore lo stabilisce il perito della banca. Esclusi notaio, imposte e spese di mutuo."),
+    calcCasa({}),
+    A.m_banca==="pre" ? null : primoPasso(),
+    calcolatore(),
+    el("h4",{},"Prima di firmare, verifichiamo tutto"),
+    el("p",{},"Il contratto preliminare non è legato all'ottenimento del mutuo. Per questo non si firma nulla finché i conti non tornano. Facciamo tre verifiche, insieme:"),
+    el("ol",{class:"todo"},
+      todo(1,"La rata: la base di tutto","Ci porti la pre-delibera della banca, cioè il documento in cui la banca verifica che con il tuo reddito puoi sostenere la rata. Senza questa, non si parte."),
+      todo(2,"Il valore","Prima di fare i conti verifichiamo quanto vale, in quella zona, una casa ristrutturata con quelle caratteristiche. Così, quando il perito arriva, la valutazione è quella attesa."),
+      todo(3,"I tuoi risparmi","La caparra è il 20% del prezzo della casa finita. Non hai il 20%? Non ti preoccupare, ne parliamo insieme. E c'è anche un'altra strada: compri tu una casa alla tua portata e noi la ristrutturiamo.")
+    ),
+    el("p",{},"I conti li verifichiamo insieme prima di firmare, così parti sicuro. E la casa la acquistiamo noi: ci mettiamo la faccia e i nostri soldi."),
+    el("h4",{},"Cosa ottieni"),
+    el("ul",{class:"plus"},
+      ["Compri la casa che sogni, con conti verificati prima di firmare",
+       "Il mutuo si calcola sulla casa finita, non su quella da sistemare",
+       "Casa pronta in 60 giorni (fino a 100 m²)",
+       "Appena hai il mutuo entri, senza attese: la casa è già pronta",
+       "È la casa che hai scelto tu fin dall'inizio"].map(t=>el("li",{},tick(),el("span",{},t))))
+  );
+}
+
+function solVendita(){
+  let personal = null;
+  const vt = A.v_trovata || [];
+  if(vt.includes("paura") && vt.includes("tempi")) personal = "Hai già trovato la casa che vuoi: con noi non la perdi mentre vendi la tua, e quando hai venduto ci entri subito, già finita.";
+  else if(vt.includes("paura")) personal = "Hai già trovato la casa che vuoi: con noi non la perdi mentre vendi la tua.";
+  else if(vt.includes("tempi")) personal = "Vuoi entrare appena hai venduto: la ristrutturiamo mentre tu vendi, così il giorno in cui consegni le chiavi della tua, ricevi quelle della nuova.";
+  else if(A.v_stato==="acquirente") personal = "Hai già un acquirente: con noi non gli chiedi di aspettare mesi mentre tu sistemi la casa nuova.";
+  return el("article",{class:"sol"},
+    el("p",{class:"tag"},"La casa da vendere"),
+    el("h3",{},"La tua casa nuova ti aspetta, mentre vendi la tua"),
+    el("p",{class:"doubt"},"«Prima devo vendere casa mia, e i tempi giocano contro di me.»"),
+    personal ? el("p",{class:"personal"},personal) : null,
+    el("h4",{},"Il problema, detto chiaro"),
+    el("p",{},"Trovi la casa giusta, ma non puoi comprarla finché non vendi la tua, e intanto un altro acquirente può prendertela. E quando vendi, devi ancora comprare, ristrutturare e traslocare: tra ristrutturazione e trasloco sono almeno quattro mesi, mentre chi ha comprato casa tua aspetta di entrare. Con noi quei mesi non esistono: la tua casa nuova si ristruttura mentre tu vendi. L'unica attesa è quella della tua vendita, e quando arriva la casa è già pronta."),
+    el("div",{class:"timeline"},
+      el("div",{class:"tl"},el("b",{},"Da solo"),el("ol",{},
+        el("li",{},"Fai una proposta e devi prima vendere"),
+        el("li",{},"Aspetti, e rischi di perdere la casa"),
+        el("li",{},"Vendi, poi compri e inizi i lavori"),
+        el("li",{},"Almeno 4 mesi tra ristrutturazione e trasloco"))),
+      el("div",{class:"tl us"},el("b",{},"Con HOUSETOHOME"),el("ol",{},
+        el("li",{},"Noi acquistiamo la casa che hai scelto"),
+        el("li",{},"La ristrutturiamo mentre tu vendi la tua"),
+        el("li",{},"La teniamo lì per te: nessuno te la porta via"),
+        el("li",{},"In 60 giorni la casa è pronta e ti aspetta"),
+        el("li",{},"Quando hai venduto, entri subito")))
+    ),
+    el("p",{},"I tempi li decidi tu, oppure sono soltanto quelli della vendita della tua casa. Nel frattempo HOUSETOHOME lavora per te."),
+    pianoSoldi(),
+    el("h4",{},"Cosa ottieni"),
+    el("ul",{class:"plus"},
+      ["Non perdi la casa che hai scelto mentre vendi la tua",
+       "Non fai aspettare chi ha comprato la tua casa",
+       "Nessun periodo in affitto o in casa d'altri tra un trasloco e l'altro",
+       "Ti godi la vendita senza pensieri, e magari porti un caffè all'impresa che sta realizzando il tuo sogno"].map(t=>el("li",{},tick(),el("span",{},t))))
+  );
+}
+
+function solRistrutturazione(){
+  const paure = A.r_paure||[];
+  const bits = [];
+  if(paure.includes("costi")) bits.push("il prezzo lo conosci prima di firmare e non cambia");
+  if(paure.includes("tempi")) bits.push("i lavori durano 60 giorni fino a 100 m², ed è scritto nel preventivo");
+  if(paure.includes("imprevisti")) bits.push("gli imprevisti li gestiamo noi");
+  if(paure.includes("chi")) bits.push("hai un unico riferimento per tutto il cantiere");
+  const personal = bits.length ? "Per te, in concreto: " + bits.join("; ") + "." : null;
+  const cerco = A.r_casa==="cerco";
+  return el("article",{class:"sol"},
+    el("p",{class:"tag"},"La ristrutturazione"),
+    el("h3",{},"La casa come la sogni, senza sorprese"),
+    el("p",{class:"doubt"},"«Non so quanto costerà, né quando sarà pronta.»"),
+    personal ? el("p",{class:"personal"},personal) : null,
+    el("h4",{},"Come funziona"),
+    el("p",{},"La casa la compri tu, con le tue risorse. HOUSETOHOME la ristruttura per te e ti accompagna dall'inizio alla fine: il progetto lo decidi tu, noi ti consegniamo un preventivo chiaro e, una volta firmato, quel prezzo non cambia di un centesimo."),
+    cerco ? el("p",{},"Stai ancora cercando? Vieni a vederla con noi prima di fare la proposta: ti diciamo subito cosa si può fare e quanto costa.") : null,
+    el("h4",{},"Cosa devi fare"),
+    el("ol",{class:"todo"},
+      todo(1,"Decidi tu il progetto","Spazi, finiture, materiali: scegli tu, noi ti diciamo cosa è possibile."),
+      todo(2,"Ricevi il preventivo","Chiaro, voce per voce, senza costi nascosti, con i tempi scritti in giorni: fino a 100 m² la casa è pronta in 60 giorni."),
+      todo(3,"Firmi l'accettazione del preventivo","Prima non paghi nulla. Poi paghi in tre momenti: il 25% alla firma, il 50% a metà lavori, il 25% alla fine dei lavori.")
+    ),
+    el("h4",{},"Cosa ottieni"),
+    el("ul",{class:"plus"},
+      ["La tua casa come l'hai sognata",
+       "Un prezzo che non cambia",
+       "Dopo la consegna, ti seguiamo per un anno",
+       "Lavori in 60 giorni, scritti nel preventivo",
+       "Nessun imprevisto da affrontare da solo"].map(t=>el("li",{},tick(),el("span",{},t))))
+  );
+}
+
+function todo(n,t,d){ return el("li",{},el("span",{class:"n"},String(n)),el("div",{},el("b",{},t),d?el("small",{},d):null)); }
+
+function stepsAcquisto(R){
+  const steps = [];
+  if(R.m) steps.push(["Chiedi la pre-delibera alla banca","Un documento che conferma che la rata è sostenibile per il tuo reddito. Senza questo non si parte."]);
+  steps.push(["Scegli la casa e il progetto","Decidiamo insieme come sarà: spazi, finiture, materiali. Noi verifichiamo quanto vale, finita, in quella zona. Da quando la acquistiamo, in 60 giorni la casa è pronta."]);
+  steps.push(["Conosci il prezzo finale","Ti diciamo quanto costerà la casa finita. Quel prezzo non cambia di un centesimo."]);
+  if(R.v){
+    steps.push(["Firmi il contratto preliminare con HOUSETOHOME","Alla firma versi il 15% del prezzo della casa ristrutturata. Tutto è scritto in un contratto preliminare trascritto: casa, progetto, prezzo e tempi del rogito, che fissiamo insieme in base alla vendita della tua casa. A parte servono solo le spese di notaio e le imposte."]);
+    steps.push(["Vendi la tua casa senza pensieri","Intanto noi lavoriamo: in 60 giorni la casa è pronta e ti aspetta. Quando firmi il compromesso della tua casa e incassi la caparra del tuo acquirente, versi la seconda parte della caparra: il 10%. Al rogito paghi il restante 75%."]);
+    steps.push(["Fai il rogito ed entri","Il giorno in cui consegni le chiavi della tua casa, ricevi quelle della nuova."]);
+  } else {
+    steps.push(["Firmi il contratto preliminare con HOUSETOHOME","Versi una caparra del 20% del prezzo della casa ristrutturata. Tutto è scritto in un contratto preliminare trascritto: casa, progetto e prezzo. A parte servono solo le spese di notaio e le imposte."]);
+    steps.push(["Fai il rogito ed entri","Da quando la acquistiamo, in 60 giorni la casa è pronta. Quando la banca ti ha deliberato il mutuo, noi siamo già pronti: fai il rogito ed entri."]);
+  }
+  return el("article",{class:"sol"},
+    el("p",{class:"tag"},"Cosa devi fare"),
+    el("h3",{},`${steps.length} passaggi, tutti scritti`),
+    el("ol",{class:"todo"}, steps.map((s,i)=>todo(i+1,s[0],s[1]))),
+    el("h4",{},"Le domande che ti stai facendo"),
+    el("div",{class:"faq"},
+      R.v ? el("p",{},el("b",{},"Perché la caparra in due parti?"),"Perché sappiamo che i tuoi soldi sono ancora nella casa che devi vendere. Alla firma ti chiediamo il 15%: noi abbiamo già comprato la casa e avviato i lavori per te, e la caparra conferma che quella casa è tua. La seconda parte, il 10%, la versi quando firmi il compromesso della tua casa, con la caparra che ricevi dal tuo acquirente. Così, prima del rogito, la caparra è il 25%: 15% alla firma e 10% al compromesso.")
+          : el("p",{},el("b",{},"Perché una caparra del 20%?"),"Perché siamo noi ad acquistare la casa e a pagare i lavori per te. Il 20% è la parte che la banca non finanzia: la versi alla firma e il resto lo copre il mutuo. La caparra conferma, per iscritto, che quella casa è tua e nessun altro può comprarla."),
+      el("p",{},el("b",{},"Quando si fa il rogito?"), R.v ? "Da quando la acquistiamo, in 60 giorni la casa è pronta e ti aspetta, a prescindere dai tuoi tempi. Il rogito lo fissiamo insieme nel preliminare, in base a dove sei con la vendita della tua casa: appena messa in vendita, con una proposta o con un acquirente. Nessuna fretta: i tempi li decidiamo insieme, in base alla tua vendita." : "Da quando la acquistiamo, in 60 giorni la casa è pronta. Quando la banca ti ha deliberato il mutuo, noi siamo già pronti per il rogito."),
+      R.m ? el("p",{},el("b",{},"Come sono sicuro di avere il mutuo?"),"Per questo si parte dalla pre-delibera: prima di tutto la banca verifica, per iscritto, che con il tuo reddito puoi sostenere la rata. È la base di tutto. Poi noi verifichiamo il valore reale della casa finita in quella zona, così la perizia conferma i conti, e tu verifichi i tuoi risparmi per la caparra. Il preliminare non è vincolato al mutuo: per questo firmiamo solo con tutte e tre le verifiche fatte. Così parti sicuro.") : null,
+      el("p",{},el("b",{},"Come sono tutelato?"),"Tutto è scritto in un contratto preliminare trascritto, cioè registrato nei registri immobiliari: la casa è prenotata a tuo nome e nessuno può venderla ad altri o metterci sopra un'ipoteca. Casa, progetto, prezzo e tempi sono nero su bianco."),
+      el("p",{},el("b",{},"E dopo la consegna?"),"Non sei da solo: per un anno dalla fine dei lavori ti seguiamo noi."),
+      el("p",{},el("b",{},"Quali imposte pago?"),"Le stesse di quando compri casa da un privato: con le agevolazioni prima casa, se ne hai diritto, oppure quelle per la seconda casa. Nei rari casi in cui i lavori toccano parti strutturali dell'edificio, te lo diciamo prima e ti mostriamo i conti nel dettaglio, prima di qualsiasi firma."),
+      el("p",{},el("b",{},"Il prezzo può cambiare durante i lavori?"),"No. Il prezzo scritto nel preliminare è quello che paghi al rogito."),
+      el("p",{},el("b",{},"Chi sceglie le finiture?"),"Tu. È la tua casa: noi ti consigliamo, tu decidi.")
+    )
+  );
+}
+
+function solAltraStrada(){
+  return el("article",{class:"sol"},
+    el("p",{class:"tag"},"La strada giusta per te"),
+    el("h3",{},"Compri tu, noi la ristrutturiamo"),
+    el("p",{},"Quando HOUSETOHOME acquista la casa per te serve una caparra del 20%: è ciò che rende l'operazione sicura per tutti. Con i risparmi di oggi c'è una strada più adatta, e porta allo stesso sogno."),
+    el("p",{},"Scegli una casa da ristrutturare alla tua portata e la compri tu, con il tuo mutuo. Noi la trasformiamo come la desideri, con un preventivo preciso fin dal primo giorno. Avrai la casa che vuoi, con conti chiari e senza sorprese."),
+    el("p",{},"Ti aiutiamo anche a capire su quali case puntare, prima di fare qualsiasi proposta.")
+  );
+}
+
+const K_L = 11e2;
+const CAPARRA = 0.20, LTV = 0.80;
+const devoVendere = () => A.vendere === "si";
+const capIniziale = () => devoVendere() ? 0.15 : CAPARRA;
+const SECONDA = 0.10;
+const ZONE = [
+  {g:"Bologna – Centro", z:[
+    ["Castiglione - Tribunale",5500,"d"],["Santo Stefano",5500,"d"],["Centro Storico",5000,"d"],["Saragozza dentro le Mura",5000,"d"],
+    ["San Vitale",4800,"d"],["San Felice",4700,"d"],["Marconi",4500,"d"],["Irnerio",4300,"d"]]},
+  {g:"Bologna – Colli", z:[
+    ["Colli Castiglione",5800,"p"],["Colli San Mamolo",5800,"p"],["Colli Murri",5600,"p"],["Colli Saragozza",5600,"p"],["Collinare",5300,"p"]]},
+  {g:"Bologna – Costa, Saragozza, Saffi", z:[
+    ["Saragozza fuori Porta",4700,"p"],["Costa",4250,"p"],["Saffi",4000,"p"]]},
+  {g:"Bologna – Murri, Massarenti", z:[
+    ["Murri",4250,"p"],["Massarenti",4150,"p"]]},
+  {g:"Bologna – San Vitale, Mazzini", z:[
+    ["Mazzini - Fossolo",3900,"p"],["San Vitale - Roveri",3700,"f"]]},
+  {g:"Bologna – Toscana, Savena", z:[
+    ["Savena",3900,"f"],["San Ruffillo",3850,"f"],["Rastignano",3000,"f"]]},
+  {g:"Bologna – San Donato, Pilastro", z:[
+    ["Fiera",3700,"f"],["San Donato",3600,"f"],["Pilastro",3100,"f"]]},
+  {g:"Bologna – Bolognina, Corticella, Pescarola", z:[
+    ["Bolognina",3700,"f"],["Noce - Pescarola",3500,"f"],["Corticella",3450,"f"]]},
+  {g:"Bologna – Barca, Santa Viola", z:[
+    ["Santa Viola",3300,"f"],["Barca",3100,"f"]]},
+  {g:"Bologna – Aeroporto, Borgo Panigale", z:[
+    ["Borgo Panigale",3150,"f"],["Casteldebole",3050,"f"],["Aeroporto",3050,"f"]]},
+  {g:"Casalecchio di Reno", z:[
+    ["Centro, Garibaldi",3550,"f"],["Meridiana",4200,"f"],["Centro, Marullina",3500,"f"],["Talon",4100,"f"],["Croce",3500,"f"],
+    ["San Biagio, Faianello",3350,"f"],["Ceretolo",3300,"f"]]},
+  {g:"San Lazzaro di Savena", z:[
+    ["San Lazzaro",4250,"f"],["Caselle",4100,"f"],["Casette",3900,"f"],["Idice",3750,"f"],["Mirandola",3750,"f"],
+    ["Case Grandi",3600,"f"],["Villa Rizzi",3500,"f"],["Ponticella",3400,"f"],["Martiri di Pizzocalvo",3400,"f"],["Castel dei Britti",3200,"f"]]},
+  {g:"Zola Predosa", z:[
+    ["Zola Predosa",3150,"f"],["Riale",3050,"f"],["Ponte Ronca",3000,"f"]]},
+  {g:"Altri comuni della provincia", z:[["Castenaso",3200,"f"],["Castel Maggiore",3100,"f"],["Granarolo dell\'Emilia",3100,"f"],["Anzola dell\'Emilia",2850,"f"],["Calderara di Reno",2800,"f"],["Ozzano dell\'Emilia",2800,"f"],["Pianoro",2700,"f"],["Sasso Marconi",2650,"f"],["Castel San Pietro Terme",2650,"f"],["Argelato",2450,"f"],["Monte San Pietro",2350,"f"],["Bentivoglio",2300,"f"],["San Giovanni in Persiceto",2250,"f"],["Valsamoggia",2200,"f"],["Sala Bolognese",2200,"f"],["Budrio",2150,"f"],["Imola",2150,"f"],["Minerbio",2150,"f"],["San Pietro in Casale",2100,"f"],["Medicina",1750,"f"],["Molinella",1400,"f"]]}
+];
+const AUTO = { d:{posto:25000, garage:40000}, p:{posto:15000, garage:25000}, f:{posto:10000, garage:20000} };
+const PRUDENZA = 1.02;
+const giorniLavori = (m) => m > 100 ? 90 : 60;
+const ZONA = {}, FASCIA = {};
+ZONE.forEach(gr=>gr.z.forEach(([n,v,f])=>{ const k=gr.g+" – "+n; ZONA[k]=Math.round(v*PRUDENZA/10)*10; FASCIA[k]=f; }));
+function zonaSelect(id){
+  return el("select",{id}, el("option",{value:""},"Scegli la zona"),
+    ZONE.map(gr=>el("optgroup",{label:gr.g.replace(" (mercato)","")}, gr.z.map(([n])=>el("option",{value:gr.g+" – "+n}, n.replace(" (mercato)",""))))));
+}
+const valoreMq = (zona,q) => ZONA[zona] - (1-q)*K_L;
+const DA_VALUTARE = new Set(["Casalecchio di Reno – Meridiana"]);
+function boxInsieme(Z){
+  const nome = Z.split(" – ").pop();
+  const t = "Ciao, sto cercando casa in zona "+nome+" a Casalecchio di Reno. Vorrei capire insieme a voi quanto vale la casa con i lavori che desidero.";
+  return el("div",{class:"calc-ok-box"},
+    el("p",{},el("b",{},"In "+nome+" la vediamo insieme.")),
+    el("p",{},"Qui le case sono costruzioni recenti: ognuna è diversa, per piano, finiture e lavori che vuoi fare. Per questo ti diamo la cifra giusta per la tua casa, non una media."),
+    el("p",{},"Scrivici cosa stai guardando e cosa vorresti cambiare: lo valutiamo insieme e ti diciamo con precisione quanto ti serve per entrarci."),
+    el("a",{class:"btn wa",href:"https://wa.me/"+WA_NUM+"?text="+encodeURIComponent(t),target:"_blank",rel:"noopener"},"Scrivici su WhatsApp"));
+}
+const FINITURE = [
+  {id:"pav",   t:"Pavimenti e imbiancatura",                q:0.15},
+  {id:"bagno", t:"Bagno nuovo, pavimenti e imbiancatura",   q:0.25}
+];
+const INTERVENTI = [
+  {id:"infissi",  t:"Finestre nuove",                       q:0.30},
+  {id:"risc",     t:"Riscaldamento nuovo",                  q:0.25},
+  {id:"impianti", t:"Impianto elettrico e idraulico nuovi", q:0.25}
+];
+const eur = n => String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g,".") + " €";
+const giu = n => Math.floor(n/1000)*1000;
+const vic = n => Math.round(n/1000)*1000;
+const num = v => { const x = parseFloat(String(v).replace(/\./g,"").replace(",",".").replace(/[^\d.]/g,"")); return isFinite(x) ? x : 0; };
+
+function confetti(){
+  if(reduce) return;
+  const c = document.createElement("canvas"); c.className = "confetti"; document.body.append(c);
+  const ctx = c.getContext("2d"); const W = c.width = innerWidth, H = c.height = innerHeight;
+  const colors = ["#F8E07E","#3F4042","#FFFFFF","#E8C200","#8A8B8E"];
+  const ps = Array.from({length:140},()=>({x:W/2+(Math.random()-.5)*W*.3, y:H*.35, vx:(Math.random()-.5)*12, vy:-Math.random()*13-4, r:Math.random()*6+4, a:Math.random()*6, va:(Math.random()-.5)*.3, c:colors[Math.floor(Math.random()*colors.length)]}));
+  let t = 0;
+  (function f(){
+    ctx.clearRect(0,0,W,H);
+    ps.forEach(p=>{ p.vy+=.35; p.vx*=.99; p.x+=p.vx; p.y+=p.vy; p.a+=p.va;
+      ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.a); ctx.fillStyle=p.c; ctx.fillRect(-p.r/2,-p.r/4,p.r,p.r/2); ctx.restore(); });
+    if(++t < 150) requestAnimationFrame(f); else c.remove();
+  })();
+}
+
+function lavoriPicker(pref, onChange){
+  let lavori = "completa";
+  const seg = el("div",{class:"seg",role:"group","aria-label":"Tipo di ristrutturazione"});
+  const parz = el("div",{class:"extras",hidden:""});
+  const chk = {};
+  const box = x=>{ const c = el("input",{type:"checkbox",id:pref+x.id}); chk[x.id]=c;
+    c.addEventListener("change",()=>{ if(c.checked && FINITURE.some(f=>f.id===x.id)) FINITURE.forEach(f=>{ if(f.id!==x.id) chk[f.id].checked=false; }); onChange(); });
+    return el("label",{class:"check",for:pref+x.id},c,el("span",{},x.t)); };
+  parz.append(el("p",{class:"extras-t"},"Finiture (scegline una)"), ...FINITURE.map(box), el("p",{class:"extras-t"},"Interventi"), ...INTERVENTI.map(box));
+  [["completa","Completa"],["parziale","Solo alcuni lavori"]].forEach(([v,t])=>{
+    const b = el("button",{type:"button",class:"seg-b","aria-pressed":v===lavori?"true":"false"},t);
+    b.addEventListener("click",()=>{ lavori=v; seg.querySelectorAll(".seg-b").forEach(x=>x.setAttribute("aria-pressed","false")); b.setAttribute("aria-pressed","true"); parz.hidden = v!=="parziale"; onChange(); });
+    seg.append(b);
+  });
+  return {
+    node: el("div",{class:"sv-tipo"}, el("span",{class:"sv-lab"},"Quali lavori vuoi fare?"), seg, parz),
+    quota: ()=> lavori==="completa" ? 1 : Math.min([...FINITURE,...INTERVENTI].reduce((a,x)=>a+(chk[x.id].checked?x.q:0),0),1)
+  };
+}
+
+const notaPerc = () => "Non hai il "+(devoVendere()?"15":"20")+"%? Non ti preoccupare, ne parliamo insieme.";
+const notaQuindici = () => el("p",{class:"fine"},notaPerc());
+function righeConti(V){
+  const dl = el("dl",{class:"calc-rows"},
+    ...(devoVendere() ? [
+      el("dt",{},"Alla firma del preliminare (15%)"), el("dd",{},eur(V*0.15)),
+      el("dt",{},"Al compromesso della tua casa (10%)"), el("dd",{},eur(V*SECONDA)),
+      el("dt",{},"Al rogito, con il ricavato della vendita o il mutuo (75%)"), el("dd",{},eur(V*(1-0.15-SECONDA)))
+    ] : [
+      el("dt",{},"Caparra alla firma del preliminare (20%)"), el("dd",{},eur(V*CAPARRA)),
+      el("dt",{},"Mutuo della banca (80%)"), el("dd",{},eur(V*LTV))
+    ])
+  );
+  return el("div",{},dl,notaQuindici());
+}
+function spiegaConti(V){
+  return el("p",{class:"calc-note"},
+    (devoVendere()
+      ? "Come funziona: alla firma del preliminare versi il 15%, cioè "+eur(V*0.15)+". Quando firmi il compromesso della tua casa e incassi la caparra del tuo acquirente, versi il 10%, cioè "+eur(V*SECONDA)+". Il restante 75%, cioè "+eur(V*0.75)+", lo paghi al rogito con il mutuo o con il ricavato della vendita. Con il mutuo, la banca valuta la casa già ristrutturata."
+      : "Come funziona: versi il 20% di caparra, cioè "+eur(V*CAPARRA)+". La banca valuta la casa già ristrutturata e ti finanzia l'80%, cioè "+eur(V*LTV)+": con il mutuo paghi il resto al rogito. Usi tutto il mutuo a cui hai diritto, per una casa già finita come la vuoi tu."));
+}
+
+function calcCasa(opts){
+  const zona = zonaSelect("cc-zona");
+  const mq = el("input",{id:"cc-mq",inputmode:"numeric",placeholder:"es. 80",autocomplete:"off"});
+  const out = el("div",{class:"calc-out","aria-live":"polite"});
+  const rev = el("div",{class:"calc-rev",hidden:""});
+  const lp = lavoriPicker("cc-",()=>update());
+
+  let trovata = "si";
+  const prezzo = el("input",{id:"cc-prezzo",inputmode:"numeric",placeholder:"es. 220.000",autocomplete:"off"});
+  const segT = el("div",{class:"seg",role:"group","aria-label":"Hai già individuato la casa?"});
+  const boxSi = el("label",{for:"cc-prezzo"},"Prezzo dell'annuncio (€)", prezzo);
+  const boxNo = el("label",{for:"cc-zona",hidden:""},"Zona", zona);
+  [["si","Sì, l'ho trovata"],["no","Non ancora"]].forEach(([v,t])=>{
+    const b = el("button",{type:"button",class:"seg-b","aria-pressed":v===trovata?"true":"false"},t);
+    b.addEventListener("click",()=>{ trovata=v; segT.querySelectorAll(".seg-b").forEach(x=>x.setAttribute("aria-pressed","false")); b.setAttribute("aria-pressed","true"); boxSi.hidden = v!=="si"; boxNo.hidden = v==="si"; update(); });
+    segT.append(b);
+  });
+
+  function update(){
+    out.replaceChildren();
+    const Z = zona.value, M = num(mq.value), Q = lp.quota(), PA = num(prezzo.value);
+    if(trovata==="si" ? (!PA || !M) : (!Z || !M)){ out.append(el("p",{class:"calc-empty"}, trovata==="si" ? "Scrivi il prezzo dell'annuncio e i metri quadri per vedere il risultato." : "Scegli la zona e scrivi i metri quadri per vedere il risultato.")); return; }
+    if(trovata!=="si" && DA_VALUTARE.has(Z)){ out.append(boxInsieme(Z)); return; }
+    if(Q===0){ out.append(el("p",{class:"calc-empty"},"Scegli i lavori che vuoi fare per vedere il risultato.")); return; }
+    const V = trovata==="si" ? vic(PA*0.97 + M*K_L*Q) : vic(valoreMq(Z,Q)*M);
+    LAST.casa = {zona:Z, mq:M, lavori: Q>=1 ? "completa" : "parziale", V};
+    const yes = el("button",{class:"btn",type:"button"},"Ho questa cifra: partiamo");
+    const msg = el("p",{class:"calc-ok",hidden:""},"Perfetto: hai la base per realizzare il tuo sogno.");
+    yes.addEventListener("click",()=>{ confetti(); msg.hidden=false; yes.disabled=true; if(opts.onYes) setTimeout(opts.onYes, reduce?300:1800); else msg.textContent += " Lasciaci il tuo contatto qui sotto e partiamo."; });
+    const no = el("button",{class:"btn ghost",type:"button"},"Non ce l'ho ancora: scopri quale casa puoi comprare");
+    no.addEventListener("click",()=>{ rev.hidden=false; rev.replaceChildren(calcInverso(trovata==="si"?"":Z, lp)); rev.scrollIntoView({behavior:reduce?"auto":"smooth",block:"start"}); });
+    out.append(
+      el("p",{class:"calc-label"},"Prezzo della casa finita"),
+      el("p",{class:"calc-big"},eur(V)),
+      righeConti(V),
+      el("p",{class:"calc-time"},"Casa pronta in "+giorniLavori(M)+" giorni."),
+      spiegaConti(V),
+      el("p",{class:"fine"}, trovata==="si"
+        ? "Prezzo della casa finita, lavori compresi. Escluso garage e posto auto. Questi sono i tuoi conti, chiari dal primo giorno. Da qui partiamo insieme."
+        : "Prezzo di una casa finita con cantina nella zona che hai scelto, lavori compresi. Escluso garage e posto auto. Questi sono i tuoi conti, chiari dal primo giorno. Da qui partiamo insieme."),
+      speseNotaio(),
+      el("div",{class:"calc-actions"}, yes, msg, no)
+    );
+  }
+
+  function calcInverso(zonaIniziale){
+    const liq = el("input",{id:"cr-liq",inputmode:"numeric",placeholder:"es. 60.000",autocomplete:"off"});
+    const mutIn = el("input",{id:"cr-mutuo",inputmode:"numeric",placeholder:"es. 240.000",autocomplete:"off"});
+    const z2 = zonaSelect("cr-zona"); if(zonaIniziale) z2.value = zonaIniziale;
+    const o = el("div",{class:"calc-out","aria-live":"polite"});
+    const lp2 = lavoriPicker("cr-",()=>up());
+    function up(){
+      o.replaceChildren();
+      const L = num(liq.value), Z = z2.value, Q = lp2.quota(), MU = devoVendere() ? 0 : num(mutIn.value);
+      if(!L || !Z){ o.append(el("p",{class:"calc-empty"},"Scrivi la tua liquidità e scegli la zona.")); return; }
+      if(DA_VALUTARE.has(Z)){ o.append(boxInsieme(Z)); return; }
+      if(Q===0){ o.append(el("p",{class:"calc-empty"},"Scegli i lavori che vuoi fare.")); return; }
+
+      const V = MU ? giu(L + MU) : giu(L/capIniziale()), mqMax = Math.floor(V/valoreMq(Z,Q));
+      const capMU = Math.min(L, V*CAPARRA);
+      LAST.inverso = {zona:Z, liq:L, V, mq:mqMax};
+      o.append(
+        el("p",{class:"calc-label"},"Puoi puntare a una casa finita fino a"),
+        el("p",{class:"calc-big"},eur(V)),
+        el("p",{class:"calc-label"},"In zona "+Z.split(" – ").pop().replace(" (mercato)","")+", con i lavori che hai scelto, corrisponde a una casa di "),
+        el("p",{class:"calc-mid"},mqMax+" m²"),
+        el("p",{class:"calc-time"},"Casa pronta in "+giorniLavori(mqMax)+" giorni."),
+        ...(MU ? [
+          el("dl",{class:"calc-rows"},
+            el("dt",{},"Mutuo della pre-delibera + i tuoi risparmi"), el("dd",{},eur(MU)+" + "+eur(L)),
+            el("dt",{},"Caparra alla firma del preliminare ("+(Math.round(capMU/V*1000)/10).toLocaleString("it-IT")+"%)"), el("dd",{},eur(capMU)),
+            el("dt",{},"Al rogito, con il mutuo"+(V-capMU>MU?" e i risparmi che ti restano":"")), el("dd",{},eur(V-capMU))),
+          L < V*CAPARRA ? el("p",{class:"fine"},"La caparra che chiediamo è il 20%, cioè "+eur(V*CAPARRA)+". Hai "+eur(L)+": non ti preoccupare, ne parliamo insieme.") : ""
+        ] : [
+          righeConti(V),
+          spiegaConti(V),
+          devoVendere() ? "" : el("p",{class:"calc-note"},"Hai già la pre-delibera? Scrivi qui sopra il mutuo massimo: il conto diventa più preciso.")
+        ]),
+        opts.onContinue ? el("button",{class:"btn",type:"button",onclick:opts.onContinue},"Continua con questa cifra") : ""
+      );
+    }
+    liq.addEventListener("input",up); mutIn.addEventListener("input",up); z2.addEventListener("change",up); up();
+    return el("div",{class:"calc"},
+      el("h4",{},"Quale casa puoi comprare con i tuoi risparmi"),
+      el("p",{},"Scrivi la liquidità che hai, scegli la zona e i lavori: ti diciamo il valore della casa finita a cui puoi puntare e quanti metri quadri corrispondono."),
+      el("label",{for:"cr-liq"},"Liquidità per la caparra (\u20ac)", liq),
+      devoVendere() ? null : el("label",{for:"cr-mutuo"},"Mutuo della tua pre-delibera, se ce l'hai (\u20ac)", mutIn),
+      el("label",{for:"cr-zona"},"Zona", z2),
+      lp2.node,
+      o
+    );
+  }
+
+  zona.addEventListener("change",update); mq.addEventListener("input",update); prezzo.addEventListener("input",update); update();
+  return el("div",{class:"calc-wrap"},
+    el("div",{class:"calc"},
+      el("h4",{},"Quanto ti serve davvero"),
+      el("p",{},"Dicci la casa e i lavori che vuoi fare: ti diciamo quanto costa la casa finita e la caparra da versare."),
+      el("div",{class:"sv-tipo"}, el("span",{class:"sv-lab"},"Hai già individuato la casa?"), segT),
+      boxSi, boxNo,
+      el("label",{for:"cc-mq"},"Metri quadri", mq),
+      lp.node,
+      out
+    ),
+    rev
+  );
+}
+
+function speseNotaio(){
+  return el("p",{class:"fine"},"A parte servono le spese del notaio e le imposte, come da un privato: il 2% del valore catastale per la prima casa, il 9% per la seconda.");
+}
+function pianoSoldi(){
+  const inp = (id,ph,val)=>el("input",{id,inputmode:"numeric",placeholder:ph,autocomplete:"off",value:val||""});
+  const nuova = inp("ps-nuova","es. 400.000", LAST.casa ? LAST.casa.V.toLocaleString("it-IT") : "");
+  const vendo = inp("ps-vendo","es. 200.000");
+  const residuo = inp("ps-residuo","0 se non hai mutuo");
+  const risp = inp("ps-risp","es. 70.000");
+  const capPct = inp("ps-cap","10","10");
+  const o = el("div",{class:"calc-out","aria-live":"polite"});
+  const pc = (x,V)=> (Math.round(x/V*1000)/10).toLocaleString("it-IT")+"%";
+  function up(){
+    o.replaceChildren();
+    const V=num(nuova.value), P=num(vendo.value), D=num(residuo.value), S=num(risp.value), cp=num(capPct.value)/100;
+    if(!V||!P||!risp.value){ o.append(el("p",{class:"calc-empty"},"Scrivi il prezzo della casa nuova, a quanto vendi la tua e i tuoi risparmi.")); return; }
+    const netto = Math.max(0,P-D);
+    const firma = V*0.15;
+    const capInc = P*cp;
+    const seconda = V*SECONDA;
+    const integra = Math.max(0, seconda - capInc);
+    const rogito = V - firma - seconda;
+
+    const rispUsati = Math.min(S, Math.max(firma + integra, V - netto));
+    const vendUsati = Math.min(netto, V - rispUsati);
+    const mutuo = Math.max(0, V - rispUsati - vendUsati);
+    const avanzo = Math.max(0, S + netto - V);
+    const msgs = [];
+    if(mutuo===0) msgs.push(el("p",{class:"calc-ok-box"},"Con la vendita della tua casa e i tuoi risparmi copri tutto l'acquisto: non ti serve un mutuo."+(avanzo>0?" E ti restano "+eur(avanzo)+".":"")));
+    else if(mutuo > V*LTV) msgs.push(el("p",{class:"calc-warn"},"Ti servirebbe un mutuo di "+eur(mutuo)+", cioè il "+pc(mutuo,V)+" della casa nuova: è più dell'80% che le banche finanziano di solito. Non ti preoccupare, ne parliamo insieme e troviamo la soluzione giusta."));
+    else msgs.push(el("p",{class:"calc-ok-box"},"Ti serve un mutuo di "+eur(mutuo)+", il "+pc(mutuo,V)+" della casa nuova. Verifica con la pre-delibera che la rata sia sostenibile per il tuo reddito."));
+    if(S < firma) msgs.push(el("p",{class:"calc-warn"},"Alla firma del preliminare serve il 15%, cioè "+eur(firma)+": oggi hai "+eur(S)+", ne mancano "+eur(firma-S)+". Con i tuoi risparmi di oggi puoi fermare una casa finita fino a "+eur(Math.floor(S/0.15/1000)*1000)+". Non ti preoccupare, ne parliamo: scrivici e troviamo insieme la strada."));
+    else if(S - firma < integra) msgs.push(el("p",{class:"calc-warn"},"Al compromesso versi il 10%, cioè "+eur(seconda)+". La caparra che incassi è "+eur(capInc)+": i "+eur(integra)+" che mancano li metti dai risparmi. Dopo la firma te ne restano "+eur(S-firma)+": ne mancano "+eur(integra-(S-firma))+": non ti preoccupare, ne parliamo insieme."));
+    o.append(
+      ...msgs,
+      el("p",{class:"calc-how-t"},"Da dove arrivano i soldi"),
+      el("dl",{class:"calc-rows"},
+        el("dt",{},"I tuoi risparmi"), el("dd",{},eur(rispUsati)+" · "+pc(rispUsati,V)),
+        el("dt",{},"Vendita della tua casa"+(D?" (tolto il mutuo residuo)":"")), el("dd",{},eur(vendUsati)+" · "+pc(vendUsati,V)),
+        el("dt",{},"Nuovo mutuo"), el("dd",{},eur(mutuo)+" · "+pc(mutuo,V))
+      ),
+      el("p",{class:"calc-how-t"},"Quando paghi"),
+      el("dl",{class:"calc-rows"},
+        el("dt",{},"Alla firma del preliminare, dai risparmi"), el("dd",{},eur(firma)+" · 15%"),
+        el("dt",{},"Al compromesso della tua casa"+(integra?" (caparra incassata + "+eur(integra)+" dai risparmi)":", con la caparra che incassi")), el("dd",{},eur(seconda)+" · "+pc(seconda,V)),
+        el("dt",{},"Al rogito"+(mutuo?", con il resto della vendita e il mutuo":", con il resto della vendita")), el("dd",{},eur(rogito)+" · "+pc(rogito,V))
+      ),
+      el("p",{class:"fine"},"Caparra totale prima del rogito: "+eur(firma+seconda)+" ("+pc(firma+seconda,V)+")."),
+      S >= firma ? notaQuindici() : "",
+      speseNotaio()
+    );
+    LAST.piano = {V,P,D,S,mutuo};
+  }
+  [nuova,vendo,residuo,risp,capPct].forEach(i=>i.addEventListener("input",up)); up();
+  return el("div",{class:"calc"},
+    el("h4",{},"I tuoi conti: da dove arrivano i soldi"),
+    el("p",{},"Scopri quanto coprono la vendita della tua casa e i tuoi risparmi, quanto mutuo ti serve, quanto versi e quando."),
+    el("label",{for:"ps-nuova"},"Prezzo della casa nuova, finita (€)", nuova),
+    el("label",{for:"ps-vendo"},"A quanto vendi la tua casa (€)", vendo),
+    el("label",{for:"ps-residuo"},"Quanto devi ancora alla banca sulla tua casa (€)", residuo),
+    el("label",{for:"ps-risp"},"I tuoi risparmi di oggi (€)", risp),
+    el("label",{for:"ps-cap"},"Caparra che incasserai al compromesso (% del prezzo di vendita)", capPct),
+    o
+  );
+}
+
+function primoPasso(){
+  return el("div",{class:"calc"},
+    el("h4",{},"Il tuo primo passo: vai in banca"),
+    el("p",{},"Non sai ancora quanto mutuo puoi avere? È normale, e nessuno può dirtelo meglio della tua banca. È da qui che partono tutti i conti, non da una cifra inventata."),
+    el("ol",{class:"todo"},
+      todo(1,"Prendi appuntamento con la tua banca","E fai una domanda precisa: \u00abQual è il mutuo massimo che posso ottenere con il mio reddito?\u00bb. Chiedi la risposta per iscritto: si chiama pre-delibera."),
+      todo(2,"Porta i documenti sul tuo reddito","Di solito: documento d'identità e codice fiscale, ultime buste paga e Certificazione Unica se sei dipendente, dichiarazione dei redditi se sei autonomo. La tua banca ti dirà l'elenco preciso."),
+      todo(3,"Sappi cosa guarda la banca","Che la rata mensile sia sostenibile per il tuo reddito. In genere le banche chiedono che non superi un terzo di quello che guadagni ogni mese."),
+      todo(4,"Torna con la cifra e fai i conti qui sotto","Con il mutuo massimo e i tuoi risparmi il calcolatore ti dice a quale casa puoi puntare.")
+    ),
+    el("p",{class:"calc-note"},"Un consiglio: molte agenzie immobiliari hanno un consulente del credito di fiducia. Chiedi all'agente: può darti le informazioni sul mutuo e aiutarti a ottenere la pre-delibera più velocemente, senza dover andare tu in banca.")
+  );
+}
+
+function calcolatore(){
+  const fmt = eur;
+  const pc = (x,V)=> (Math.round(x/V*1000)/10).toLocaleString("it-IT")+"%";
+  const out = el("div",{class:"calc-out","aria-live":"polite"},
+    el("p",{class:"calc-empty"},"Inserisci i due importi per vedere il risultato."));
+  const mut = el("input",{id:"calc-mutuo",inputmode:"numeric",placeholder:"es. 240.000",autocomplete:"off"});
+  const ris = el("input",{id:"calc-risparmi",inputmode:"numeric",placeholder:"es. 80.000",autocomplete:"off"});
+  function update(){
+    const M = num(mut.value), S = num(ris.value);
+    out.replaceChildren();
+    if(!M || !S){ out.append(el("p",{class:"calc-empty"},"Inserisci i due importi per vedere il risultato.")); return; }
+
+    const P = Math.floor((M + S)/1000)*1000;
+    const cap = Math.min(S, P*CAPARRA);
+    const sotto = S < P*CAPARRA;
+    const rog = P - cap;
+    const perito = Math.ceil(M/LTV/1000)*1000;
+    out.append(
+      el("p",{class:"calc-label"},"Puoi puntare a una casa ristrutturata fino a"),
+      el("p",{class:"calc-big"},fmt(P)),
+      el("p",{class:"calc-how-t"},"Come si arriva a questa cifra"),
+      el("ol",{class:"calc-how"},
+        el("li",{},"Mutuo della pre-delibera più i tuoi risparmi: ",el("b",{},fmt(M)+" + "+fmt(S)+" = "+fmt(P))),
+        el("li",{},"Alla firma del preliminare versi la caparra: ",el("b",{},fmt(cap)+" ("+pc(cap,P)+")"),"."),
+        el("li",{},"Al rogito paghi il resto, ",el("b",{},fmt(rog)),", con il mutuo"+(rog>M?" e i risparmi che ti restano.":"."))
+      ),
+      sotto ? el("p",{class:"calc-note"},"La caparra che chiediamo è il 20%, cioè "+fmt(P*CAPARRA)+". Hai "+fmt(S)+": non ti preoccupare, ne parliamo insieme.") : "",
+      el("p",{class:"calc-note"},"Il prezzo della casa finita lo conosci dal primo giorno ed è scritto nel preliminare: nessuna sorpresa."),
+      el("p",{class:"calc-note"},"È la cifra della casa che sogni: scrivici qui sotto e partiamo.")
+    );
+  }
+  mut.addEventListener("input",update); ris.addEventListener("input",update);
+  return el("div",{class:"calc"},
+    el("h4",{},"Fai i tuoi conti"),
+    el("p",{},"Usa i tuoi numeri. Nessuno li vede, servono solo a te."),
+    el("label",{for:"calc-mutuo"},"Mutuo massimo scritto nella tua pre-delibera (€)", mut),
+    el("label",{for:"calc-risparmi"},"Risparmi che puoi usare per la caparra (€)", ris),
+    out,
+    el("p",{class:"fine"},"Esclusi notaio, imposte e spese di mutuo, che si pagano a parte.")
+  );
+}
+
+const CARDS = {
+  m:{ tag:"Il mutuo", title:"Un mutuo all'altezza della casa che sogni",
+      doubt:"«Con il mutuo e i miei risparmi non ci arrivo.»",
+      sum:"La banca valuta la casa già ristrutturata: il mutuo segue il valore della casa finita, e i lavori sono già nel prezzo.",
+      img:["../assets/media/orti-soggiorno-prima.jpg","../assets/media/orti-soggiorno-dopo.jpg"], where:"Via degli Orti, Bologna",
+      body:R=>[solMutuo(), stepsAcquisto(R)] },
+  v:{ tag:"La casa da vendere", title:"La tua casa nuova ti aspetta, mentre vendi la tua",
+      doubt:"«Prima devo vendere casa mia, e i tempi giocano contro di me.»",
+      sum:"Acquistiamo la casa che hai scelto e la teniamo per te mentre vendi la tua. Quando hai venduto, entri subito.",
+      img:["../assets/media/mameli-soggiorno-prima.jpg","../assets/media/mameli-soggiorno-dopo.jpg"], where:"Via Mameli, Casalecchio di Reno",
+      body:R=>[solVendita(), stepsAcquisto(R)] },
+  r:{ tag:"La ristrutturazione", title:"La casa come la sogni, senza sorprese",
+      doubt:"«Non so quanto costerà, né quando sarà pronta.»",
+      sum:"Progetto insieme, preventivo chiaro e un prezzo che non cambia. Paghi 25% alla firma, 50% a metà lavori, 25% alla fine dei lavori.",
+      img:["../assets/media/orti-bagno-prima.jpg","../assets/media/orti-bagno-dopo.jpg"], where:"Via degli Orti, Bologna",
+      body:()=>[solRistrutturazione()] },
+  a:{ tag:"La strada giusta per te", title:"Compri tu, noi la ristrutturiamo",
+      doubt:"«I miei risparmi oggi non bastano per la caparra.»",
+      sum:"Scegli una casa da ristrutturare alla tua portata e la compri tu. Noi la trasformiamo come la desideri, con conti chiari.",
+      img:["../assets/media/tosarelli-prima.jpg","../assets/media/tosarelli-dopo.jpg"], where:"Via Tosarelli, Zola Predosa",
+      body:()=>[solAltraStrada(), solRistrutturazione()] }
+};
+let detail = null;
+
+const WA_NUM = "393395829835";
+const SHEET_URL = "https://script.google.com/macros/s/AKfycbwWt9D6ivEzmUEtFQLtFkW6CQPyU65C5FNVfMuaB0av3ysiBXXBbtWBlLxt_xuMfwucyQ/exec";
+const LAST = {};
+const zonaBreve = z => z.split(" – ").slice(-1)[0].replace(/(^|, )[Zz]ona /g,"$1") + (z.startsWith("Bologna") ? ", Bologna" : ", "+z.split(" – ")[0]);
+function messaggioWA(nome){
+  const R = route(), r = [];
+  r.push("Ciao HOUSETOHOME" + (nome ? ", sono "+nome : "") + "!");
+  r.push("Ho fatto il vostro sondaggio e vorrei parlarvi di:");
+  if(R.m) r.push("- mutuo: con mutuo e risparmi non arrivo al prezzo della casa che vorrei" + (A.m_banca==="pre" ? " (ho già una pre-delibera)" : A.m_banca==="no" ? " (non sono ancora andato in banca)" : ""));
+  if(R.v){
+    const st = {no:"non l'ho ancora messa in vendita", invendita:"è già in vendita", acquirente:"ho già un acquirente"}[A.v_stato];
+    const vt = A.v_trovata||[];
+    r.push("- devo prima vendere la mia casa" + (st ? " ("+st+")" : ""));
+    if(vt.includes("paura")||vt.includes("tempi")) r.push("- ho già trovato la casa che vorrei" + (vt.includes("tempi") ? " e vorrei entrarci appena vendo la mia" : ""));
+  }
+  if(R.r || R.noCash){
+    const pm = {costi:"i costi", tempi:"i tempi", imprevisti:"gli imprevisti", chi:"a chi affidarmi"};
+    const pp = (A.r_paure||[]).map(x=>pm[x]).filter(Boolean);
+    r.push("- ristrutturazione" + (pp.length ? ": mi preoccupano "+pp.join(", ") : ""));
+    const rc = {mia:"la casa è già mia", compro:"la sto comprando", cerco:"sto ancora cercando la casa"}[A.r_casa];
+    if(rc) r.push("- "+rc);
+  }
+  if(R.none) r.push("- una consulenza per la casa che sto cercando");
+  if(LAST.casa) r.push("Casa che mi interessa: zona "+zonaBreve(LAST.casa.zona)+", "+LAST.casa.mq+" m², ristrutturazione "+LAST.casa.lavori+" (valore stimato "+eur(LAST.casa.V)+").");
+  else if(LAST.inverso) r.push("Ho "+eur(LAST.inverso.liq)+" di liquidità e cerco in zona "+zonaBreve(LAST.inverso.zona)+".");
+  if(LAST.piano) r.push("Vendo la mia casa a "+eur(LAST.piano.P)+(LAST.piano.D?" (mutuo residuo "+eur(LAST.piano.D)+")":"")+", ho "+eur(LAST.piano.S)+" di risparmi"+(LAST.piano.mutuo?" e mi servirebbe un mutuo di "+eur(LAST.piano.mutuo):" e non mi servirebbe un mutuo")+".");
+  const liq = {si:"sì", forse:"più o meno, devo fare bene i conti", no:"non ancora"}[A.liquidita];
+  if(liq) r.push("Risparmi per la caparra: "+liq+".");
+  r.push("Quando possiamo sentirci?");
+  return r.join("\n");
+}
+
+function contactBlock(){
+  const f = id => el("input",Object.assign({id},
+    id==="c-tel"?{type:"tel",inputmode:"tel",autocomplete:"tel"}:id==="c-email"?{type:"email",inputmode:"email",autocomplete:"email"}:{autocomplete:id==="c-nome"?"given-name":"family-name"}));
+  const nome=f("c-nome"), cognome=f("c-cognome"), tel=f("c-tel"), email=f("c-email");
+  const privacy = el("input",{id:"c-privacy",type:"checkbox"});
+  const note = el("p",{class:"note"});
+  const prev = el("p",{class:"wa-prev"});
+  const waBtn = el("a",{class:"btn wa",href:"https://wa.me/"+WA_NUM,target:"_blank",rel:"noopener"}, waIcon(), "Invia su WhatsApp");
+  const callBtn = el("button",{class:"btn ghost",type:"button"},"Preferisco essere richiamato");
+  const thanks = el("p",{class:"thanks",hidden:""},"Grazie! Abbiamo ricevuto la tua richiesta e ti abbiamo inviato una mail di conferma. Ti richiamiamo noi, senza impegno.");
+  const full = ()=> (nome.value.trim()+" "+cognome.value.trim()).trim();
+  const upd = ()=>{ const t = messaggioWA(full()); prev.textContent = t; waBtn.href = "https://wa.me/"+WA_NUM+"?text="+encodeURIComponent(t); };
+  const valido = ()=>{
+    const ok = nome.value.trim() && cognome.value.trim() && tel.value.replace(/\D/g,"").length>=9 && /\S+@\S+\.\S+/.test(email.value) && privacy.checked;
+    if(!ok) note.textContent = "Per contattarti servono nome, cognome, cellulare, e-mail e il consenso privacy.";
+    return ok;
+  };
+  let inviato = "";
+  const salva = (modo)=>{
+    if(inviato===modo) return; inviato = modo;
+    const R = route();
+    const problema = [R.m?"Mutuo":"", R.v?"Casa da vendere":"", R.r?"Ristrutturazione":""].filter(Boolean).join(", ") || "Altra strada";
+    const dati = { nome:nome.value.trim(), cognome:cognome.value.trim(), cellulare:tel.value.trim(), email:email.value.trim(),
+      problema, risposte:"Contatto: "+modo+"\n"+messaggioWA(full()), privacy:privacy.checked };
+    try{ fetch(SHEET_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(dati),keepalive:true}).catch(()=>{}); }catch(err){}
+  };
+  [nome,cognome].forEach(i=>i.addEventListener("input",upd));
+  waBtn.addEventListener("click",e=>{ upd(); if(!valido()){ e.preventDefault(); } else { salva("WhatsApp"); note.textContent="Si apre WhatsApp con il messaggio pronto: premi invia. Ti arriva anche una mail di conferma.";} });
+  callBtn.addEventListener("click",()=>{ if(valido()){ salva("Da richiamare"); form.hidden=true; thanks.hidden=false; } });
+  const form = el("div",{class:"wa-box"},
+    el("h3",{},"Parliamone subito"),
+    el("p",{},"Lasciaci i tuoi dati e scrivici su WhatsApp: il messaggio è già pronto con le tue risposte, devi solo premere invia. Preferisci una telefonata? Ti richiamiamo noi. In entrambi i casi ti arriva subito una mail di conferma."),
+    el("div",{class:"two"},
+      el("label",{for:"c-nome"},"Nome",nome),
+      el("label",{for:"c-cognome"},"Cognome",cognome)),
+    el("label",{for:"c-tel"},"Cellulare",tel),
+    el("label",{for:"c-email"},"E-mail",email),
+    el("label",{class:"check",for:"c-privacy"}, privacy,
+      el("span",{},"Ho letto l'",el("a",{href:PRIVACY_URL,target:"_blank",rel:"noopener"},"informativa privacy")," e acconsento a essere contattato da HOUSETOHOME S.r.l.")),
+    el("p",{class:"extras-t"},"Il messaggio che riceveremo"),
+    prev, waBtn, callBtn, note
+  );
+  upd();
+  return [
+    form, thanks,
+    el("div",{class:"cta-box"},
+      el("a",{class:"btn",href:METODO_URL,target:"_blank",rel:"noopener"},"Scopri chi ti segue"),
+      el("p",{class:"small"},"Chi siamo, come lavoriamo e le case che abbiamo già trasformato."))
+  ];
+}
+
+function waIcon(){const s=document.createElementNS("http://www.w3.org/2000/svg","svg");s.setAttribute("width","20");s.setAttribute("height","20");s.setAttribute("viewBox","0 0 24 24");s.setAttribute("aria-hidden","true");
+  s.innerHTML='<path d="M4 20l1.3-3.9A8 8 0 1 1 8.1 19z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M9 9.5c.3 2.2 2.3 4.2 4.5 4.6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>';return s;}
+function arrow(){const s=document.createElementNS("http://www.w3.org/2000/svg","svg");s.setAttribute("width","16");s.setAttribute("height","16");s.setAttribute("viewBox","0 0 16 16");s.setAttribute("aria-hidden","true");
+  s.innerHTML='<path d="M6 3l5 5-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>';return s;}
+function cardButton(k, main){
+  const c = CARDS[k];
+  return el("button",{class:"scard"+(main?"":" other"),type:"button",onclick:()=>{detail=k;render();}},
+    el("span",{class:"scard-img"}, el("img",{src:c.img[1],alt:"",loading:"lazy"})),
+    el("span",{class:"scard-body"},
+      el("span",{class:"tag"},c.tag),
+      el("span",{class:"scard-title"},c.title),
+      main ? el("span",{class:"scard-doubt"},c.doubt) : null,
+      el("span",{class:"scard-sum"},c.sum),
+      el("span",{class:"scard-go"},"Approfondisci ", arrow())
+    ));
+}
+
+let statInviata = false;
+function inviaStatistica(){
+  if(statInviata) return; statInviata = true;
+  const R = route();
+  const problema = [R.m?"Mutuo":"", R.v?"Casa da vendere":"", R.r?"Ristrutturazione":""].filter(Boolean).join(", ") || "Altra strada";
+  const risposte = Object.keys(A).map(k=>k+": "+(Array.isArray(A[k])?A[k].join("/"):A[k])).join(" | ");
+  try{ fetch(SHEET_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({tipo:"anonimo",problema,risposte}),keepalive:true}).catch(()=>{}); }catch(err){}
+}
+function solutions(){
+  inviaStatistica();
+  drawHouse(STEPS);
+  if(detail) return detailView(detail);
+  const R = route();
+  let keys, title;
+  if(R.noCash){ keys=["a","r"]; title="Per la tua casa c'è una strada su misura."; }
+  else if(R.m && R.v){ keys=["m","v"]; title="Hai due ostacoli. Li risolviamo entrambi."; }
+  else if(R.m){ keys=["m"]; title="Il tuo ostacolo è il mutuo. Ecco come lo superi."; }
+  else if(R.v){ keys=["v"]; title="Il tuo ostacolo sono i tempi della vendita. Ecco come li superi."; }
+  else if(R.r){ keys=["r"]; title="Il tuo pensiero è la ristrutturazione. Ecco come la affrontiamo."; }
+  else { keys=[]; title="Sei già sulla buona strada."; }
+  const others = R.noCash ? [] : ["m","v","r"].filter(k=>!keys.includes(k));
+  const forse = R.noCash ? null
+    : A.liquidita==="forse" ? el("p",{class:"personal center"},"Sui risparmi hai qualche dubbio: è giusto così. Facciamo i conti insieme, nero su bianco, prima di qualsiasi firma.")
+    : A.liquidita==="nonso" ? el("p",{class:"personal center"},"Non hai ancora fatto i conti? Scrivici qui sotto la zona e i metri quadri della casa che ti piace: li facciamo insieme.")
+    : null;
+
+  stage.append(el("section",{class:"screen"},
+    el("p",{class:"kicker"},"HOUSETOHOME realizza il tuo sogno."),
+    el("h1",{},title),
+    keys.length ? el("p",{class:"lead"}, keys.length>1 ? "Tocca la soluzione che vuoi approfondire." : "Tocca la soluzione per vedere come funziona, passo per passo.")
+                : el("p",{class:"lead"},"Hai le risorse, non devi vendere e i lavori non ti spaventano. Per progettare e seguire la ristrutturazione, ci siamo noi."),
+    forse,
+    el("div",{class:"scards"}, keys.map(k=>cardButton(k,true))),
+    others.length ? el("h3",{class:"others-title"}, keys.length ? "Vuoi conoscere anche le altre strade?" : "Le strade possibili") : null,
+    others.length ? el("div",{class:"scards"}, others.map(k=>cardButton(k,false))) : null,
+    contactBlock(),
+    el("button",{class:"btn ghost",type:"button",onclick:()=>{for(const k in A)delete A[k];showSolutions=false;detail=null;pos=-1;render();}},"Ricomincia")
+  ));
+  top0();
+}
+
+function detailView(k){
+  const c = CARDS[k], R = route();
+  stage.append(el("section",{class:"screen"},
+    el("p",{class:"kicker"},c.tag),
+    el("h1",{},c.title),
+    el("div",{class:"beforeafter"},
+      el("figure",{},el("img",{src:c.img[0],alt:"La casa prima dei lavori"}),el("figcaption",{},"La casa che guardi oggi")),
+      el("figure",{class:"after"},el("img",{src:c.img[1],alt:"La stessa casa dopo i lavori"}),el("figcaption",{},"Quella che potrai avere"))
+    ),
+    el("p",{class:"small"},"Un lavoro reale di HOUSETOHOME: "+c.where+"."),
+    c.body(R),
+    contactBlock(),
+    el("button",{class:"btn ghost",type:"button",onclick:()=>{detail=null;render();}},"Torna alle soluzioni")
+  ));
+  top0();
+}
+
+backBtn.addEventListener("click",()=>{
+  if(detail){ detail=null; render(); return; }
+  if(showSolutions){ showSolutions=false; render(); return; }
+  if(pos>=0){ pos--; render(); }
+});
+render();
+</script>
+
+</body>
+</html>

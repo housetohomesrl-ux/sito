@@ -1,0 +1,589 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>HOUSETOHOME S.r.l.</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="robots" content="noindex">
+<meta name="description" content="HOUSETOHOME S.r.l., Bologna: flip immobiliare, un metodo per comprare la casa dei tuoi sogni e home staging.">
+<link rel="stylesheet" href="assets/fonts.css">
+<style>
+/* Layout: fasce piene (giallo, azzurro, mattone, blu) che si alternano, contenuto in colonna centrale; il nome HOUSE → HOME è il momento tipografico */
+:root{
+  --pl-wall:#3F4042; --pl-old:#ECE7DA; --pl-live:#F8E07E; --pl-bed:#CBE8FA; --pl-bath:#F9DCCB; --pl-door:#ECE7DA; --pl-win:#8FCBEA;
+  --yellow:#F8E07E; --yellow-soft:#F8E07E; --yellow-deep:#E9CC5A; --azzurro:#A9D5EF; --azzurro-soft:#E3F1FA; --mattone:#EBAE93; --mattone-soft:#FBE6DC; --blu:#A7BCE3; --blu-2:#2A4E8A; --paper:#FFFFFF; --card:#FFFFFF; --ink:#3F4042; --ink-soft:#5B5C5F; --rule:#E6E6E3; --ph:#EFEADA;
+  --display:'Merriweather', Georgia, 'Times New Roman', serif;
+  --body:'Open Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  color-scheme: light;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.65}
+.band{padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px))}
+.wrap{max-width:960px;margin:0 auto}
+.narrow{max-width:680px}
+.yellow{background:var(--yellow-soft)}
+.dark{background:var(--paper);color:var(--ink)}
+.azz{background:var(--azzurro-soft)}
+.matt{background:var(--mattone-soft)}
+h1,h2,h3{font-family:var(--display);font-weight:700;text-wrap:balance;margin:0}
+h1{font-size:clamp(32px,7vw,54px);line-height:1.12}
+h2{font-size:clamp(26px,5vw,36px);line-height:1.2}
+h3{font-size:20px;line-height:1.3}
+p{margin:0}
+a{color:inherit}
+.eyebrow{font:700 12px var(--body);letter-spacing:.16em;text-transform:uppercase;color:var(--ink-soft);margin:0}
+.dark .eyebrow{color:var(--ink-soft)}
+.prose{display:flex;flex-direction:column;gap:14px;max-width:62ch}
+.lead{font-size:19px;line-height:1.55;max-width:40ch}
+section .wrap{padding-block:64px;display:flex;flex-direction:column;gap:28px}
+:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+
+/* testata */
+header .wrap{padding-block:26px 56px;display:flex;flex-direction:column;align-items:center;gap:30px;text-align:center}
+.logo{width:210px;height:auto;display:block}
+nav ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;justify-content:center;gap:6px 22px}
+nav a{font:600 14px var(--body);text-decoration:none;border-bottom:2px solid transparent;padding-bottom:2px}
+nav a:hover{border-color:var(--ink)}
+header .wrap{padding-bottom:30px}
+.hero-photo{position:relative;border-radius:22px 22px 0 0;overflow:hidden;aspect-ratio:16/10;max-width:100%;background:var(--ph)}
+.hero-photo img{width:100%;height:100%;object-fit:cover;display:block}
+.hero-text{position:absolute;inset:auto 0 0 0;padding:clamp(20px,4vw,40px);display:flex;flex-direction:column;gap:12px;color:#FFFFFF;background:linear-gradient(to top, rgba(40,44,52,.82), rgba(40,44,52,.62) 55%, rgba(40,44,52,.3) 85%, rgba(40,44,52,0))}
+.hero-text h1{color:#FFFFFF;max-width:16ch}
+.hero-text .lead{color:#F4F2EA;font-size:17px}
+@media (max-width:620px){
+  .hero-photo{aspect-ratio:auto;display:flex;flex-direction:column;background:var(--azzurro-soft);border-radius:18px 18px 0 0}
+  .hero-photo img{aspect-ratio:4/3;height:auto}
+  .hero-text{position:static;background:var(--azzurro-soft)}
+  .hero-text,.hero-text h1,.hero-text .lead{color:var(--ink)!important}
+}
+
+.keys-grid{display:grid;grid-template-columns:1fr;gap:28px;align-items:center}
+.family{margin:0;aspect-ratio:4/5;max-width:100%;border-radius:18px;overflow:hidden;background:var(--ph)}
+.family img{width:100%;height:100%;object-fit:cover;display:block}
+.slot{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;padding:16px;border:2px dashed var(--azzurro);background:var(--card);border-radius:18px;color:var(--ink-soft)}
+.slot b{font:700 18px var(--display);color:var(--ink)}
+@media (min-width:720px){.keys-grid{grid-template-columns:1.1fr 1fr}}
+
+/* il nome */
+.name{display:grid;grid-template-columns:1fr auto 1fr;align-items:stretch;gap:0;border-radius:20px;overflow:hidden}
+.name > div{padding:26px clamp(14px,3vw,28px);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:10px;min-width:0}
+.name .word{font:700 clamp(34px,8.5vw,76px)/1 var(--display);letter-spacing:.02em}
+.name .to{display:grid;place-items:center;padding-inline:clamp(10px,3vw,30px);background:var(--yellow)}
+.name .to span{font:700 clamp(18px,3.4vw,26px)/1 var(--display);letter-spacing:.06em}
+.name .to small{display:block;font:600 11px var(--body);letter-spacing:.14em;text-transform:uppercase;margin-top:8px;text-align:center}
+.name p{font-size:15px;max-width:30ch}
+.name .house{background:var(--mattone);color:var(--ink)}
+.name .home{background:var(--azzurro);color:var(--ink)}
+
+
+/* perché */
+.quote{font:400 italic clamp(21px,3.6vw,28px)/1.5 var(--display);max-width:34ch;margin:0}
+.sign{font-weight:600}
+.mamma{margin:8px 0;padding:22px 24px;background:var(--mattone-soft);color:var(--ink);border-radius:18px;display:flex;flex-direction:column;gap:8px;max-width:52ch}
+.fiducia{margin:22px 0 0;border-radius:18px;overflow:hidden;max-width:720px}
+.fiducia img{display:block;width:100%;height:auto}
+.trust{font:400 italic clamp(19px,3.2vw,24px)/1.5 var(--display);max-width:40ch;margin:18px 0 10px}
+.trust.me{font-style:normal;font-weight:700;margin-top:0}
+.mamma blockquote{margin:0;font:400 italic clamp(18px,3vw,22px)/1.5 var(--display)}
+.mamma figcaption{font:700 12px var(--body);letter-spacing:.16em;text-transform:uppercase;color:var(--ink-soft)}
+.work > .pair{max-width:none}
+.gallery.two{grid-template-columns:1fr 1fr}
+.gallery.two .shot{aspect-ratio:4/5}
+.gallery.one{grid-template-columns:1fr;max-width:340px}
+.gallery.two .shot:nth-child(3){display:block}
+.plans{background:var(--paper);border:1px solid var(--rule);border-radius:16px;padding:14px 18px}
+.plans summary{cursor:pointer;font-weight:700}
+.plan-pair{display:grid;grid-template-columns:1fr;gap:18px;margin-top:14px}
+.plan-pair figure{margin:0;display:flex;flex-direction:column;gap:6px;min-width:0}
+.plan-pair figcaption{font:700 12px var(--body);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)}
+.plan-svg{width:100%;height:auto;display:block}
+.plan-tabs{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 10px}
+.plan-tabs button{font:700 14px var(--body);padding:8px 16px;border-radius:999px;border:2px solid var(--ink);background:transparent;color:var(--ink);cursor:pointer}
+.plan-tabs button[aria-selected="true"]{background:var(--blu);color:var(--ink)}
+.plan-stage{background:#F4F1EA;border-radius:14px;padding:10px;overflow:hidden}
+.plan-3d{width:100%;min-height:240px;display:grid;place-items:center;color:var(--ink-soft)}
+.plan-stage img{width:100%;height:auto;display:block;border-radius:10px}
+.plan-3d canvas{display:block;width:100%!important;height:auto!important;border-radius:10px;touch-action:none}
+.lavori{background:var(--paper);border:1px solid var(--rule);border-left:5px solid var(--yellow);border-radius:14px;padding:12px 16px;margin:0}
+.lavori p{margin:0;font-size:15px;line-height:1.55}
+.lavori .lav-t{font-weight:700;margin-bottom:4px}
+.plan-note{font-size:13px;color:var(--ink-soft);margin-top:8px}
+.plan-svg .rl{font:700 15px var(--body);fill:var(--ink)}
+.plan-svg .rs{font:700 12px var(--body);fill:var(--ink)}
+.plan-svg .ri{font:600 11px var(--body);fill:var(--ink-soft)}
+.plan-svg .furn{stroke:#9A8F72;stroke-width:1.5}
+.plan-svg .balc{fill:none;stroke:var(--ink);stroke-width:2}
+.plan-svg .stair{stroke:var(--ink);stroke-width:1}
+@media (min-width:820px){.plan-pair{grid-template-columns:1fr 1fr}}
+.render-wrap{display:flex;flex-direction:column;gap:8px}
+.render{margin:0;border-radius:18px;overflow:hidden;max-width:100%;background:var(--ph)}
+.render img{width:100%;height:auto;display:block}
+.render.illus{background:#FFFFFF;max-width:720px;border-radius:18px}
+.render-wrap p{font-size:14px;color:var(--ink-soft)}
+.staging-pairs{display:flex;flex-direction:column;gap:10px;max-width:760px;width:100%;margin-inline:auto}
+.gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.gallery .shot{aspect-ratio:3/4}
+.sub{font:700 12px var(--body);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin:4px 0 -4px}
+@media (max-width:520px){.gallery{grid-template-columns:1fr 1fr}.gallery .shot:nth-child(3){display:none}}
+.three{display:grid;grid-template-columns:1fr;gap:10px}
+.three a{display:grid;grid-template-columns:1fr auto;gap:4px 16px;padding:16px 18px;background:rgba(255,255,255,.55);border:1px solid rgba(63,64,66,.14);border-radius:16px;text-decoration:none}
+.three b{font:700 19px var(--display)}
+.three span{color:var(--ink-soft);grid-column:1}
+.three a:nth-child(1) i{background:var(--azzurro);color:var(--ink)}.three a:nth-child(2) i{background:var(--blu);color:var(--ink)}.three a:nth-child(3) i{background:var(--mattone);color:var(--ink)}
+.three i{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;grid-row:1/3;grid-column:2;align-self:center;font-style:normal;font-size:22px}
+.three a:hover b{text-decoration:underline;text-underline-offset:4px}
+
+/* come: passaggi reali in sequenza */
+.steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr;gap:14px;counter-reset:s}
+.steps li{background:var(--card);border:1px solid var(--rule);border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:8px}
+.steps .n{width:38px;height:38px;border-radius:50%;background:var(--yellow);display:grid;place-items:center;font:700 17px var(--display)}
+.steps p{color:var(--ink-soft)}
+.steps li:nth-child(2) .n{background:var(--azzurro)}
+.steps li:nth-child(3) .n{background:var(--mattone)}
+.steps li:nth-child(4) .n{background:var(--blu)}
+.steps li:nth-child(5) .n{background:var(--yellow)}
+.steps li:nth-child(6) .n{background:var(--azzurro)}
+.team{display:grid;gap:20px;padding:24px;background:var(--blu);color:var(--ink);border-radius:18px}
+.team h3{color:var(--ink)}
+.team h3{font-size:19px}
+.team-txt{display:flex;flex-direction:column;gap:12px;max-width:62ch;min-width:0}
+.team-img{margin:0;border-radius:14px;overflow:hidden}
+.team-img img{display:block;width:100%;height:100%;object-fit:cover}
+@media (min-width:820px){.team{grid-template-columns:1fr 1.15fr;align-items:center}}
+
+/* flip: case finite */
+.works{display:flex;flex-direction:column;gap:48px}
+.work{display:flex;flex-direction:column;gap:14px}
+.work-head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:4px 18px}
+.facts{display:flex;flex-wrap:wrap;gap:8px}
+.facts span{font:600 13px var(--body);background:var(--azzurro-soft);border:1px solid #BFDDEE;border-radius:999px;padding:4px 12px;font-variant-numeric:tabular-nums}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.shot{position:relative;aspect-ratio:4/3;max-width:100%;border-radius:14px;overflow:hidden;background:var(--ph);margin:0}
+.pair.tall .shot{aspect-ratio:4/5}
+.shot img{width:100%;height:100%;object-fit:cover;display:block}
+.shot .tag{position:absolute;left:10px;top:10px;font:700 11px var(--body);letter-spacing:.12em;text-transform:uppercase;background:var(--card);color:var(--ink);padding:4px 10px;border-radius:999px}
+.shot .tag.dopo{background:var(--yellow)}
+.orti{display:grid;grid-template-columns:1fr;gap:10px}
+.video{margin:0;display:flex;flex-direction:column;gap:8px;align-items:center}
+.video video{width:100%;max-width:320px;aspect-ratio:9/16;border-radius:16px;background:#1d1d1e;display:block}
+.video figcaption{font-size:13px;color:var(--ink-soft)}
+
+/* metodo */
+.dark .prose p{color:var(--ink)}
+.dark .quote{color:var(--ink)}
+.thoughts{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr;gap:10px;max-width:760px}
+.thoughts li{font:400 italic 17px/1.5 var(--display);color:var(--ink);background:var(--blu);border-radius:12px;padding:12px 16px}
+@media (min-width:720px){.thoughts{grid-template-columns:1fr 1fr}}
+.ways{display:grid;grid-template-columns:1fr;gap:14px}
+.way{border-radius:18px;padding:22px;display:flex;flex-direction:column;gap:10px;background:var(--yellow-soft);color:var(--ink)}
+.way:nth-child(2){background:var(--azzurro)}
+.way:nth-child(3){background:var(--mattone)}
+.way .q{font:400 italic 16px/1.5 var(--display);opacity:.85}
+.way .you{font-weight:700}
+.way .more{margin-top:auto;align-self:flex-start;display:inline-flex;align-items:center;gap:8px;min-height:48px;padding:0 22px;border-radius:999px;background:var(--ink);color:#FFFFFF;font:700 15px var(--body);text-decoration:none}
+.way .more:hover{opacity:.9}
+.way .more:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+.ctas{display:flex;flex-wrap:wrap;gap:12px}
+.ctas.center{justify-content:center}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:54px;padding:0 26px;border-radius:999px;font:700 16px var(--body);text-decoration:none}
+.btn.solid{background:var(--yellow);color:var(--ink)}
+.btn.line{border:2px solid var(--ink);color:var(--ink)}
+.btn.ink{background:var(--blu);color:var(--ink)}
+.btn.matt-btn{background:var(--mattone);color:var(--ink)}
+.btn:hover{opacity:.9}
+.c-wa,.c-tel,.c-mail{gap:9px;box-shadow:0 4px 12px rgba(63,64,66,.16);transition:transform .15s ease,box-shadow .15s ease}
+.c-wa:hover,.c-tel:hover,.c-mail:hover{opacity:1;transform:translateY(-2px);box-shadow:0 8px 18px rgba(63,64,66,.2)}
+.btn.c-wa{background:#25D366;color:#fff}
+.btn.c-tel{background:var(--ink);color:#fff}
+.btn.c-mail{background:#fff;color:var(--ink)}
+@media (max-width:620px){.contact .ctas{flex-wrap:nowrap;gap:8px}.contact .ctas .btn{flex:1 1 0;min-width:0;flex-direction:column;gap:4px;min-height:68px;padding:8px 4px;border-radius:20px;font-size:14px}}
+.dark :focus-visible{outline-color:var(--ink)}
+
+/* home staging */
+.staging{display:grid;grid-template-columns:1fr;gap:28px}
+.list{list-style:none;margin:0;padding:4px 18px;display:flex;flex-direction:column;gap:0;background:#fff;border:1px solid #9FD2F0;border-radius:16px}
+.list li{padding:12px 0;border-bottom:1px solid #9FD2F0;display:flex;gap:12px}
+.list li:last-child{border-bottom:0}
+.list li::before{content:"";flex:none;width:10px;height:10px;margin-top:8px;border-radius:2px;background:var(--mattone)}
+
+/* contatti */
+.contact{display:grid;grid-template-columns:1fr;gap:28px}
+.card{display:flex;flex-direction:column;gap:18px;background:#fff;border-radius:20px;padding:24px;box-shadow:0 8px 24px rgba(63,64,66,.10);min-width:0}
+.card-head{display:flex;flex-direction:column;gap:2px;padding-bottom:16px;border-bottom:2px solid var(--yellow)}
+.card .who{font:700 22px var(--display)}
+.card .role{color:var(--ink-soft);font-size:14px}
+.rows{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:14px}
+.rows li{display:flex;align-items:center;gap:14px;min-width:0}
+.rows i{flex:none;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:var(--yellow);color:var(--ink)}
+.rows li:nth-child(2) i{background:var(--azzurro)}.rows li:nth-child(3) i{background:var(--blu)}.rows li:nth-child(4) i{background:var(--mattone)}
+.rows div{display:flex;flex-direction:column;min-width:0}
+.rows small{font:700 11px var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft)}
+.rows span{overflow-wrap:anywhere;user-select:all}
+footer .wrap{padding-block:26px;display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between;font-size:13px}
+
+@media (min-width:720px){
+  .steps{grid-template-columns:repeat(2,1fr)}
+  .ways{grid-template-columns:repeat(3,1fr)}
+  .orti{grid-template-columns:2.36fr 1fr;align-items:start}
+  .orti .video video{max-width:none}
+  .staging,.contact{grid-template-columns:1.1fr 1fr;align-items:start}
+  .staging{align-items:center}
+  .staging .prose h2{margin-top:0}
+}
+@media (min-width:960px){
+  .steps{grid-template-columns:repeat(3,1fr)}
+}
+@media (max-width:520px){
+  .name{grid-template-columns:1fr}
+  .name .to{padding-block:14px}
+}
+
+.topbar{position:fixed;left:0;right:0;top:0;z-index:50;display:flex;align-items:center;gap:14px;background:var(--yellow);border-radius:0 0 18px 18px;padding:calc(6px + env(safe-area-inset-top,0px)) max(12px,env(safe-area-inset-right,0px)) 6px max(12px,env(safe-area-inset-left,0px));box-shadow:0 2px 10px rgba(40,44,52,.12);transform:translateY(-110%);transition:transform .3s ease}
+.topbar.on{transform:none}
+.tb-logo img{height:34px;width:auto;display:block}
+.topbar nav{display:flex;gap:16px;overflow-x:auto;scrollbar-width:none;white-space:nowrap;min-width:0}
+.topbar nav::-webkit-scrollbar{display:none}
+.topbar nav a{font:600 14px var(--body);color:var(--ink);text-decoration:none;padding:10px 2px}
+@media (min-width:900px){.topbar{justify-content:center}}
+.wa-float{position:fixed;right:max(16px,env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:60;width:58px;height:58px;border-radius:50%;background:#25D366;display:grid;place-items:center;box-shadow:0 4px 14px rgba(0,0,0,.22)}
+.wa-float:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+html{scroll-padding-top:60px}
+@media (prefers-reduced-motion:reduce){.topbar{transition:none}}
+
+.mail-listino{margin:14px auto 0;max-width:520px}
+.mail-listino summary{text-align:center}
+.mail-listino summary{cursor:pointer;font-weight:600;text-decoration:underline;text-underline-offset:3px;padding:6px 0}
+#form-listino{display:flex;flex-direction:column;gap:12px;margin-top:12px;background:var(--card);border:1px solid var(--rule);border-radius:16px;padding:18px}
+#form-listino label{display:flex;flex-direction:column;gap:4px;font:600 14px var(--body);min-width:0;flex:1}
+#form-listino input:not([type=checkbox]){font:16px var(--body);padding:12px;border:1px solid #C9CDD2;border-radius:10px;min-width:0}
+.fl-row{display:flex;gap:12px;flex-wrap:wrap}
+#form-listino .fl-check{flex-direction:row;align-items:center;gap:8px;font-weight:400}
+#form-listino .fl-check input{width:20px;height:20px}
+#form-listino button{align-self:flex-start;border:0;cursor:pointer}
+.fl-msg{margin:0;font-weight:600}
+</style>
+</head>
+<body>
+
+<header class="band yellow">
+  <div class="wrap">
+    <img class="logo" src="assets/logo.png" alt="HOUSETOHOME S.r.l.">
+    <nav aria-label="Sezioni">
+      <ul>
+        <li><a href="#chi-siamo">Chi siamo</a></li>
+        <li><a href="#flip">Flip immobiliare</a></li>
+        <li><a href="#metodo">Il nostro metodo</a></li>
+        <li><a href="#home-staging">Home staging</a></li>
+        <li><a href="#contatti">Contatti</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<div class="band yellow" style="padding-bottom:0">
+  <div class="wrap">
+    <div class="hero-photo">
+      <img src="assets/media/lavori/b-orti-soggiorno-dopo.jpg" alt="Zona giorno di via degli Orti a lavori finiti: open space luminoso con cucina bianca">
+      <div class="hero-text">
+        <h1>Trasformiamo il tuo sogno in casa.</h1>
+        <p class="lead">Compriamo e ristrutturiamo case a Bologna e provincia, e diamo loro una nuova vita. Sappiamo che ristrutturare spaventa: tempi lunghi, mille scelte, pensieri che non finiscono mai. Per questo realizziamo la tua casa già pronta, per farti vivere il momento più bello: quello in cui entri, la senti già tua e immagini come la vivrai.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="band keys">
+  <div class="wrap">
+    <div class="keys-grid">
+      <figure class="family" id="foto-famiglia">
+        <img src="assets/media/lavori/famiglia-chiavi.jpg" alt="Una famiglia entra per la prima volta nella sua nuova casa e la guarda emozionata">
+      </figure>
+      <div class="prose">
+        <p class="eyebrow">Il giorno delle chiavi</p>
+        <h2>Apri la porta, ed è già casa tua.</h2>
+        <p>Le stanze che hai immaginato, i materiali che hai scelto, la luce che entra dalle finestre nuove. Il giorno delle chiavi entri con la tua famiglia in una casa finita, pronta da vivere.</p>
+        <p>È per questo momento che facciamo il nostro lavoro.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="chi-siamo">
+  <div class="wrap">
+    <p class="eyebrow">Il nome</p>
+    <h2>Da una casa, a casa tua.</h2>
+    <div class="name" aria-label="HOUSE, TO, HOME">
+      <div class="house">
+        <span class="word">HOUSE</span>
+        <p>Le mura, le stanze, i metri quadri. La casa di passaggio: quella in cui hai vissuto per qualche anno e che resta un bel ricordo.</p>
+      </div>
+      <div class="to"><div><span>TO</span><small>il nostro lavoro</small></div></div>
+      <div class="home">
+        <span class="word">HOME</span>
+        <p>La casa dove ti senti al sicuro. La colazione della domenica, le persone che ami, gli abbracci al rientro, gli amici a cena. La tua casa.</p>
+      </div>
+    </div>
+    <div class="prose">
+      <p>HOUSETOHOME è il viaggio da un immobile alla tua casa: prendiamo mura e metri quadri e li trasformiamo nel posto dove vivrai i tuoi giorni più belli. In mezzo, c'è tutto il nostro lavoro.</p>
+    </div>
+  </div>
+</section>
+
+<section class="band yellow">
+  <div class="wrap narrow">
+    <p class="eyebrow">Perché lo facciamo</p>
+    <p class="quote">«L'ho fondata con un'idea semplice: aiutare le persone a realizzare il proprio sogno, con case pensate e curate in ogni dettaglio, pronte ad accogliere la loro vita.»</p>
+    <p class="sign">Fabrizio Montanari, amministratore di HOUSETOHOME S.r.l.</p>
+    <figure class="fiducia"><img src="assets/media/fiducia.jpg" alt="Le mani di una famiglia stringono insieme le chiavi della nuova casa" loading="lazy"></figure>
+    <p class="trust">Tutto comincia dalla fiducia. È la cosa più preziosa che ci affidi, e ce la guadagniamo ogni giorno, con i fatti, fino al momento in cui le chiavi della tua casa sono nelle tue mani.</p>
+    <p class="trust me">Dietro ogni casa c'è una persona che ti ascolta: per ogni scelta, ogni dubbio, ogni consiglio, troverai sempre me, Fabrizio.</p>
+    <p>Ecco cosa facciamo, ogni giorno:</p>
+    <div class="three">
+      <a href="#flip"><b>Flip immobiliare</b><span>Compriamo case da ristrutturare e le trasformiamo in case pronte da vivere.</span><i aria-hidden="true">↓</i></a>
+      <a href="#metodo"><b>Il nostro metodo per chi cerca casa</b><span>Hai trovato la casa giusta? Ti aiutiamo con la soluzione del nostro metodo più adatta a te, insieme alle agenzie immobiliari con cui collaboriamo.</span><i aria-hidden="true">↓</i></a>
+      <a href="#home-staging"><b>Home staging</b><span>Arrediamo le case in vendita: chi le visita capisce subito quanto sono ampi gli spazi e vede già come potrebbe arredare la sua nuova casa.</span><i aria-hidden="true">↓</i></a>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="come">
+  <div class="wrap">
+    <p class="eyebrow">Come lo facciamo</p>
+    <h2>Sei passaggi, dalla prima visita alle chiavi.</h2>
+    <ol class="steps">
+      <li><span class="n">1</span><h3>La visita</h3><p>Verifichiamo la struttura, valutiamo la zona, l'esposizione, gli spazi e la luce di ogni ambiente. È già qui che nasce il nuovo progetto: entriamo nella casa e ce la immaginiamo finita, come se fosse già pronta da vivere.</p></li>
+      <li><span class="n">2</span><h3>Il progetto</h3><p>Dopo le valutazioni sul campo, il nostro team di professionisti disegna i nuovi spazi per valorizzare ogni ambiente. Studiamo la luce, la posizione e la grandezza delle finestre, progettiamo gli impianti per unire praticità e stile e pensiamo già a come sarà arredata. Prima di aprire il cantiere, la casa prende forma in 3D.</p></li>
+      <li><span class="n">3</span><h3>L'acquisto</h3><p>Decidiamo in tempi rapidi e acquistiamo senza mutuo: il proprietario vende con tempi certi e senza sorprese, e noi possiamo partire subito con i lavori.</p></li>
+      <li><span class="n">4</span><h3>I materiali</h3><p>Scegliamo ogni materiale per valorizzare al meglio ogni ambiente, pensando già a chi ci vivrà: pavimenti, rivestimenti, porte e colori che rendono la casa calda e accogliente. Ci riforniamo dai fornitori con cui collaboriamo da anni e ogni scelta la tocchiamo con mano.</p></li>
+      <li><span class="n">5</span><h3>Il cantiere e la squadra</h3><p>Il cantiere parte con un programma preciso, giorno per giorno. Prima demolizioni e nuove pareti, poi impianti elettrico, idraulico e termico, infissi, pavimenti e rivestimenti; per ultimi porte, bagni, cucina e pitture. Ogni artigiano della squadra sa quando entrare e cosa fare, senza tempi morti. In 60 giorni la casa è pronta.</p></li>
+      <li><span class="n">6</span><h3>Ti consegniamo le chiavi</h3><p>Entri in una casa nuova, finita, pronta da vivere. E non sei da solo: per un anno dalla fine dei lavori ti seguiamo noi.</p></li>
+    </ol>
+    <div class="render-wrap">
+      <figure class="render"><img src="assets/media/lavori/casa3-render-2.jpg" alt="Progetto del soggiorno in 3D: divano chiaro, parete attrezzata in legno, tende leggere" loading="lazy"></figure>
+      <p>Ogni casa nasce con una vista reale, ancora prima della fine dei lavori. Così puoi immaginarla e renderti conto dei colori, della luce di ogni stanza e degli arredi: tutto per incontrare la casa che desideri.</p>
+    </div>
+    <div class="team">
+      <figure class="team-img"><img src="assets/media/lavori/progetto-famiglia.jpg" alt="Il progetto della nuova casa sul tavolo: tutti guardano insieme la pianta" loading="lazy"></figure>
+      <div class="team-txt">
+      <h3>Per noi è la squadra a fare la differenza.</h3>
+      <p>Siamo un team di professionisti unito, consapevole del valore di ciò che realizziamo: la casa in cui qualcuno vivrà i suoi giorni più belli. Ognuno di noi conosce il suo ruolo, ha le idee chiare e lavora fianco a fianco con gli altri.</p>
+      <p>Ci confrontiamo ogni giorno, ci aiutiamo e andiamo tutti nella stessa direzione, con un solo obiettivo: consegnarti la casa che hai sognato, realizzata con passione e nei tempi promessi.</p>
+      <p>Ci crediamo quanto te. E quando una squadra ci crede davvero, si vede in ogni dettaglio.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="flip" style="background:var(--card)">
+  <div class="wrap">
+    <p class="eyebrow">Flip immobiliare</p>
+    <h2>Case che abbiamo trasformato.</h2>
+    <p class="lead" style="font-size:17px">Acquistiamo case da ristrutturare, le trasformiamo e le rimettiamo sul mercato pronte da abitare. Così chi cerca casa trova la casa dei suoi sogni, già finita.</p>
+    <div class="works">
+      <article class="work">
+        <div class="work-head"><h3>Via degli Orti, Bologna</h3><div class="facts"><span>94 m²</span><span>da 3 a 5 locali</span><span>2 bagni</span></div></div>
+        <div class="lavori"><p class="lav-t">I lavori</p><p>Da casa d'altri tempi a casa luminosa e moderna. Il vecchio soggiorno è diventato due camere, mentre cucinotto, ripostiglio e tinello oggi sono un unico, grande soggiorno con angolo cottura, pieno di luce. La camera padronale ha il suo bagno privato. Dietro le pareti tutto è nuovo: impianti elettrico, idraulico e termico, aria condizionata canalizzata. Infissi nuovi, tapparelle motorizzate e cassonetti coibentati tengono fuori freddo e rumore. Pavimenti, rivestimenti, porte e bagno rifatti da zero, con una luce studiata stanza per stanza per un ambiente caldo e accogliente.</p></div>
+        <div class="orti">
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div class="pair">
+              <figure class="shot"><img src="assets/media/lavori/b-orti-cucina-prima.jpg" alt="Prima dei lavori: cucinotto stretto con piastrelle bianche e pavimento in graniglia" loading="lazy"><span class="tag">Prima</span></figure>
+              <figure class="shot"><img src="assets/media/lavori/b-orti-cucina-dopo.jpg" alt="Dopo i lavori: lo stesso spazio aperto, pareti bianche e grandi lastre a pavimento" loading="lazy"><span class="tag dopo">Dopo</span></figure>
+            </div>
+            <div class="pair">
+              <figure class="shot"><img src="assets/media/lavori/b-orti-bagno-prima.jpg" alt="Bagno prima dei lavori: mosaico rosa e vasca" loading="lazy"><span class="tag">Prima</span></figure>
+              <figure class="shot"><img src="assets/media/lavori/b-orti-bagno-dopo.jpg" alt="Bagno dopo i lavori: grandi lastre effetto marmo e doccia a filo pavimento" loading="lazy"><span class="tag dopo">Dopo</span></figure>
+            </div>
+          </div>
+          <figure class="video">
+            <video controls playsinline preload="metadata" poster="assets/media/orti-video-poster.jpg"><source src="assets/media/orti-video.mp4" type="video/mp4"></video>
+            <figcaption>La casa finita, in video.</figcaption>
+          </figure>
+        </div>
+        <div class="pair">
+          <figure class="shot"><img src="assets/media/lavori/b-casa2-camera-prima.jpg" alt="Camera prima dei lavori: pavimento in palladiana e mobili vecchi" loading="lazy"><span class="tag">Prima</span></figure>
+          <figure class="shot"><img src="assets/media/lavori/b-casa2-camera-dopo.jpg" alt="Camera dopo i lavori: pareti bianche e pavimento in grandi lastre" loading="lazy"><span class="tag dopo">Dopo</span></figure>
+        </div>
+        <div class="pair">
+          <figure class="shot"><img src="assets/media/lavori/b-casa2-studio-prima.jpg" alt="Prima dei lavori: studio con pavimento in palladiana grigia e arredi vecchi" loading="lazy"><span class="tag">Prima</span></figure>
+          <figure class="shot"><img src="assets/media/lavori/b-casa2-studio-dopo.jpg" alt="La stessa stanza dopo i lavori: pareti bianche, finestra nuova e grandi lastre a pavimento" loading="lazy"><span class="tag dopo">Dopo</span></figure>
+        </div>
+        <p class="sub">La casa finita</p>
+        <div class="gallery two"><figure class="shot"><img src="assets/media/lavori/b-orti-soggiorno-dopo.jpg" alt="Il soggiorno finito visto di fronte: cucina bianca, tavolo apparecchiato e divano" loading="lazy"></figure><figure class="shot"><img src="assets/media/lavori/b-casa2-tavola.jpg" alt="Tavola apparecchiata davanti alla cucina bianca" loading="lazy"></figure></div>
+        <details class="plans"><summary>Guarda la planimetria: prima, dopo e lavorazioni</summary><div class="plan-view" data-name="Via degli Orti, Bologna" data-imgs='[["Prima", "assets/media/piante/orti-prima.jpg"], ["Dopo", "assets/media/piante/orti-dopo.jpg"], ["Lavorazioni", "assets/media/piante/orti-lav.jpg"]]'></div></details>
+      </article>
+      <article class="work">
+        <div class="work-head"><h3>Via Mameli, Casalecchio di Reno</h3><div class="facts"><span>82 m²</span><span>3 locali</span></div></div>
+        <div class="lavori"><p class="lav-t">I lavori</p><p>Abbiamo abbattuto i muri tra disimpegno, tinello e cucina: al loro posto un soggiorno con cucina ampio e arioso, il cuore della casa. Una parete in diagonale dà carattere alla camera e nella seconda camera è nata una lavanderia, nascosta e comoda. Impianti elettrico, idraulico e termico completamente nuovi e aria condizionata canalizzata per stare bene in ogni stagione. Infissi e tapparelle motorizzate nuovi, cassonetti coibentati, pavimenti, rivestimenti e porte scelti uno per uno, bagno rifatto da cima a fondo. E una luce diffusa, pensata per ogni ambiente.</p></div>
+        <div class="pair">
+          <figure class="shot"><img src="assets/media/lavori/b-mameli-soggiorno-prima.jpg" alt="Soggiorno prima dei lavori: pavimento in graniglia, mobili vecchi, tende pesanti" loading="lazy"><span class="tag">Prima</span></figure>
+          <figure class="shot"><img src="assets/media/lavori/b-mameli-soggiorno-dopo.jpg" alt="Lo stesso soggiorno dopo i lavori: pareti bianche e nuovo pavimento chiaro effetto legno" loading="lazy"><span class="tag dopo">Dopo</span></figure>
+        </div>
+        <div class="pair tall">
+          <figure class="shot"><img src="assets/media/lavori/b-mameli-bagno-prima.jpg" alt="Bagno prima dei lavori: piastrelle azzurre e box doccia vecchio" loading="lazy"><span class="tag">Prima</span></figure>
+          <figure class="shot"><img src="assets/media/lavori/b-mameli-bagno-dopo.jpg" alt="Bagno dopo i lavori: grandi lastre, sanitari nuovi e finestra sul giardino" loading="lazy"><span class="tag dopo">Dopo</span></figure>
+        </div>
+        <p class="sub">La casa finita</p>
+        <div class="gallery">
+          <figure class="shot"><img src="assets/media/lavori/b-mameli-camera-dopo.jpg" alt="Camera finita con pavimento chiaro effetto legno e finestra sul verde" loading="lazy"></figure>
+          <figure class="shot"><img src="assets/media/lavori/b-mameli-doccia-dopo.jpg" alt="Doccia nuova con soffione e grandi lastre" loading="lazy"></figure>
+          <figure class="shot"><img src="assets/media/lavori/b-mameli-camera2-dopo.jpg" alt="Seconda camera luminosa con pavimento nuovo" loading="lazy"></figure>
+        </div>
+        <details class="plans"><summary>Guarda la planimetria: prima, dopo e lavorazioni</summary><div class="plan-view" data-name="Via Mameli, Casalecchio di Reno" data-imgs='[["Prima", "assets/media/piante/mameli-prima.jpg"], ["Dopo", "assets/media/piante/mameli-dopo.jpg"], ["Lavorazioni", "assets/media/piante/mameli-lav.jpg"]]'></div></details>
+      </article>
+      <article class="work">
+        <div class="work-head"><h3>Via Turati</h3><div class="facts"><span>85 m²</span><span>3 locali</span><span>cucina aperta sul soggiorno</span></div></div>
+        <div class="lavori"><p class="lav-t">I lavori</p><p>La cucina chiusa non c'è più: l'abbiamo aperta sul soggiorno e al posto della parete c'è un muretto alto 1 metro, che separa senza dividere. Nell'ingresso abbiamo ricavato una lavanderia, così ogni cosa ha il suo posto. Sotto le finiture, una casa tutta nuova: impianti elettrico, idraulico e termico rifatti, aria condizionata canalizzata, infissi nuovi con tapparelle motorizzate e cassonetti sostituiti e coibentati. Pavimenti caldi, rivestimenti eleganti, porte nuove e un bagno rifatto da zero, avvolti da una luce morbida e diffusa.</p></div>
+        <div class="pair tall"><figure class="shot"><img src="assets/media/lavori/b-casa3-cantiere.jpg" alt="Durante i lavori: muri demoliti tra cucina e soggiorno" loading="lazy"><span class="tag">Prima</span></figure><figure class="shot"><img src="assets/media/lavori/b-casa3-giorno-dopo.jpg" alt="Dopo: soggiorno aperto con pavimento effetto legno e muretto a mezza altezza" loading="lazy"><span class="tag dopo">Dopo</span></figure></div>
+        <div class="pair tall"><figure class="shot"><img src="assets/media/lavori/b-casa3-bagno-prima.jpg" alt="Bagno prima: piastrelle rosa e vasca" loading="lazy"><span class="tag">Prima</span></figure><figure class="shot"><img src="assets/media/lavori/b-casa3-bagno-dopo.jpg" alt="Bagno dopo: piatto doccia scuro, grandi lastre e sanitari nuovi" loading="lazy"><span class="tag dopo">Dopo</span></figure></div>
+        <p class="sub">La casa finita</p>
+        <div class="gallery two"><figure class="shot"><img src="assets/media/lavori/b-casa3-camera-dopo.jpg" alt="Camera finita con portafinestra sul balcone" loading="lazy"></figure><figure class="shot"><img src="assets/media/lavori/b-casa3-stanza-dopo.jpg" alt="Stanza finita con pavimento effetto legno e finestra nuova" loading="lazy"></figure></div>
+        <details class="plans"><summary>Guarda la planimetria: prima, dopo e lavorazioni</summary><div class="plan-view" data-name="Via Turati" data-imgs='[["Prima", "assets/media/piante/turati-prima.jpg"], ["Dopo", "assets/media/piante/turati-dopo.jpg"], ["Lavorazioni", "assets/media/piante/turati-lav.jpg"]]'></div></details>
+      </article>
+      <article class="work">
+        <div class="work-head"><h3>Via Tosarelli, Zola Predosa</h3><div class="facts"><span>90 m²</span><span>3 locali</span></div></div>
+        <div class="lavori"><p class="lav-t">I lavori</p><p>Apri la porta e la casa ti accoglie a braccia aperte: abbiamo eliminato le pareti dell'ingresso e il piccolo ripostiglio, e oggi l'ingresso scorre nel soggiorno con cucina. Il disimpegno ha una porta nuova e il bagno si è allargato verso la camera per fare spazio a una doccia ampia. Impianti elettrico, idraulico e termico nuovi, aria condizionata canalizzata, infissi con tapparelle motorizzate e cassonetti coibentati: una casa silenziosa ed efficiente. Pavimenti, rivestimenti, porte e bagno completamente rinnovati, con una luce studiata ambiente per ambiente.</p></div>
+        <div class="pair tall"><figure class="shot"><img src="assets/media/lavori/b-tosarelli-prima.jpg" alt="Ingresso prima dei lavori: pareti gialle con greca, pavimento in marmo rosso, porte scure" loading="lazy"><span class="tag">Prima</span></figure><figure class="shot"><img src="assets/media/lavori/b-casa4-ingresso-dopo.jpg" alt="Ingresso dopo: pareti bianche e pavimento effetto legno" loading="lazy"><span class="tag dopo">Dopo</span></figure></div>
+        <div class="pair tall"><figure class="shot"><img src="assets/media/lavori/b-casa4-cucina-prima.jpg" alt="Cucina prima dei lavori: stretta e separata dal soggiorno" loading="lazy"><span class="tag">Prima</span></figure><figure class="shot"><img src="assets/media/lavori/b-casa4-giorno-dopo.jpg" alt="Dopo: zona giorno aperta e luminosa con portafinestra" loading="lazy"><span class="tag dopo">Dopo</span></figure></div>
+        <p class="sub">La casa finita</p>
+        <div class="gallery two"><figure class="shot"><img src="assets/media/lavori/b-casa4-bagno-dopo.jpg" alt="Bagno nuovo con doccia a filo e grandi lastre grigie" loading="lazy"></figure><figure class="shot"><img src="assets/media/lavori/b-casa4-camera-dopo.jpg" alt="Camera finita con porta bianca" loading="lazy"></figure></div>
+        <details class="plans"><summary>Guarda la planimetria: prima, dopo e lavorazioni</summary><div class="plan-view" data-name="Via Tosarelli, Zola Predosa" data-imgs='[["Prima", "assets/media/piante/tosarelli-prima.jpg"], ["Dopo", "assets/media/piante/tosarelli-dopo.jpg"], ["Lavorazioni", "assets/media/piante/tosarelli-lav.jpg"]]'></div></details>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="band dark" id="metodo">
+  <div class="wrap">
+    <p class="eyebrow">Il nostro metodo</p>
+    <p class="quote">Ogni giorno vediamo famiglie che trovano la casa giusta e poi si fermano, piene di domande:</p>
+    <ul class="thoughts">
+      <li>«Il mutuo basterà per la casa che desidero?»</li>
+      <li>«Tra la vendita della mia casa, la ristrutturazione e il trasloco, quando potrò entrare in quella nuova?»</li>
+      <li>«Quanto mi costeranno davvero i lavori?»</li>
+      <li>«Quanto durerà il cantiere? E alla fine dovrò aggiungere altri soldi?»</li>
+    </ul>
+    <div class="prose"><p>Per loro abbiamo creato il nostro metodo. Possiamo collaborare con la tua agenzia immobiliare e affiancarti insieme a lei, oppure puoi rivolgerti direttamente a noi: in entrambi i casi siamo al tuo fianco, dalla prima visita alle chiavi. Tre soluzioni, una per ogni ostacolo. In tutte e tre il progetto lo decidi tu.</p></div>
+    <div class="ways">
+      <article class="way">
+        <p class="q">«Il mutuo o i soldi per la ristrutturazione non bastano per la casa che desidero.»</p>
+        <h3>Il mutuo sulla casa finita</h3>
+        <p>La casa che desideri è più vicina di quanto pensi. Acquistiamo e ristrutturiamo la casa che hai scelto, e tu la compri da noi già finita. Il perito della banca valuta così la casa ristrutturata, non quella da ristrutturare: il valore sale, e con lui il mutuo a cui puoi accedere. I lavori sono già compresi nel prezzo: non ti servono altri soldi per ristrutturarla, ci abbiamo pensato noi.</p>
+        <p class="you">Compri la casa finita, al prezzo fissato prima di cominciare.</p>
+        <a class="more" href="metodo/#mutuo">Voglio capirne di più <span aria-hidden="true">→</span></a>
+      </article>
+      <article class="way">
+        <p class="q">«Devo prima vendere la mia casa.»</p>
+        <h3>La casa pronta quando vendi</h3>
+        <p>Acquistiamo la casa che hai scelto e la ristrutturiamo mentre tu vendi la tua. La casa resta ferma per te: l'unica attesa è quella della tua vendita. Noi ti aspettiamo.</p>
+        <p class="you">Il giorno del rogito entri in una casa già pronta.</p>
+        <a class="more" href="metodo/#vendita">Voglio capirne di più <span aria-hidden="true">→</span></a>
+      </article>
+      <article class="way">
+        <p class="q">«Voglio ristrutturare e sapere quanto spendo.»</p>
+        <h3>Il prezzo fissato subito</h3>
+        <p>Progetto e prezzo li concordiamo insieme prima di iniziare. Da quel momento il prezzo resta quello, senza sorprese, e il cantiere lo seguiamo noi.</p>
+        <p class="you">Il prezzo non cambia di un centesimo.</p>
+        <a class="more" href="metodo/#ristrutturazione">Voglio capirne di più <span aria-hidden="true">→</span></a>
+      </article>
+    </div>
+    <div class="ctas center">
+      <a class="btn solid" href="sondaggio/">Scopri chi ti può aiutare</a>
+      <a class="btn line" href="metodo/">Il nostro metodo nel dettaglio</a>
+    </div>
+  </div>
+</section>
+
+<section class="band azz" id="home-staging">
+  <div class="wrap">
+    <p class="eyebrow">Home staging</p>
+    <div class="staging">
+      <div class="prose">
+        <h2>Una casa arredata si vende prima.</h2>
+        <p>Arredata, una casa si capisce al primo sguardo: chi la visita si vede già dentro. Allestiamo case in vendita per agenzie e proprietari, ristrutturate o da ristrutturare.</p>
+      </div>
+      <ul class="list">
+        <li>Allestimento, montaggio e smontaggio a cura nostra</li>
+        <li>Set completo fino a 5 locali: arredo e oggettistica curati per zona giorno e camere</li>
+        <li>Noleggio mensile, senza durata minima</li>
+        <li>Il set resta in casa fino alla proposta accettata</li>
+        <li>Prezzo in base ai m² e ai mesi di noleggio</li>
+      </ul>
+    </div>
+    <div class="staging-pairs">
+      <div class="pair"><figure class="shot"><img src="assets/media/lavori/b-staging-0.jpg" alt="Zona giorno vuota" loading="lazy"><span class="tag">Prima</span></figure><figure class="shot"><img src="assets/media/lavori/b-staging-3.jpg" alt="La stessa zona giorno allestita con tavolo, sedie e divano" loading="lazy"><span class="tag dopo">Dopo</span></figure></div>
+      <div class="pair"><figure class="shot"><img src="assets/media/lavori/b-staging-1.jpg" alt="Camera matrimoniale vuota" loading="lazy"><span class="tag">Prima</span></figure><figure class="shot"><img src="assets/media/lavori/b-staging-4.jpg" alt="La stessa camera allestita con letto matrimoniale e comodini" loading="lazy"><span class="tag dopo">Dopo</span></figure></div>
+      <div class="pair"><figure class="shot"><img src="assets/media/lavori/b-staging-2.jpg" alt="Camera singola vuota" loading="lazy"><span class="tag">Prima</span></figure><figure class="shot"><img src="assets/media/lavori/b-staging-5.jpg" alt="La stessa camera allestita con letto singolo e cassettiera" loading="lazy"><span class="tag dopo">Dopo</span></figure></div>
+    </div>
+    <div class="ctas center"><a class="btn matt-btn" href="https://wa.me/393395829835?text=Salve%2C%20vorrei%20ricevere%20il%20listino%20home%20staging%20di%20HOUSETOHOME%3A%20https%3A%2F%2Fhousetohomesrl.it%2Flistino" target="_blank" rel="noopener">Richiedi il listino</a></div>
+    <details class="mail-listino">
+      <summary>Preferisce ricevere il listino via mail? Clicchi qui</summary>
+      <form id="form-listino" novalidate>
+        <div class="fl-row"><label>Nome<input name="nome" autocomplete="given-name" required></label><label>Cognome<input name="cognome" autocomplete="family-name" required></label></div>
+        <label>E-mail<input name="email" type="email" autocomplete="email" required></label>
+        <label>Cellulare <small>(facoltativo)</small><input name="cellulare" type="tel" autocomplete="tel"></label>
+        <label class="fl-check"><input type="checkbox" name="privacy" required> Ho letto l'<a href="privacy/" target="_blank" rel="noopener">informativa privacy</a></label>
+        <button class="btn matt-btn" type="submit">Ricevere il listino</button>
+        <p class="fl-msg" id="fl-msg" role="status" aria-live="polite"></p>
+      </form>
+    </details>
+    <script>
+    (function(){var f=document.getElementById("form-listino"),m=document.getElementById("fl-msg");if(!f)return;
+    var URL="https://script.google.com/macros/s/AKfycbwWt9D6ivEzmUEtFQLtFkW6CQPyU65C5FNVfMuaB0av3ysiBXXBbtWBlLxt_xuMfwucyQ/exec";
+    f.addEventListener("submit",function(e){e.preventDefault();var d={tipo:"listino",nome:f.nome.value.trim(),cognome:f.cognome.value.trim(),email:f.email.value.trim(),cellulare:f.cellulare.value.trim(),privacy:f.privacy.checked};
+    if(!d.nome||!d.cognome||!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(d.email)){m.textContent="Inserisca nome, cognome e un indirizzo e-mail valido.";return;}
+    if(!d.privacy){m.textContent="Per inviarle il listino ci serve la conferma dell'informativa privacy.";return;}
+    try{fetch(URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(d),keepalive:true}).catch(function(){});}catch(err){}
+    f.querySelectorAll("input,button").forEach(function(x){x.disabled=true;});
+    m.textContent="Fatto! Le abbiamo inviato il listino all'indirizzo "+d.email+". Controlli anche nella posta indesiderata.";});})();
+    </script>
+  </div>
+</section>
+
+<section class="band yellow" id="contatti">
+  <div class="wrap">
+    <p class="eyebrow">Contatti</p>
+    <div class="contact">
+      <div class="prose">
+        <h2>Parliamo della tua casa.</h2>
+        <p>Contattami come ti è più comodo: capiamo insieme cosa desideri e da dove partire.</p>
+        <div class="ctas"><a class="btn c-wa" href="https://wa.me/393395829835?text=Salve%20Fabrizio%2C%20ho%20visto%20il%20sito%20di%20HOUSETOHOME%20e%20vorrei%20parlarti%20della%20casa%20che%20sto%20cercando." target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.8 11.9 11.9 0 0 0 4.6 4c1.7.7 2.4.8 3.2.7.5-.1 1.5-.6 1.8-1.2s.2-1.1.1-1.2-.2-.2-.5-.3z"/></svg><span>WhatsApp</span></a><a class="btn c-tel" href="tel:+393395829835"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg><span>Chiamami</span></a><a class="btn c-mail" href="mailto:info@housetohomesrl.it?subject=Informazioni%20dal%20sito%20HOUSETOHOME&amp;body=Salve%20Fabrizio%2C%0Aho%20visto%20il%20sito%20di%20HOUSETOHOME%20e%20vorrei%20parlarti%20della%20casa%20che%20sto%20cercando.%0A%0A"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg><span>Mail</span></a></div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <span class="who">Fabrizio Montanari</span>
+          <span class="role">Amministratore, HOUSETOHOME S.r.l.</span>
+        </div>
+        <ul class="rows">
+          <li><i aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg></i><div><small>Telefono</small><span>339 582 9835</span></div></li>
+          <li><i aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></i><div><small>E-mail</small><span>info@housetohomesrl.it</span></div></li>
+          <li><i aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 6v6c0 4.5 3.4 8.3 8 9 4.6-.7 8-4.5 8-9V6z"/><path d="m9 12 2 2 4-4"/></svg></i><div><small>Pec</small><span>housetohome89@pec.it</span></div></li>
+          <li><i aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg></i><div><small>Sede</small><span>Via Santo Stefano 97, 40125 Bologna</span></div></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="band dark">
+  <div class="wrap">
+    <span>HOUSETOHOME S.r.l. · P.IVA e C.F. 04269211209</span>
+    <a href="privacy/">Informativa privacy</a>
+  </div>
+</footer>
+
+<script src="assets/plans.js"></script>
+
+<div class="topbar" id="topbar" aria-hidden="true">
+  <a class="tb-logo" href="#" tabindex="-1"><img src="assets/logo.png" alt=""></a>
+  <nav aria-label="Sezioni"><a href="#chi-siamo" tabindex="-1">Chi siamo</a><a href="#flip" tabindex="-1">Flip</a><a href="#metodo" tabindex="-1">Il nostro metodo</a><a href="#home-staging" tabindex="-1">Home staging</a><a href="#contatti" tabindex="-1">Contatti</a></nav>
+</div>
+<a class="wa-float" href="https://wa.me/393395829835?text=Salve%20Fabrizio%2C%20ho%20visto%20il%20sito%20di%20HOUSETOHOME%20e%20vorrei%20parlarti%20della%20casa%20che%20sto%20cercando." target="_blank" rel="noopener" aria-label="Scrivici su WhatsApp"><svg viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><path fill="#fff" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.8 11.9 11.9 0 0 0 4.6 4c1.7.7 2.4.8 3.2.7.5-.1 1.5-.6 1.8-1.2s.2-1.1.1-1.2-.2-.2-.5-.3z"/></svg></a>
+<script>
+(function(){var b=document.getElementById("topbar"),h=document.querySelector("header");if(!b||!h||!("IntersectionObserver" in window))return;
+new IntersectionObserver(function(e){var on=!e[0].isIntersecting;b.classList.toggle("on",on);b.setAttribute("aria-hidden",on?"false":"true");b.querySelectorAll("a").forEach(function(a){a.tabIndex=on?0:-1;});}).observe(h);})();
+</script>
+</body>
+</html>
