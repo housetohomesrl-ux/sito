@@ -150,7 +150,9 @@ select{font:400 16px var(--body);color:var(--ink);border:2px solid #D9D6C8;borde
 .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 @media (max-width:360px){.two{grid-template-columns:1fr}}
 .cta-box{display:flex;flex-direction:column;gap:12px;align-items:center;padding-top:6px}
-.cta-row{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.cta-lead{font:400 italic 18px/1.45 var(--display);text-align:center;margin:0;max-width:30ch}
+.btn-big{min-height:62px;font-size:18px;padding:0 24px;width:100%;max-width:360px;box-sizing:border-box;text-align:center}
+.btn-small{min-height:46px;font-size:14px;padding:0 18px}
 .calc-pair{display:flex;flex-direction:column;gap:10px}
 form{display:flex;flex-direction:column;gap:12px;background:var(--paper);border-radius:16px;padding:18px}
 form h3{font-size:19px}
@@ -1040,10 +1042,9 @@ function contactBlock(){
   return [
     form, thanks,
     el("div",{class:"cta-box"},
-      el("p",{class:"small"},"Intanto scopri chi siamo, come lavoriamo e le case che abbiamo già trasformato."),
-      el("div",{class:"cta-row"},
-        el("a",{class:"btn",href:"/",target:"_blank",rel:"noopener"},"Visita il sito"),
-        el("a",{class:"btn ghost",href:METODO_URL,target:"_blank",rel:"noopener"},"Il nostro metodo")))
+      el("p",{class:"cta-lead"},"Le soluzioni che hai appena visto fanno parte del nostro metodo: scoprilo passo per passo."),
+      el("a",{class:"btn btn-big",href:METODO_URL,target:"_blank",rel:"noopener"},"Il nostro metodo nel dettaglio"),
+      el("a",{class:"btn ghost btn-small",href:"/",target:"_blank",rel:"noopener"},"Visita il sito"))
   ];
 }
 
