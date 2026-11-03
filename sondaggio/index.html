@@ -945,7 +945,17 @@ function messaggioWA(nome){
   const R = route(), r = [];
   r.push("Ciao HOUSETOHOME" + (nome ? ", sono "+nome : "") + "!");
   r.push("Ho fatto il vostro sondaggio e vorrei parlarvi di:");
-  if(R.m) r.push("- mutuo: con mutuo e risparmi non arrivo al prezzo della casa che vorrei" + (A.m_banca==="pre" ? " (ho già una pre-delibera)" : A.m_banca==="no" ? " (non sono ancora andato in banca)" : ""));
+  // il mutuo è un problema solo se i conti lo dicono: la banca finanzia fino all'80% del valore della casa
+  const pv = LAST.piano && LAST.piano.V ? LAST.piano : null;
+  const quota = pv && pv.mutuo ? Math.round(pv.mutuo/pv.V*100) : 0;
+  const banca = A.m_banca==="pre" ? " (ho già una pre-delibera)" : A.m_banca==="no" ? " (non sono ancora andato in banca)" : "";
+  if(pv){
+    if(quota>80) r.push("- mutuo: il mutuo che mi servirebbe supera l'80% del valore della casa"+banca);
+  } else if(R.m){
+    r.push(A.soldi==="nonso"
+      ? "- mutuo: non so ancora se con mutuo e risparmi arrivo al prezzo della casa che vorrei"+banca
+      : "- mutuo: con mutuo e risparmi non arrivo al prezzo della casa che vorrei"+banca);
+  }
   if(R.v){
     const st = {no:"non l'ho ancora messa in vendita", invendita:"è già in vendita", acquirente:"ho già un acquirente"}[A.v_stato];
     const vt = A.v_trovata||[];
@@ -960,9 +970,9 @@ function messaggioWA(nome){
     if(rc) r.push("- "+rc);
   }
   if(R.none) r.push("- una consulenza per la casa che sto cercando");
-  if(LAST.casa) r.push("Casa che mi interessa: zona "+zonaBreve(LAST.casa.zona)+", "+LAST.casa.mq+" m², ristrutturazione "+LAST.casa.lavori+" (valore stimato "+eur(LAST.casa.V)+").");
+  if(LAST.casa) r.push("Casa che mi interessa: "+(LAST.casa.zona ? "zona "+zonaBreve(LAST.casa.zona)+", " : "")+LAST.casa.mq+" m², ristrutturazione "+LAST.casa.lavori+" (valore stimato "+eur(LAST.casa.V)+").");
   else if(LAST.inverso) r.push("Ho "+eur(LAST.inverso.liq)+" di liquidità e cerco in zona "+zonaBreve(LAST.inverso.zona)+".");
-  if(LAST.piano) r.push("Vendo la mia casa a "+eur(LAST.piano.P)+(LAST.piano.D?" (mutuo residuo "+eur(LAST.piano.D)+")":"")+", ho "+eur(LAST.piano.S)+" di risparmi"+(LAST.piano.mutuo?" e mi servirebbe un mutuo di "+eur(LAST.piano.mutuo):" e non mi servirebbe un mutuo")+".");
+  if(LAST.piano) r.push("Vendo la mia casa a "+eur(LAST.piano.P)+(LAST.piano.D?" (mutuo residuo "+eur(LAST.piano.D)+")":"")+", ho "+eur(LAST.piano.S)+" di risparmi"+(LAST.piano.mutuo?" e mi servirebbe un mutuo di "+eur(LAST.piano.mutuo)+(quota?", "+(/^(8|11)\d?$/.test(String(quota))?"l'":"il ")+quota+"% del valore della casa":""):" e non mi servirebbe un mutuo")+".");
   const liq = {si:"sì", forse:"più o meno, devo fare bene i conti", no:"non ancora"}[A.liquidita];
   if(liq) r.push("Risparmi per la caparra: "+liq+".");
   r.push("Quando possiamo sentirci?");
