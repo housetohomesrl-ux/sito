@@ -1089,12 +1089,14 @@ function solutions(){
   let keys, title;
   if(R.noCash){ keys=["a","r"]; title="Per la tua casa c'è una strada su misura."; }
   else if(R.m && R.v){ keys=["m","v"]; title="Hai due ostacoli. Li risolviamo entrambi."; }
+  else if(R.m && A.m_banca!=="pre" && A.liquidita!=="si"){ keys=["m"]; title="Tra mutuo e risparmi, abbiamo una soluzione."; }
   else if(R.m){ keys=["m"]; title="Il tuo ostacolo è il mutuo. Ecco come lo superi."; }
   else if(R.v){ keys=["v"]; title="Il tuo ostacolo sono i tempi della vendita. Ecco come li superi."; }
   else if(R.r){ keys=["r"]; title="Il tuo pensiero è la ristrutturazione. Ecco come la affrontiamo."; }
   else { keys=[]; title="Sei già sulla buona strada."; }
   const others = R.noCash ? ["m","v"].filter(k=>R[k]) : ["m","v","r"].filter(k=>!keys.includes(k));
   const forse = R.noCash ? el("p",{class:"personal center"},"Qui sotto trovi le soluzioni più adatte a te. Leggile con calma, poi lasciaci i tuoi contatti: le approfondiamo insieme e troviamo la strada migliore per arrivare alla casa che desideri.")
+    : (R.m && !R.v && A.m_banca!=="pre" && A.liquidita!=="si") ? el("p",{class:"personal center"},"Con il nostro metodo la banca calcola il mutuo sulla casa già ristrutturata, di solito fino all'80% del suo valore. Il primo passo è chiedere in banca la pre-delibera; la caparra la valutiamo insieme a te. Lasciaci i tuoi contatti: facciamo i conti nero su bianco, prima di qualsiasi firma.")
     : A.liquidita==="forse" ? el("p",{class:"personal center"},"I conti li facciamo insieme, nero su bianco, prima di qualsiasi firma.")
     : A.liquidita==="nonso" ? el("p",{class:"personal center"},"Non hai ancora fatto i conti? Scrivici qui sotto la zona e i metri quadri della casa che ti piace: li facciamo insieme.")
     : null;
