@@ -966,7 +966,7 @@ function messaggioWA(nome){
   } else if(R.m){
     r.push(A.soldi==="nonso"
       ? "- mutuo: non so ancora se con mutuo e risparmi arrivo al prezzo della casa che vorrei"+banca
-      : "- mutuo: con mutuo e risparmi non arrivo al prezzo della casa che vorrei"+banca);
+      : "- mutuo: vorrei capire come arrivare al prezzo della casa che desidero"+banca);
   }
   if(R.v){
     const st = {no:"non l'ho ancora messa in vendita", invendita:"è già in vendita", acquirente:"ho già un acquirente"}[A.v_stato];
@@ -1095,7 +1095,7 @@ function solutions(){
   else { keys=[]; title="Sei già sulla buona strada."; }
   const others = R.noCash ? ["m","v"].filter(k=>R[k]) : ["m","v","r"].filter(k=>!keys.includes(k));
   const forse = R.noCash ? el("p",{class:"personal center"},"Qui sotto trovi le soluzioni più adatte a te. Leggile con calma, poi lasciaci i tuoi contatti: le approfondiamo insieme e troviamo la strada migliore per arrivare alla casa che desideri.")
-    : A.liquidita==="forse" ? el("p",{class:"personal center"},"Sui risparmi hai qualche dubbio: è giusto così. Facciamo i conti insieme, nero su bianco, prima di qualsiasi firma.")
+    : A.liquidita==="forse" ? el("p",{class:"personal center"},"I conti li facciamo insieme, nero su bianco, prima di qualsiasi firma.")
     : A.liquidita==="nonso" ? el("p",{class:"personal center"},"Non hai ancora fatto i conti? Scrivici qui sotto la zona e i metri quadri della casa che ti piace: li facciamo insieme.")
     : null;
 
