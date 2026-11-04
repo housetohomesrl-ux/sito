@@ -1093,8 +1093,8 @@ function solutions(){
   else if(R.v){ keys=["v"]; title="Il tuo ostacolo sono i tempi della vendita. Ecco come li superi."; }
   else if(R.r){ keys=["r"]; title="Il tuo pensiero è la ristrutturazione. Ecco come la affrontiamo."; }
   else { keys=[]; title="Sei già sulla buona strada."; }
-  const others = R.noCash ? [] : ["m","v","r"].filter(k=>!keys.includes(k));
-  const forse = R.noCash ? null
+  const others = R.noCash ? ["m","v"].filter(k=>R[k]) : ["m","v","r"].filter(k=>!keys.includes(k));
+  const forse = R.noCash ? el("p",{class:"personal center"},"Oggi i risparmi non bastano per la caparra: non è un no, è il punto da cui partiamo. Qui sotto trovi la strada più adatta a te oggi. Lasciaci i tuoi contatti: ne parliamo insieme e troviamo la soluzione per arrivare alla casa che desideri.")
     : A.liquidita==="forse" ? el("p",{class:"personal center"},"Sui risparmi hai qualche dubbio: è giusto così. Facciamo i conti insieme, nero su bianco, prima di qualsiasi firma.")
     : A.liquidita==="nonso" ? el("p",{class:"personal center"},"Non hai ancora fatto i conti? Scrivici qui sotto la zona e i metri quadri della casa che ti piace: li facciamo insieme.")
     : null;
@@ -1106,7 +1106,7 @@ function solutions(){
                 : el("p",{class:"lead"},"Hai le risorse, non devi vendere e i lavori non ti spaventano. Per progettare e seguire la ristrutturazione, ci siamo noi."),
     forse,
     el("div",{class:"scards"}, keys.map(k=>cardButton(k,true))),
-    others.length ? el("h3",{class:"others-title"}, keys.length ? "Vuoi conoscere anche le altre strade?" : "Le strade possibili") : null,
+    others.length ? el("h3",{class:"others-title"}, R.noCash ? "Le altre strade del nostro metodo" : keys.length ? "Vuoi conoscere anche le altre strade?" : "Le strade possibili") : null,
     others.length ? el("div",{class:"scards"}, others.map(k=>cardButton(k,false))) : null,
     contactBlock(),
     el("button",{class:"btn ghost",type:"button",onclick:()=>{for(const k in A)delete A[k];showSolutions=false;detail=null;pos=-1;render();}},"Ricomincia")
