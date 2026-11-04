@@ -598,8 +598,8 @@ const ZONE = [
 ];
 const AUTO = { d:{posto:25000, garage:40000}, p:{posto:15000, garage:25000}, f:{posto:10000, garage:20000} };
 const PRUDENZA = 1.02;
-// tempi dei lavori: ristrutturazione parziale 30 giorni; completa 60 giorni fino a 100 m², 90 giorni oltre
-const giorniLavori = (m, completa) => !completa ? 30 : (m > 100 ? 90 : 60);
+// tempi dei lavori: ristrutturazione parziale 30 giorni; completa 60 giorni fino a 110 m², 90 giorni oltre
+const giorniLavori = (m, completa) => !completa ? 30 : (m > 110 ? 90 : 60);
 const ZONA = {}, FASCIA = {};
 ZONE.forEach(gr=>gr.z.forEach(([n,v,f])=>{ const k=gr.g+" – "+n; ZONA[k]=Math.round(v*PRUDENZA/10)*10; FASCIA[k]=f; }));
 function zonaSelect(id){
