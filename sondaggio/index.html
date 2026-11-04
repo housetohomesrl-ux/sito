@@ -437,7 +437,7 @@ function solMutuo(){
     el("ul",{class:"plus"},
       ["Compri la casa che sogni, con conti verificati prima di firmare",
        "Il mutuo si calcola sulla casa finita, non su quella da sistemare",
-       "Casa pronta in 60 giorni (fino a 100 m²)",
+       "Casa pronta nei tempi fissati per iscritto prima di iniziare",
        "Appena hai il mutuo entri, senza attese: la casa è già pronta",
        "È la casa che hai scelto tu fin dall'inizio"].map(t=>el("li",{},tick(),el("span",{},t))))
   );
@@ -468,7 +468,7 @@ function solVendita(){
         el("li",{},"Noi acquistiamo la casa che hai scelto"),
         el("li",{},"La ristrutturiamo mentre tu vendi la tua"),
         el("li",{},"La teniamo lì per te: nessuno te la porta via"),
-        el("li",{},"In 60 giorni la casa è pronta e ti aspetta"),
+        el("li",{},"Nei tempi fissati la casa è pronta e ti aspetta"),
         el("li",{},"Quando hai venduto, entri subito")))
     ),
     el("p",{},"I tempi li decidi tu, oppure sono soltanto quelli della vendita della tua casa. Nel frattempo HOUSETOHOME lavora per te."),
@@ -486,7 +486,7 @@ function solRistrutturazione(){
   const paure = A.r_paure||[];
   const bits = [];
   if(paure.includes("costi")) bits.push("il prezzo lo conosci prima di firmare e non cambia");
-  if(paure.includes("tempi")) bits.push("i lavori durano 60 giorni fino a 100 m², ed è scritto nel preventivo");
+  if(paure.includes("tempi")) bits.push("i tempi dei lavori sono già definiti prima di iniziare e scritti nel preventivo");
   if(paure.includes("imprevisti")) bits.push("gli imprevisti li gestiamo noi");
   if(paure.includes("chi")) bits.push("hai un unico riferimento per tutto il cantiere");
   const personal = bits.length ? "Per te, in concreto: " + bits.join("; ") + "." : null;
@@ -502,7 +502,7 @@ function solRistrutturazione(){
     el("h4",{},"Cosa devi fare"),
     el("ol",{class:"todo"},
       todo(1,"Decidi tu il progetto","Spazi, finiture, materiali: scegli tu, noi ti diciamo cosa è possibile."),
-      todo(2,"Ricevi il preventivo","Chiaro, voce per voce, senza costi nascosti, con i tempi scritti in giorni: fino a 100 m² la casa è pronta in 60 giorni."),
+      todo(2,"Ricevi il preventivo","Chiaro, voce per voce, senza costi nascosti, con i tempi già definiti e scritti in giorni."),
       todo(3,"Firmi l'accettazione del preventivo","Prima non paghi nulla. Poi paghi in tre momenti: il 25% alla firma, il 50% a metà lavori, il 25% alla fine dei lavori.")
     ),
     el("h4",{},"Cosa ottieni"),
@@ -510,7 +510,7 @@ function solRistrutturazione(){
       ["La tua casa come l'hai sognata",
        "Un prezzo che non cambia",
        "Dopo la consegna, ti seguiamo per un anno",
-       "Lavori in 60 giorni, scritti nel preventivo",
+       "Tempi dei lavori già definiti, scritti nel preventivo",
        "Nessun imprevisto da affrontare da solo"].map(t=>el("li",{},tick(),el("span",{},t))))
   );
 }
@@ -520,15 +520,15 @@ function todo(n,t,d){ return el("li",{},el("span",{class:"n"},String(n)),el("div
 function stepsAcquisto(R){
   const steps = [];
   if(R.m) steps.push(["Chiedi la pre-delibera alla banca","Un documento che conferma che la rata è sostenibile per il tuo reddito. Senza questo non si parte."]);
-  steps.push(["Scegli la casa e il progetto","Decidiamo insieme come sarà: spazi, finiture, materiali. Noi verifichiamo quanto vale, finita, in quella zona. Da quando la acquistiamo, in 60 giorni la casa è pronta."]);
+  steps.push(["Scegli la casa e il progetto","Decidiamo insieme come sarà: spazi, finiture, materiali. Noi verifichiamo quanto vale, finita, in quella zona, e fissiamo per iscritto i tempi dei lavori."]);
   steps.push(["Conosci il prezzo finale","Ti diciamo quanto costerà la casa finita. Quel prezzo non cambia di un centesimo."]);
   if(R.v){
     steps.push(["Firmi il contratto preliminare con HOUSETOHOME","Alla firma versi il 15% del prezzo della casa ristrutturata. Tutto è scritto in un contratto preliminare trascritto: casa, progetto, prezzo e tempi del rogito, che fissiamo insieme in base alla vendita della tua casa. A parte servono solo le spese di notaio e le imposte."]);
-    steps.push(["Vendi la tua casa senza pensieri","Intanto noi lavoriamo: in 60 giorni la casa è pronta e ti aspetta. Quando firmi il compromesso della tua casa e incassi la caparra del tuo acquirente, versi la seconda parte della caparra: il 10%. Al rogito paghi il restante 75%."]);
+    steps.push(["Vendi la tua casa senza pensieri","Intanto noi lavoriamo: nei tempi fissati la casa è pronta e ti aspetta. Quando firmi il compromesso della tua casa e incassi la caparra del tuo acquirente, versi la seconda parte della caparra: il 10%. Al rogito paghi il restante 75%."]);
     steps.push(["Fai il rogito ed entri","Il giorno in cui consegni le chiavi della tua casa, ricevi quelle della nuova."]);
   } else {
     steps.push(["Firmi il contratto preliminare con HOUSETOHOME","Versi una caparra del 20% del prezzo della casa ristrutturata. Tutto è scritto in un contratto preliminare trascritto: casa, progetto e prezzo. A parte servono solo le spese di notaio e le imposte."]);
-    steps.push(["Fai il rogito ed entri","Da quando la acquistiamo, in 60 giorni la casa è pronta. Quando la banca ti ha deliberato il mutuo, noi siamo già pronti: fai il rogito ed entri."]);
+    steps.push(["Fai il rogito ed entri","Da quando la acquistiamo, la casa è pronta nei tempi fissati per iscritto. Quando la banca ti ha deliberato il mutuo, noi siamo già pronti: fai il rogito ed entri."]);
   }
   return el("article",{class:"sol"},
     el("p",{class:"tag"},"Cosa devi fare"),
@@ -538,7 +538,7 @@ function stepsAcquisto(R){
     el("div",{class:"faq"},
       R.v ? el("p",{},el("b",{},"Perché la caparra in due parti?"),"Perché sappiamo che i tuoi soldi sono ancora nella casa che devi vendere. Alla firma ti chiediamo il 15%: noi abbiamo già comprato la casa e avviato i lavori per te, e la caparra conferma che quella casa è tua. La seconda parte, il 10%, la versi quando firmi il compromesso della tua casa, con la caparra che ricevi dal tuo acquirente. Così, prima del rogito, la caparra è il 25%: 15% alla firma e 10% al compromesso.")
           : el("p",{},el("b",{},"Perché una caparra del 20%?"),"Perché siamo noi ad acquistare la casa e a pagare i lavori per te. Il 20% è la parte che la banca non finanzia: la versi alla firma e il resto lo copre il mutuo. La caparra conferma, per iscritto, che quella casa è tua e nessun altro può comprarla."),
-      el("p",{},el("b",{},"Quando si fa il rogito?"), R.v ? "Da quando la acquistiamo, in 60 giorni la casa è pronta e ti aspetta, a prescindere dai tuoi tempi. Il rogito lo fissiamo insieme nel preliminare, in base a dove sei con la vendita della tua casa: appena messa in vendita, con una proposta o con un acquirente. Nessuna fretta: i tempi li decidiamo insieme, in base alla tua vendita." : "Da quando la acquistiamo, in 60 giorni la casa è pronta. Quando la banca ti ha deliberato il mutuo, noi siamo già pronti per il rogito."),
+      el("p",{},el("b",{},"Quando si fa il rogito?"), R.v ? "Da quando la acquistiamo, la casa è pronta nei tempi fissati per iscritto e ti aspetta, a prescindere dai tuoi tempi. Il rogito lo fissiamo insieme nel preliminare, in base a dove sei con la vendita della tua casa: appena messa in vendita, con una proposta o con un acquirente. Nessuna fretta: i tempi li decidiamo insieme, in base alla tua vendita." : "Da quando la acquistiamo, la casa è pronta nei tempi fissati per iscritto. Quando la banca ti ha deliberato il mutuo, noi siamo già pronti per il rogito."),
       R.m ? el("p",{},el("b",{},"Come sono sicuro di avere il mutuo?"),"Per questo si parte dalla pre-delibera: prima di tutto la banca verifica, per iscritto, che con il tuo reddito puoi sostenere la rata. È la base di tutto. Poi noi verifichiamo il valore reale della casa finita in quella zona, così la perizia conferma i conti, e tu verifichi i tuoi risparmi per la caparra. Il preliminare non è vincolato al mutuo: per questo firmiamo solo con tutte e tre le verifiche fatte. Così parti sicuro.") : null,
       el("p",{},el("b",{},"Come sono tutelato?"),"Tutto è scritto in un contratto preliminare trascritto, cioè registrato nei registri immobiliari: la casa è prenotata a tuo nome e nessuno può venderla ad altri o metterci sopra un'ipoteca. Casa, progetto, prezzo e tempi sono nero su bianco."),
       el("p",{},el("b",{},"E dopo la consegna?"),"Non sei da solo: per un anno dalla fine dei lavori ti seguiamo noi."),
@@ -598,7 +598,8 @@ const ZONE = [
 ];
 const AUTO = { d:{posto:25000, garage:40000}, p:{posto:15000, garage:25000}, f:{posto:10000, garage:20000} };
 const PRUDENZA = 1.02;
-const giorniLavori = (m) => m > 100 ? 90 : 60;
+// tempi dei lavori: ristrutturazione parziale 30 giorni; completa 60 giorni fino a 100 m², 90 giorni oltre
+const giorniLavori = (m, completa) => !completa ? 30 : (m > 100 ? 90 : 60);
 const ZONA = {}, FASCIA = {};
 ZONE.forEach(gr=>gr.z.forEach(([n,v,f])=>{ const k=gr.g+" – "+n; ZONA[k]=Math.round(v*PRUDENZA/10)*10; FASCIA[k]=f; }));
 function zonaSelect(id){
@@ -661,6 +662,7 @@ function lavoriPicker(pref, onChange){
   });
   return {
     node: el("div",{class:"sv-tipo"}, el("span",{class:"sv-lab"},"Quali lavori vuoi fare?"), seg, parz),
+    completa: ()=> lavori==="completa",
     quota: ()=> lavori==="completa" ? 1 : Math.min([...FINITURE,...INTERVENTI].reduce((a,x)=>a+(chk[x.id].checked?x.q:0),0),1)
   };
 }
@@ -725,7 +727,7 @@ function calcCasa(opts){
       el("p",{class:"calc-label"},"Prezzo della casa finita"),
       el("p",{class:"calc-big"},eur(V)),
       righeConti(V),
-      el("p",{class:"calc-time"},"Casa pronta in "+giorniLavori(M)+" giorni."),
+      el("p",{class:"calc-time"},"Casa pronta in "+giorniLavori(M,lp.completa())+" giorni."),
       spiegaConti(V),
       el("p",{class:"fine"}, trovata==="si"
         ? "Prezzo della casa finita, lavori compresi. Escluso garage e posto auto. Questi sono i tuoi conti, chiari dal primo giorno. Da qui partiamo insieme."
@@ -756,7 +758,7 @@ function calcCasa(opts){
         el("p",{class:"calc-big"},eur(V)),
         el("p",{class:"calc-label"},"In zona "+Z.split(" – ").pop().replace(" (mercato)","")+", con i lavori che hai scelto, corrisponde a una casa di "),
         el("p",{class:"calc-mid"},mqMax+" m²"),
-        el("p",{class:"calc-time"},"Casa pronta in "+giorniLavori(mqMax)+" giorni."),
+        el("p",{class:"calc-time"},"Casa pronta in "+giorniLavori(mqMax,lp2.completa())+" giorni."),
         ...(MU ? [
           el("dl",{class:"calc-rows"},
             el("dt",{},"Mutuo della pre-delibera + i tuoi risparmi"), el("dd",{},eur(MU)+" + "+eur(L)),
