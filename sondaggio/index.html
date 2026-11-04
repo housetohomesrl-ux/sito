@@ -1007,7 +1007,8 @@ function contactBlock(){
   const prev = el("p",{class:"wa-prev"});
   const waBtn = el("a",{class:"btn wa",href:"https://wa.me/"+WA_NUM,target:"_blank",rel:"noopener"}, waIcon(), "Invia su WhatsApp");
   const callBtn = el("button",{class:"btn ghost",type:"button"},"Preferisco essere richiamato");
-  const thanks = el("p",{class:"thanks",hidden:""},"Grazie! Abbiamo ricevuto la tua richiesta e ti abbiamo inviato una mail di conferma. Ti richiamiamo noi, senza impegno.");
+  const mailBtn = el("button",{class:"btn ghost",type:"button"},"Preferisco una mail");
+  const thanks = el("p",{class:"thanks",hidden:""});
   const full = ()=> (nome.value.trim()+" "+cognome.value.trim()).trim();
   const upd = ()=>{ const t = messaggioWA(full()); prev.textContent = t; waBtn.href = "https://wa.me/"+WA_NUM+"?text="+encodeURIComponent(t); };
   const valido = ()=>{
@@ -1026,10 +1027,11 @@ function contactBlock(){
   };
   [nome,cognome].forEach(i=>i.addEventListener("input",upd));
   waBtn.addEventListener("click",e=>{ upd(); if(!valido()){ e.preventDefault(); } else { salva("WhatsApp"); note.textContent="Si apre WhatsApp con il messaggio pronto: premi invia. Ti arriva anche una mail di conferma.";} });
-  callBtn.addEventListener("click",()=>{ if(valido()){ salva("Da richiamare"); form.hidden=true; thanks.hidden=false; } });
+  callBtn.addEventListener("click",()=>{ if(valido()){ salva("Da richiamare"); thanks.textContent="Grazie! Abbiamo ricevuto la tua richiesta e ti abbiamo inviato una mail di conferma. Ti richiamiamo noi, senza impegno."; form.hidden=true; thanks.hidden=false; } });
+  mailBtn.addEventListener("click",()=>{ if(valido()){ salva("Risposta via mail"); thanks.textContent="Grazie! Abbiamo ricevuto la tua richiesta e ti abbiamo inviato una mail di conferma. Ti rispondiamo noi via mail, senza impegno. Controlla anche nella posta indesiderata."; form.hidden=true; thanks.hidden=false; } });
   const form = el("div",{class:"wa-box"},
     el("h3",{},"Parliamone subito"),
-    el("p",{},"Lasciaci i tuoi dati e scrivici su WhatsApp: il messaggio è già pronto con le tue risposte, devi solo premere invia. Preferisci una telefonata? Ti richiamiamo noi. In entrambi i casi ti arriva subito una mail di conferma."),
+    el("p",{},"Lasciaci i tuoi dati e scegli come preferisci: su WhatsApp il messaggio è già pronto con le tue risposte, devi solo premere invia. Preferisci una telefonata o una mail? Ti contattiamo noi. In tutti i casi ti arriva subito una mail di conferma."),
     el("div",{class:"two"},
       el("label",{for:"c-nome"},"Nome",nome),
       el("label",{for:"c-cognome"},"Cognome",cognome)),
@@ -1038,7 +1040,7 @@ function contactBlock(){
     el("label",{class:"check",for:"c-privacy"}, privacy,
       el("span",{},"Ho letto l'",el("a",{href:PRIVACY_URL,target:"_blank",rel:"noopener"},"informativa privacy")," e acconsento a essere contattato da HOUSETOHOME S.r.l.")),
     el("p",{class:"extras-t"},"Il messaggio che riceveremo"),
-    prev, waBtn, callBtn, note
+    prev, waBtn, callBtn, mailBtn, note
   );
   upd();
   return [
