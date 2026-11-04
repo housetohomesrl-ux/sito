@@ -34,7 +34,9 @@ h2{font-size:clamp(26px,5vw,36px);line-height:1.2}
 h3{font-size:20px;line-height:1.3}
 p{margin:0}
 a{color:inherit}
-.center-q{text-align:center;margin-inline:auto}
+.quote.center-q{text-align:center;margin-left:auto;margin-right:auto}
+.steps-title{text-align:center;font-size:clamp(20px,3vw,24px);margin:0 0 4px}
+.steps + .quote{margin-top:28px}
 .sec-title{text-align:center;font-size:clamp(30px,5vw,42px);margin:0 0 6px}
 .eyebrow{font:700 12px var(--body);letter-spacing:.16em;text-transform:uppercase;color:var(--ink-soft);margin:0}
 .dark .eyebrow{color:var(--ink-soft)}
@@ -177,9 +179,9 @@ header .wrap{padding-bottom:30px}
 /* metodo */
 .dark .prose p{color:var(--ink)}
 .dark .quote{color:var(--ink)}
-.thoughts{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr;gap:10px;max-width:760px}
+.thoughts{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr;gap:10px;max-width:none}
 .thoughts li{font:400 italic 17px/1.5 var(--display);color:var(--ink);background:var(--blu);border-radius:12px;padding:12px 16px}
-@media (min-width:720px){.thoughts{grid-template-columns:1fr 1fr}}
+@media (min-width:720px){.thoughts{grid-template-columns:repeat(3,1fr)}}
 .ways{display:grid;grid-template-columns:1fr;gap:14px}
 .way{border-radius:18px;padding:22px;display:flex;flex-direction:column;gap:10px;background:var(--yellow-soft);color:var(--ink)}
 .way:nth-child(2){background:var(--azzurro)}
@@ -356,12 +358,20 @@ html{scroll-padding-top:60px}
 <section class="band dark" id="metodo">
   <div class="wrap">
     <h2 class="sec-title">Il nostro metodo</h2>
+    <h3 class="steps-title">Dal primo incontro alle chiavi, in sei passaggi.</h3>
+    <ol class="steps">
+      <li><span class="n">1</span><h3>Il primo incontro</h3><p>Ci racconti la casa che hai trovato, da solo oppure insieme alla tua agenzia immobiliare. Ascoltiamo cosa desideri, i tuoi tempi e i tuoi dubbi, e andiamo a vederla insieme: valutiamo la struttura, gli spazi e la luce di ogni ambiente.</p></li>
+      <li><span class="n">2</span><h3>I conti, nero su bianco</h3><p>Verifichiamo quanto vale la casa finita in quella zona. Con la pre-delibera della tua banca sai quale mutuo ottieni: la banca lo calcola sulla casa già ristrutturata. Prima di qualsiasi firma, ogni numero è chiaro.</p></li>
+      <li><span class="n">3</span><h3>Il progetto lo decidi tu</h3><p>Spazi, finiture e materiali: scegli tu. Il nostro team disegna i nuovi ambienti e la casa prende forma in 3D, così vedi già colori, luce e arredi prima che il cantiere inizi.</p></li>
+      <li><span class="n">4</span><h3>Il prezzo fissato per iscritto</h3><p>Firmi con noi un contratto preliminare trascritto, che ti tutela anche verso terzi, con il prezzo della casa finita: da quel momento non cambia di un centesimo. Versi la caparra del 20%; quando devi prima vendere la tua casa, il 15% alla firma e il 10% al compromesso della tua.</p></li>
+      <li><span class="n">5</span><h3>Acquistiamo e ristrutturiamo</h3><p>Acquistiamo noi la casa e apriamo il cantiere con un programma preciso, giorno per giorno. La nostra squadra lavora nei tempi fissati per iscritto: con una ristrutturazione completa, in 60 giorni la casa è pronta. Intanto tu prepari il mutuo o vendi la tua casa con calma.</p></li>
+      <li><span class="n">6</span><h3>Il rogito e le chiavi</h3><p>Quando la banca ti delibera il mutuo, o hai venduto la tua casa, facciamo il rogito: la casa è già pronta e ti aspetta. A parte servono solo notaio e imposte. Entri in una casa finita, come l'hai sognata, e per un anno dalla fine dei lavori ti seguiamo noi.</p></li>
+    </ol>
     <p class="quote center-q">Ogni giorno vediamo famiglie che trovano la casa giusta e poi si fermano, piene di domande:</p>
     <ul class="thoughts">
       <li>«Il mutuo basterà per la casa che desidero?»</li>
       <li>«Tra la vendita della mia casa, la ristrutturazione e il trasloco, quando potrò entrare in quella nuova?»</li>
-      <li>«Quanto mi costeranno davvero i lavori?»</li>
-      <li>«Quanto durerà il cantiere? E alla fine dovrò aggiungere altri soldi?»</li>
+      <li>«Quanto mi costeranno davvero i lavori e quanto durerà il cantiere? E alla fine dovrò aggiungere altri soldi?»</li>
     </ul>
     <div class="prose"><p>Per loro abbiamo creato il nostro metodo. Possiamo collaborare con la tua agenzia immobiliare e affiancarti insieme a lei, oppure puoi rivolgerti direttamente a noi: in entrambi i casi siamo al tuo fianco, dalla prima visita alle chiavi. Tre soluzioni, una per ogni ostacolo. In tutte e tre il progetto lo decidi tu.</p></div>
     <div class="ways">
@@ -397,15 +407,7 @@ html{scroll-padding-top:60px}
 <section class="band" id="come">
   <div class="wrap">
     <p class="eyebrow">Come lo facciamo</p>
-    <h2>Sei passaggi, dalla prima visita alle chiavi.</h2>
-    <ol class="steps">
-      <li><span class="n">1</span><h3>La visita</h3><p>Verifichiamo la struttura, valutiamo la zona, l'esposizione, gli spazi e la luce di ogni ambiente. È già qui che nasce il nuovo progetto: entriamo nella casa e ce la immaginiamo finita, come se fosse già pronta da vivere.</p></li>
-      <li><span class="n">2</span><h3>Il progetto</h3><p>Dopo le valutazioni sul campo, il nostro team di professionisti disegna i nuovi spazi per valorizzare ogni ambiente. Studiamo la luce, la posizione e la grandezza delle finestre, progettiamo gli impianti per unire praticità e stile e pensiamo già a come sarà arredata. Prima di aprire il cantiere, la casa prende forma in 3D.</p></li>
-      <li><span class="n">3</span><h3>L'acquisto</h3><p>Decidiamo in tempi rapidi e acquistiamo senza mutuo: il proprietario vende con tempi certi e senza sorprese, e noi possiamo partire subito con i lavori.</p></li>
-      <li><span class="n">4</span><h3>I materiali</h3><p>Scegliamo ogni materiale per valorizzare al meglio ogni ambiente, pensando già a chi ci vivrà: pavimenti, rivestimenti, porte e colori che rendono la casa calda e accogliente. Ci riforniamo dai fornitori con cui collaboriamo da anni e ogni scelta la tocchiamo con mano.</p></li>
-      <li><span class="n">5</span><h3>Il cantiere e la squadra</h3><p>Il cantiere parte con un programma preciso, giorno per giorno. Prima demolizioni e nuove pareti, poi impianti elettrico, idraulico e termico, infissi, pavimenti e rivestimenti; per ultimi porte, bagni, cucina e pitture. Ogni artigiano della squadra sa quando entrare e cosa fare, senza tempi morti. Con una ristrutturazione completa, in 60 giorni la casa è pronta.</p></li>
-      <li><span class="n">6</span><h3>Ti consegniamo le chiavi</h3><p>Entri in una casa nuova, finita, pronta da vivere. E non sei da solo: per un anno dalla fine dei lavori ti seguiamo noi.</p></li>
-    </ol>
+    <h2>Ogni casa prende forma prima ancora del cantiere.</h2>
     <div class="render-wrap">
       <figure class="render"><img src="assets/media/lavori/casa3-render-2.jpg" alt="Progetto del soggiorno in 3D: divano chiaro, parete attrezzata in legno, tende leggere" loading="lazy"></figure>
       <p>Ogni casa nasce con una vista reale, ancora prima della fine dei lavori. Così puoi immaginarla e renderti conto dei colori, della luce di ogni stanza e degli arredi: tutto per incontrare la casa che desideri.</p>
