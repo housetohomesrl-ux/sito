@@ -1006,8 +1006,8 @@ function contactBlock(){
   const note = el("p",{class:"note"});
   const prev = el("p",{class:"wa-prev"});
   const waBtn = el("a",{class:"btn wa",href:"https://wa.me/"+WA_NUM,target:"_blank",rel:"noopener"}, waIcon(), "Invia su WhatsApp");
-  const callBtn = el("button",{class:"btn ghost",type:"button"},"Preferisco essere richiamato");
-  const mailBtn = el("button",{class:"btn ghost",type:"button"},"Preferisco essere contattato via mail");
+  const callBtn = el("button",{class:"btn ghost",type:"button"},"Vorrei essere richiamato");
+  const mailBtn = el("button",{class:"btn ghost",type:"button"},"Vorrei essere contattato per mail");
   const thanks = el("p",{class:"thanks",hidden:""});
   const full = ()=> (nome.value.trim()+" "+cognome.value.trim()).trim();
   const upd = ()=>{ const t = messaggioWA(full()); prev.textContent = t; waBtn.href = "https://wa.me/"+WA_NUM+"?text="+encodeURIComponent(t); };
