@@ -1094,7 +1094,7 @@ function solutions(){
   else if(R.r){ keys=["r"]; title="Il tuo pensiero è la ristrutturazione. Ecco come la affrontiamo."; }
   else { keys=[]; title="Sei già sulla buona strada."; }
   const others = R.noCash ? ["m","v"].filter(k=>R[k]) : ["m","v","r"].filter(k=>!keys.includes(k));
-  const forse = R.noCash ? el("p",{class:"personal center"},"Oggi i risparmi non bastano per la caparra: non è un no, è il punto da cui partiamo. Qui sotto trovi la strada più adatta a te oggi. Lasciaci i tuoi contatti: ne parliamo insieme e troviamo la soluzione per arrivare alla casa che desideri.")
+  const forse = R.noCash ? el("p",{class:"personal center"},"Qui sotto trovi le soluzioni più adatte a te. Leggile con calma, poi lasciaci i tuoi contatti: le approfondiamo insieme e troviamo la strada migliore per arrivare alla casa che desideri.")
     : A.liquidita==="forse" ? el("p",{class:"personal center"},"Sui risparmi hai qualche dubbio: è giusto così. Facciamo i conti insieme, nero su bianco, prima di qualsiasi firma.")
     : A.liquidita==="nonso" ? el("p",{class:"personal center"},"Non hai ancora fatto i conti? Scrivici qui sotto la zona e i metri quadri della casa che ti piace: li facciamo insieme.")
     : null;
