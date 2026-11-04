@@ -150,6 +150,9 @@ select{font:400 16px var(--body);color:var(--ink);border:2px solid #D9D6C8;borde
 .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 @media (max-width:360px){.two{grid-template-columns:1fr}}
 .cta-box{display:flex;flex-direction:column;gap:12px;align-items:center;padding-top:6px}
+input.err{border-color:#C0392B!important;box-shadow:0 0 0 3px rgba(192,57,43,.18)}
+input[type=checkbox].err{outline:3px solid #C0392B;outline-offset:2px}
+.note.err-note{color:#A93226;font-weight:600}
 .cta-lead{font:400 italic 18px/1.45 var(--display);text-align:center;margin:0;max-width:30ch}
 .btn-big{min-height:62px;font-size:18px;padding:0 24px;width:100%;max-width:360px;box-sizing:border-box;text-align:center}
 .btn-small{min-height:46px;font-size:14px;padding:0 18px}
@@ -1012,10 +1015,19 @@ function contactBlock(){
   const full = ()=> (nome.value.trim()+" "+cognome.value.trim()).trim();
   const upd = ()=>{ const t = messaggioWA(full()); prev.textContent = t; waBtn.href = "https://wa.me/"+WA_NUM+"?text="+encodeURIComponent(t); };
   const valido = ()=>{
-    const ok = nome.value.trim() && cognome.value.trim() && tel.value.replace(/\D/g,"").length>=9 && /\S+@\S+\.\S+/.test(email.value) && privacy.checked;
-    if(!ok) note.textContent = "Per contattarti servono nome, cognome, cellulare, e-mail e il consenso privacy.";
-    return ok;
+    const checks = [[nome, !!nome.value.trim()],[cognome, !!cognome.value.trim()],[tel, tel.value.replace(/\D/g,"").length>=9],[email, /\S+@\S+\.\S+/.test(email.value)],[privacy, privacy.checked]];
+    checks.forEach(([i,ok])=>i.classList.toggle("err",!ok));
+    const primo = checks.find(c=>!c[1]);
+    if(primo){
+      note.textContent = "Per contattarti servono nome, cognome, cellulare, e-mail e il consenso privacy: completa i campi evidenziati.";
+      note.classList.add("err-note");
+      primo[0].scrollIntoView({behavior:"smooth",block:"center"}); setTimeout(()=>primo[0].focus({preventScroll:true}),350);
+      return false;
+    }
+    note.classList.remove("err-note");
+    return true;
   };
+  [nome,cognome,tel,email,privacy].forEach(i=>i.addEventListener("input",()=>i.classList.remove("err")));
   let inviato = "";
   const salva = (modo)=>{
     if(inviato===modo) return; inviato = modo;
@@ -1040,7 +1052,7 @@ function contactBlock(){
     el("label",{class:"check",for:"c-privacy"}, privacy,
       el("span",{},"Ho letto l'",el("a",{href:PRIVACY_URL,target:"_blank",rel:"noopener"},"informativa privacy")," e acconsento a essere contattato da HOUSETOHOME S.r.l.")),
     el("p",{class:"extras-t"},"Il messaggio che riceveremo"),
-    prev, waBtn, callBtn, mailBtn, note
+    prev, note, waBtn, callBtn, mailBtn
   );
   upd();
   return [
