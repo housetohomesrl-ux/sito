@@ -216,7 +216,7 @@ const QS = {
     {v:"no", t:"No, non ancora"}
   ]},
   liquidita:{ title:()=>"Hai da parte il "+(devoVendere()?"15":"20")+"% del prezzo della casa finita, cioè acquisto più ristrutturazione?",
-    hint:()=>devoVendere() ? "È la prima parte della caparra, alla firma del preliminare. La seconda parte la versi quando firmi il compromesso della tua casa. A parte servono solo le spese di notaio e le imposte. Non hai il 15%? Non ti preoccupare, ne parliamo insieme." : "È la caparra del contratto preliminare. A parte servono solo le spese di notaio e le imposte. Non hai il 20%? Non ti preoccupare, ne parliamo insieme.",
+    hint:()=>devoVendere() ? "È la prima parte della caparra, alla firma del preliminare. La seconda parte la versi quando firmi il compromesso della tua casa. A parte servono solo le spese di notaio e le imposte. Non hai il 15%? I conti li facciamo insieme." : "È la caparra del contratto preliminare. A parte servono solo le spese di notaio e le imposte. Non hai il 20%? I conti li facciamo insieme.",
     opts:[
       {v:"si", t:"Sì"},
       {v:"forse", t:"Più o meno, devo fare bene i conti"},
@@ -433,7 +433,7 @@ function solMutuo(){
     el("ol",{class:"todo"},
       todo(1,"La rata: la base di tutto","Ci porti la pre-delibera della banca, cioè il documento in cui la banca verifica che con il tuo reddito puoi sostenere la rata. Senza questa, non si parte."),
       todo(2,"Il valore","Prima di fare i conti verifichiamo quanto vale, in quella zona, una casa ristrutturata con quelle caratteristiche. Così, quando il perito arriva, la valutazione è quella attesa."),
-      todo(3,"I tuoi risparmi","La caparra è il 20% del prezzo della casa finita. Non hai il 20%? Non ti preoccupare, ne parliamo insieme. E c'è anche un'altra strada: compri tu la casa da ristrutturare e noi la trasformiamo come la desideri.")
+      todo(3,"I tuoi risparmi","La caparra è il 20% del prezzo della casa finita. Non hai il 20%? I conti li facciamo insieme. E c'è anche un'altra strada: compri tu la casa da ristrutturare e noi la trasformiamo come la desideri.")
     ),
     el("p",{},"I conti li verifichiamo insieme prima di firmare, così parti sicuro. E la casa la acquistiamo noi: ci mettiamo la faccia e i nostri soldi."),
     el("h4",{},"Cosa ottieni"),
@@ -671,7 +671,7 @@ function lavoriPicker(pref, onChange){
   };
 }
 
-const notaPerc = () => "Non hai il "+(devoVendere()?"15":"20")+"%? Non ti preoccupare, ne parliamo insieme.";
+const notaPerc = () => "Non hai il "+(devoVendere()?"15":"20")+"%? I conti li facciamo insieme.";
 const notaQuindici = () => el("p",{class:"fine"},notaPerc());
 function righeConti(V){
   const dl = el("dl",{class:"calc-rows"},
@@ -866,9 +866,9 @@ function pianoSoldi(){
     const avanzo = Math.max(0, S + netto - V);
     const msgs = [];
     if(mutuo===0) msgs.push(el("p",{class:"calc-ok-box"},"Con la vendita della tua casa e i tuoi risparmi copri tutto l'acquisto: non ti serve un mutuo."+(avanzo>0?" E ti restano "+eur(avanzo)+".":"")));
-    else if(mutuo > V*LTV) msgs.push(el("p",{class:"calc-warn"},"Ti servirebbe un mutuo di "+eur(mutuo)+", cioè il "+pc(mutuo,V)+" della casa nuova: è più dell'80% che le banche finanziano di solito. Non ti preoccupare, ne parliamo insieme e troviamo la soluzione giusta."));
+    else if(mutuo > V*LTV) msgs.push(el("p",{class:"calc-warn"},"Ti servirebbe un mutuo di "+eur(mutuo)+", cioè il "+pc(mutuo,V)+" della casa nuova: è più dell'80% che le banche finanziano di solito. I conti li facciamo insieme e troviamo la soluzione giusta."));
     else msgs.push(el("p",{class:"calc-ok-box"},"Ti serve un mutuo di "+eur(mutuo)+", il "+pc(mutuo,V)+" della casa nuova. Verifica con la pre-delibera che la rata sia sostenibile per il tuo reddito."));
-    if(S < firma) msgs.push(el("p",{class:"calc-warn"},"Alla firma del preliminare serve il 15%, cioè "+eur(firma)+": oggi hai "+eur(S)+", ne mancano "+eur(firma-S)+". Con i tuoi risparmi di oggi puoi fermare una casa finita fino a "+eur(Math.floor(S/0.15/1000)*1000)+". Non ti preoccupare, ne parliamo: scrivici e troviamo insieme la strada."));
+    if(S < firma) msgs.push(el("p",{class:"calc-warn"},"Alla firma del preliminare serve il 15%, cioè "+eur(firma)+": oggi hai "+eur(S)+", ne mancano "+eur(firma-S)+". Con i tuoi risparmi di oggi puoi fermare una casa finita fino a "+eur(Math.floor(S/0.15/1000)*1000)+". I conti li facciamo insieme: scrivici e troviamo la strada."));
     else if(S - firma < integra) msgs.push(el("p",{class:"calc-warn"},"Al compromesso versi il 10%, cioè "+eur(seconda)+". La caparra che ricevi è "+eur(capInc)+": i "+eur(integra)+" che mancano li metti dai risparmi. Dopo la firma te ne restano "+eur(S-firma)+": ne mancano "+eur(integra-(S-firma))+": non ti preoccupare, ne parliamo insieme."));
     o.append(
       ...msgs,
