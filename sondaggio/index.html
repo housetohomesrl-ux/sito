@@ -658,24 +658,21 @@ function confetti(){
 }
 
 function lavoriPicker(pref, onChange){
-  let lavori = "completa";
-  const seg = el("div",{class:"seg",role:"group","aria-label":"Tipo di ristrutturazione"});
-  const parz = el("div",{class:"extras",hidden:""});
-  const chk = {};
-  const box = x=>{ const c = el("input",{type:"checkbox",id:pref+x.id}); chk[x.id]=c;
-    c.addEventListener("change",()=>{ if(c.checked && FINITURE.some(f=>f.id===x.id)) FINITURE.forEach(f=>{ if(f.id!==x.id) chk[f.id].checked=false; }); onChange(); });
-    return el("label",{class:"check",for:pref+x.id},c,el("span",{},x.t)); };
-  parz.append(el("p",{class:"extras-t"},"Finiture (scegline una)"), ...FINITURE.map(box), el("p",{class:"extras-t"},"Interventi"), ...INTERVENTI.map(box));
-  [["completa","Completa"],["parziale","Solo alcuni lavori"]].forEach(([v,t])=>{
-    const b = el("button",{type:"button",class:"seg-b","aria-pressed":v===lavori?"true":"false"},t);
-    b.addEventListener("click",()=>{ lavori=v; seg.querySelectorAll(".seg-b").forEach(x=>x.setAttribute("aria-pressed","false")); b.setAttribute("aria-pressed","true"); parz.hidden = v!=="parziale"; onChange(); });
-    seg.append(b);
-  });
+  const c = el("input",{type:"checkbox",id:pref+"parz"});
+  c.addEventListener("change",()=>onChange());
   return {
-    node: el("div",{class:"sv-tipo"}, el("span",{class:"sv-lab"},"Quali lavori vuoi fare?"), seg, parz),
-    completa: ()=> lavori==="completa",
-    quota: ()=> lavori==="completa" ? 1 : Math.min([...FINITURE,...INTERVENTI].reduce((a,x)=>a+(chk[x.id].checked?x.q:0),0),1)
+    node: el("div",{class:"sv-tipo"}, el("label",{class:"check parz-check",for:pref+"parz"}, c, el("span",{},"Non vuoi una ristrutturazione completa? Seleziona qui"))),
+    parziale: ()=> c.checked,
+    completa: ()=> !c.checked,
+    quota: ()=> c.checked ? 0 : 1
   };
+}
+// lavori non completi: niente percentuali, li valutiamo insieme
+function boxParziale(opts){
+  const go = ()=>{ if(opts && opts.onParziale) opts.onParziale(); else { location.hash = "lavori"; } };
+  return el("div",{class:"calc-ok-box"},
+    el("p",{},el("b",{},"Lo valutiamo insieme, con i conti scritti nero su bianco.")),
+    el("button",{class:"btn",type:"button",onclick:go},"Scrivici subito"));
 }
 
 const notaPerc = () => "Non hai il "+(devoVendere()?"15":"20")+"%? I conti li facciamo insieme.";
@@ -737,7 +734,7 @@ function calcCasa(opts){
     const Z = zona.value, M = num(mq.value), Q = lp.quota(), PA = num(prezzo.value);
     if(trovata==="si" ? (!PA || !M) : (!Z || !M)){ out.append(el("p",{class:"calc-empty"}, trovata==="si" ? "Scrivi il prezzo dell'annuncio e i metri quadri per vedere il risultato." : "Scegli la zona e scrivi i metri quadri per vedere il risultato.")); return; }
     if(trovata!=="si" && DA_VALUTARE.has(Z)){ out.append(boxInsieme(Z)); return; }
-    if(Q===0){ out.append(el("p",{class:"calc-empty"},"Scegli i lavori che vuoi fare per vedere il risultato.")); return; }
+    if(lp.parziale()){ LAST.casa = {zona: trovata==="si" ? "" : Z, dove: trovata==="si" ? dove.value.trim() : "", prezzo: trovata==="si" ? PA : 0, mq:M, lavori:"parziale", V:0}; out.append(boxParziale(opts)); return; }
     const V = trovata==="si" ? vic((PA*0.98 + M*K_T*Q)*AUMENTO_TROVATA) : vic(valoreMq(Z,Q)*M);
     LAST.casa = {zona: trovata==="si" ? "" : Z, dove: trovata==="si" ? dove.value.trim() : "", prezzo: trovata==="si" ? PA : 0, mq:M, lavori: Q>=1 ? "completa" : "parziale", V};
     if(opts.risparmi) return esitoCaparra(V, M);
@@ -771,7 +768,7 @@ function calcCasa(opts){
       const L = num(liq.value), Z = z2.value, Q = lp2.quota(), MU = devoVendere() ? 0 : num(mutIn.value);
       if(!L || !Z){ o.append(el("p",{class:"calc-empty"},"Scrivi la tua liquidità e scegli la zona.")); return; }
       if(DA_VALUTARE.has(Z)){ o.append(boxInsieme(Z)); return; }
-      if(Q===0){ o.append(el("p",{class:"calc-empty"},"Scegli i lavori che vuoi fare.")); return; }
+      if(lp2.parziale()){ o.append(boxParziale()); return; }
 
       const V = MU ? giu(L + MU) : giu(L/capIniziale()), mqMax = Math.floor(V/valoreMq(Z,Q));
       const capMU = Math.min(L, V*CAPARRA);
@@ -826,7 +823,7 @@ function calcCasa(opts){
       const yes = el("button",{class:"btn",type:"button"},"Ho i soldi: partiamo");
       const msg = el("p",{class:"calc-ok",hidden:""},"Perfetto: hai la caparra per la casa che vuoi. Lasciaci i tuoi dati e partiamo.");
       yes.addEventListener("click",()=>{ confetti(); msg.hidden=false; yes.disabled=true; setTimeout(()=>opts.onYes(), reduce?300:1600); });
-      out.append(el("p",{class:"calc-ok"},"I tuoi risparmi coprono la caparra."), el("div",{class:"calc-actions"}, yes, msg, parla("Ci arrivo vicino: parliamone comunque")));
+      out.append(el("p",{class:"calc-ok"},"I tuoi risparmi coprono la caparra del "+pc+"%."), el("div",{class:"calc-actions"}, yes, msg, parla("Ci arrivo vicino: parliamone comunque")));
     } else if(S >= need*VICINO){
       out.append(el("p",{class:"personal"},"Ci sei quasi. Contattaci: troviamo insieme la soluzione per arrivare alla casa che desideri."),
         el("div",{class:"calc-actions"}, parla("Ci arrivo vicino: parliamone","")));
@@ -1048,8 +1045,8 @@ function messaggioWA(nome){
     if(c.dove) w.push(c.dove); else if(c.zona) w.push("zona "+zonaBreve(c.zona));
     w.push(c.mq+" m²");
     if(c.prezzo) w.push("prezzo dell'annuncio "+eur(c.prezzo));
-    w.push("ristrutturazione "+c.lavori);
-    r.push((c.prezzo ? "Ho già trovato la casa: " : "Casa che cerco: ")+w.join(", ")+" (valore stimato da finita "+eur(c.V)+").");
+    w.push(c.lavori==="parziale" ? "solo alcuni lavori, da valutare insieme" : "ristrutturazione completa");
+    r.push((c.prezzo ? "Ho già trovato la casa: " : "Casa che cerco: ")+w.join(", ")+(c.V ? " (valore stimato da finita "+eur(c.V)+")." : "."));
   }
   else if(LAST.inverso) r.push("Ho "+eur(LAST.inverso.liq)+" di liquidità e cerco in zona "+zonaBreve(LAST.inverso.zona)+".");
   if(LAST.piano) r.push("Vendo la mia casa a "+eur(LAST.piano.P)+(LAST.piano.D?" (mutuo residuo "+eur(LAST.piano.D)+")":"")+", ho "+eur(LAST.piano.S)+" di risparmi"+(LAST.piano.mutuo?" e mi servirebbe un mutuo di "+eur(LAST.piano.mutuo):" e non mi servirebbe un mutuo")+".");
@@ -1205,6 +1202,16 @@ function modoMutuo(m){
   for(const k in A) delete A[k];
   const slot = el("div",{class:"contact-slot"});
   const apriContatti = (testo)=>{ A.origine = testo; slot.replaceChildren(...contactBlock()); slot.scrollIntoView({behavior:reduce?"auto":"smooth",block:"start"}); };
+  if(m==="lavori"){
+    A.origine = "- non vorrei una ristrutturazione completa: vorrei valutare insieme i lavori";
+    A.tema = "Lavori parziali";
+    stage.append(el("section",{class:"screen"},
+      el("p",{class:"kicker"},"I conti nero su bianco"),
+      el("h1",{},"Valutiamo insieme i tuoi lavori."),
+      el("p",{class:"lead"},"Lasciaci i tuoi dati e scegli come vuoi essere contattato: guardiamo insieme cosa vuoi fare e ti diamo i conti scritti, voce per voce."),
+      ...contactBlock()));
+    top0(); return;
+  }
   if(m==="ristrutturazione"){
     A.origine = "- vorrei ristrutturare casa con voi";
     A.pagina = "Ho letto la pagina della ristrutturazione."; A.tema = "Ristrutturazione";
@@ -1237,6 +1244,7 @@ function modoMutuo(m){
       el("p",{class:"lead"},"Inserisci qui sotto la casa, i lavori e i tuoi risparmi: calcoliamo il prezzo della casa finita e la caparra da versare."),
       calcCasa({risparmi:true,
         onYes:()=>apriContatti("- ho fatto il calcolo: ho la caparra per la casa che voglio, partiamo"),
+        onParziale:()=>apriContatti("- non vorrei una ristrutturazione completa: vorrei valutare insieme i lavori"),
         onTalk:(q)=>apriContatti(q==="lontano" ? "- ho fatto il calcolo per il mutuo sulla casa finita e vorrei parlarne" : "- ho fatto il calcolo: per la caparra ci arrivo vicino, vorrei parlarne"),
         onRistr:()=>{ stage.replaceChildren(); A.origine=""; delete A.origine; detailView("r"); }}),
       el("div",{class:"cta-box"},
@@ -1253,7 +1261,9 @@ backBtn.addEventListener("click",()=>{
   if(pos>=0){ pos--; render(); }
 });
 const MODO = location.hash.replace("#","");
-if(["calcola","calcola-vendita","inizia","vendita","ristrutturazione"].includes(MODO)) modoMutuo(MODO); else render();
+const MODI = ["calcola","calcola-vendita","inizia","vendita","ristrutturazione","lavori"];
+if(MODI.includes(MODO)) modoMutuo(MODO); else render();
+window.addEventListener("hashchange",()=>{ const m = location.hash.replace("#",""); if(MODI.includes(m)) modoMutuo(m); });
 </script>
 
 </body>
