@@ -231,7 +231,9 @@ const QS = {
   ]},
   v_trovata:{ title:"Hai già trovato la casa che vorresti?", hint:"Puoi sceglierne più di una", multi:true, opts:[
     {v:"paura", t:"Sì, e ho paura che qualcun altro la compri prima di me"},
-    {v:"tempi", t:"Sì, e vorrei entrarci appena vendo la mia, senza aspettare mesi di lavori"},
+    {v:"venditore", t:"Sì, e ho paura che il venditore non mi aspetti"},
+    {v:"rallenta", t:"Sì, e dover vendere la mia rallenta tutto: sia la vendita sia l'acquisto"},
+    {v:"tempi", t:"Sì, e ho paura di aspettare mesi di lavori prima di entrarci"},
     {v:"no", t:"Non ancora, sto cercando", only:true}
   ]},
   r_paure:{ title:"Cosa ti preoccupa della ristrutturazione?", hint:"Puoi sceglierne più di una", multi:true, opts:[
@@ -450,9 +452,14 @@ function solMutuo(){
 function solVendita(){
   let personal = null;
   const vt = A.v_trovata || [];
-  if(vt.includes("paura") && vt.includes("tempi")) personal = "Hai già trovato la casa che vuoi: con noi non la perdi mentre vendi la tua, e quando hai venduto ci entri subito, già finita.";
-  else if(vt.includes("paura")) personal = "Hai già trovato la casa che vuoi: con noi non la perdi mentre vendi la tua.";
-  else if(vt.includes("tempi")) personal = "Vuoi entrare appena hai venduto: la ristrutturiamo mentre tu vendi, così il giorno in cui consegni le chiavi della tua, ricevi quelle della nuova.";
+  const perdi = vt.includes("paura")||vt.includes("venditore"), entra = vt.includes("tempi"), calma = vt.includes("rallenta");
+  if(perdi||entra||calma){
+    const pz = [];
+    if(perdi) pz.push("Con noi non la perdi: la acquistiamo noi e la teniamo per te.");
+    if(calma) pz.push("Vendi la tua con calma, senza che una vendita rallenti l'altra.");
+    if(entra) pz.push("Quando hai venduto, ci entri subito, già finita.");
+    personal = "Hai già trovato la casa che vuoi. " + pz.join(" ");
+  }
   else if(A.v_stato==="acquirente") personal = "Hai già un acquirente: con noi non gli chiedi di aspettare mesi mentre tu sistemi la casa nuova.";
   return el("article",{class:"sol"},
     el("p",{class:"tag"},"La casa da vendere"),
@@ -1024,7 +1031,9 @@ function messaggioWA(nome){
     const st = {no:"non l'ho ancora messa in vendita", invendita:"è già in vendita", acquirente:"ho già un acquirente"}[A.v_stato];
     const vt = A.v_trovata||[];
     r.push("- devo prima vendere la mia casa" + (st ? " ("+st+")" : ""));
-    if(vt.includes("paura")||vt.includes("tempi")) r.push("- ho già trovato la casa che vorrei" + (vt.includes("tempi") ? " e vorrei entrarci appena vendo la mia" : ""));
+    const vm = {paura:"ho paura che qualcun altro la compri prima di me", venditore:"ho paura che il venditore non mi aspetti", rallenta:"dover vendere la mia rallenta sia la vendita sia l'acquisto", tempi:"vorrei entrarci appena vendo la mia, senza aspettare mesi di lavori"};
+    const vp = vt.map(x=>vm[x]).filter(Boolean);
+    if(vp.length) r.push("- ho già trovato la casa che vorrei: " + vp.join("; "));
   }
   if(R.r || R.noCash){
     const pm = {costi:"i costi", tempi:"i tempi", imprevisti:"gli imprevisti", chi:"a chi affidarmi"};
