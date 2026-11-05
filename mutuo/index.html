@@ -81,6 +81,7 @@ section .wrap{padding-block:44px;display:flex;flex-direction:column;gap:20px}
 .value .v-num{font-family:var(--display);font-weight:700;font-size:clamp(34px,9vw,52px);line-height:1.1;color:var(--yellow)}
 .value .v-txt{font-weight:700;font-size:17px}
 .value p:last-child{color:#E9E6DA;max-width:52ch}
+.bridge{font-family:var(--display);font-weight:700;font-size:clamp(19px,4.4vw,24px);text-align:center;text-wrap:balance}
 /* finale */
 .final{background:var(--azzurro);border-radius:20px;padding:24px;display:flex;flex-direction:column;gap:12px;text-align:center;align-items:center}
 .final p.big{font-family:var(--display);font-weight:700;font-size:clamp(19px,4.4vw,24px);line-height:1.4;max-width:30ch}
@@ -117,19 +118,8 @@ footer a{color:var(--ink)}
 <section class="band">
   <div class="wrap">
     <p class="eyebrow">L'esempio</p>
-    <h2>Una casa da ristrutturare, due strade.</h2>
-    <div class="real reveal">
-      <figure><img src="../assets/media/lavori/b-orti-soggiorno-prima.jpg" alt="Via degli Orti prima dei lavori: zona giorno da ristrutturare" loading="lazy"><span class="tag">Prima</span></figure>
-      <figure><img src="../assets/media/lavori/b-orti-soggiorno-dopo.jpg" alt="Via degli Orti dopo i lavori: zona giorno con cucina bianca e tavolo apparecchiato" loading="lazy"><span class="tag dopo">Dopo</span></figure>
-    </div>
-    <p class="real-cap">Una casa vera: via degli Orti, Bologna. Prima e dopo il nostro lavoro.</p>
-    <div class="value reveal">
-      <p class="v-num">+150.000 €</p>
-      <p class="v-txt">di valore in più rispetto alla casa da ristrutturare.</p>
-      <p>Ristrutturare non vuol dire solo rifare pavimenti e pareti. Vuol dire ripensare gli spazi, portare luce dove prima non c'era, rendere ogni stanza più comoda e più bella da vivere. È così che una casa cresce di valore. E con il nostro metodo, quel valore diventa il mutuo che ti porta a casa tua.</p>
-    </div>
-    <div class="cases">
-      <article class="case senza reveal">
+    <h2>Una casa da ristrutturare: cosa succede senza di noi?</h2>
+    <article class="case senza reveal">
         <p class="tit">Senza di noi</p>
         <div class="rows">
           <div class="row"><span>Casa da ristrutturare</span><span>200.000 €</span></div>
@@ -140,18 +130,17 @@ footer a{color:var(--ink)}
         <p>Con questa cifra copri l'acquisto, il notaio e l'agenzia, forse.</p>
         <p class="q">E i soldi per la ristrutturazione, da dove arrivano?</p>
         <p class="warn">Da un prestito, con tassi che arrivano al 7-8%.</p>
-      </article>
-      <article class="case con reveal">
-        <p class="tit">Con HOUSETOHOME</p>
-        <div class="rows">
-          <div class="row"><span>La stessa casa, ristrutturata</span><span>290.000 €</span></div>
-          <div class="row"><span>La tua liquidità</span><span>60.000 €</span></div>
-        </div>
-        <p>Il perito valuta la casa già ristrutturata. La banca propone l'80% di 290.000 €: 232.000 €.</p>
-        <div class="sum"><div><small>Mutuo</small>232.000</div><span class="op">+</span><div><small>Liquidità</small>60.000</div><span class="op">=</span><div class="tot"><small>Totale</small>292.000 €</div></div>
-        <p class="warn">La ristrutturazione è già nel prezzo: nessun prestito, un solo mutuo.</p>
-        <p>Qui sotto ti spieghiamo come ci arriviamo, passo dopo passo.</p>
-      </article>
+    </article>
+    <p class="bridge reveal">Con noi la stessa casa diventa possibile. Ecco come, passo dopo passo.</p>
+    <div class="real reveal">
+      <figure><img src="../assets/media/lavori/b-orti-soggiorno-prima.jpg" alt="Via degli Orti prima dei lavori: zona giorno da ristrutturare" loading="lazy"><span class="tag">Prima</span></figure>
+      <figure><img src="../assets/media/lavori/b-orti-soggiorno-dopo.jpg" alt="Via degli Orti dopo i lavori: zona giorno con cucina bianca e tavolo apparecchiato" loading="lazy"><span class="tag dopo">Dopo</span></figure>
+    </div>
+    <p class="real-cap">Una casa vera: via degli Orti, Bologna. Prima e dopo il nostro lavoro.</p>
+    <div class="value reveal">
+      <p class="v-num">+150.000 €</p>
+      <p class="v-txt">di valore in più rispetto alla casa da ristrutturare.</p>
+      <p>Ristrutturare non vuol dire solo rifare pavimenti e pareti. Vuol dire ripensare gli spazi, portare luce dove prima non c'era, rendere ogni stanza più comoda e più bella da vivere. È così che una casa cresce di valore. E con il nostro metodo, quel valore diventa il mutuo che ti porta a casa tua.</p>
     </div>
   </div>
 </section>
@@ -184,7 +173,18 @@ footer a{color:var(--ink)}
       <li class="step reveal"><span class="n">B</span><div class="box"><h3>Un valore che conosci già</h3><p>Ancora prima di iniziare, con la conferma della fattibilità, a questa casa abbiamo già dato un valore: 290.000 €. Il perito la valuta per com'è in quel momento, finita, e comunica il valore alla banca.</p></div></li>
       <li class="step reveal"><span class="n">C</span><div class="box"><h3>La banca ti comunica il mutuo</h3><p>Nella maggior parte dei casi la banca propone l'80% del valore: l'80% di 290.000 €, cioè <strong>232.000 €</strong>.</p></div></li>
     </ol>
-    <div class="sum reveal"><div><small>Mutuo</small>232.000</div><span class="op">+</span><div><small>Liquidità</small>60.000</div><span class="op">=</span><div class="tot"><small>Totale</small>292.000 €</div></div>
+    <div class="cases">
+      <article class="case senza reveal">
+        <p class="tit">Senza di noi</p>
+        <div class="sum"><div><small>Mutuo</small>160.000</div><span class="op">+</span><div><small>Liquidità</small>60.000</div><span class="op">=</span><div class="tot"><small>Totale</small>220.000 €</div></div>
+        <p class="warn">E per i lavori serve un prestito, con tassi che arrivano al 7-8%.</p>
+      </article>
+      <article class="case con reveal">
+        <p class="tit">Con HOUSETOHOME</p>
+        <div class="sum"><div><small>Mutuo</small>232.000</div><span class="op">+</span><div><small>Liquidità</small>60.000</div><span class="op">=</span><div class="tot"><small>Totale</small>292.000 €</div></div>
+        <p class="warn">La ristrutturazione è già nel prezzo: nessun prestito, un solo mutuo.</p>
+      </article>
+    </div>
     <div class="final reveal">
       <p class="big">Con la tua stessa liquidità hai acquistato, con il mutuo, una casa da ristrutturare completamente. E ora hai la casa come la sognavi.</p>
     </div>
