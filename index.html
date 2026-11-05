@@ -19,7 +19,7 @@
   color-scheme: light;
 }
 *{box-sizing:border-box}
-html{scroll-behavior:smooth}
+html{scroll-behavior:auto}
 @media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
 body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.65}
 .band{padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px))}
@@ -614,22 +614,15 @@ new IntersectionObserver(function(e){var on=!e[0].isIntersecting;b.classList.tog
 <script>
 // i link interni ricalcolano la posizione mentre le foto si caricano, così si arriva sempre al punto giusto
 (function(){
-  var iv=null;
-  function stop(){ if(iv){ clearInterval(iv); iv=null; } }
-  ["wheel","touchstart","keydown","mousedown"].forEach(function(ev){ window.addEventListener(ev,stop,{passive:true}); });
   function go(id,smooth){
     var t=document.getElementById(id); if(!t) return false;
-    stop();
     var off=function(){return t.getBoundingClientRect().top+window.scrollY-70;};
     t.querySelectorAll('img[loading="lazy"]').forEach(function(i){i.loading="eager";});
     document.querySelectorAll('img[loading="lazy"]').forEach(function(i){ if(i.getBoundingClientRect().top+window.scrollY < off()+200) i.loading="eager"; });
     window.scrollTo({top:off(),behavior:smooth?"smooth":"auto"});
-    var n=0, ok=0;
-    setTimeout(function(){
-      iv=setInterval(function(){ n++; var d=Math.abs(t.getBoundingClientRect().top-70);
-        if(d>4){ ok=0; window.scrollTo({top:off(),behavior:"auto"}); } else ok++;
-        if(ok>=2||n>8) stop(); },300);
-    }, smooth?700:0);
+    var touched=false, mark=function(){touched=true;};
+    ["wheel","touchstart","touchmove","keydown","mousedown"].forEach(function(ev){ window.addEventListener(ev,mark,{passive:true,once:true}); });
+    [1000,2000].forEach(function(ms){ setTimeout(function(){ if(!touched && Math.abs(t.getBoundingClientRect().top-70)>8) window.scrollTo({top:off(),behavior:"auto"}); }, ms); });
     return true;
   }
   document.addEventListener("click",function(e){
