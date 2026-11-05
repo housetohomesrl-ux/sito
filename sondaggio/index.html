@@ -1205,6 +1205,9 @@ function modoMutuo(m){
         onYes:()=>apriContatti("- ho fatto il calcolo: ho la caparra per la casa che voglio, partiamo"),
         onTalk:(q)=>apriContatti(q==="lontano" ? "- ho fatto il calcolo per il mutuo sulla casa finita e vorrei parlarne" : "- ho fatto il calcolo: per la caparra ci arrivo vicino, vorrei parlarne"),
         onRistr:()=>{ stage.replaceChildren(); A.origine=""; delete A.origine; detailView("r"); }}),
+      el("div",{class:"cta-box"},
+        el("p",{class:"cta-lead"},"Preferisci parlarne direttamente con noi?"),
+        el("button",{class:"btn",type:"button",onclick:()=>apriContatti("- vorrei parlarvi del mutuo sulla casa finita")},"Scrivici subito")),
       slot));
   }
   top0();
