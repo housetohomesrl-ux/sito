@@ -123,7 +123,7 @@ select{font:400 16px var(--body);color:var(--ink);border:2px solid #D9D6C8;borde
 .calc-how-t{font:700 13px var(--body);letter-spacing:.08em;text-transform:uppercase;margin-top:6px}
 .calc-how{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;font-size:14px}
 .scards{display:flex;flex-direction:column;gap:12px}
-.scard{display:grid;grid-template-columns:96px 1fr;gap:14px;align-items:stretch;text-align:left;width:100%;background:var(--paper);color:var(--ink);border:2px solid transparent;border-radius:18px;padding:12px;cursor:pointer;font:inherit;box-shadow:0 1px 0 rgba(63,64,66,.12);transition:border-color 160ms, transform 160ms}
+.scard{text-decoration:none;box-sizing:border-box;display:grid;grid-template-columns:96px 1fr;gap:14px;align-items:stretch;text-align:left;width:100%;background:var(--paper);color:var(--ink);border:2px solid transparent;border-radius:18px;padding:12px;cursor:pointer;font:inherit;box-shadow:0 1px 0 rgba(63,64,66,.12);transition:border-color 160ms, transform 160ms}
 .scard:hover{border-color:var(--ink)}
 .scard:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
 .scard-img{border-radius:12px;overflow:hidden;background:var(--soft);min-height:120px}
@@ -193,6 +193,7 @@ textarea{min-height:84px;resize:vertical}
 
 <script>
 const METODO_URL = "/metodo/";
+const PAGINE = { m:"/mutuo/", v:"/vendita/", r:"/ristrutturazione/", a:"/ristrutturazione/" };
 const PRIVACY_URL = "/privacy/";
 
 const QS = {
@@ -1111,10 +1112,7 @@ function contactBlock(){
   if(A.origine) return [form, thanks, pers, el("div",{class:"cta-box"}, visita)];
   return [
     form, thanks, pers,
-    el("div",{class:"cta-box"},
-      el("p",{class:"cta-lead"},"Le soluzioni che hai appena visto sono il nostro metodo: scoprilo passo per passo."),
-      el("a",{class:"btn btn-big",href:METODO_URL,target:"_blank",rel:"noopener"},"Il nostro metodo nel dettaglio"),
-      visita)
+    el("div",{class:"cta-box"}, visita)
   ];
 }
 
@@ -1124,7 +1122,7 @@ function arrow(){const s=document.createElementNS("http://www.w3.org/2000/svg","
   s.innerHTML='<path d="M6 3l5 5-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>';return s;}
 function cardButton(k, main){
   const c = CARDS[k];
-  return el("button",{class:"scard"+(main?"":" other"),type:"button",onclick:()=>{detail=k;render();}},
+  return el("a",{class:"scard"+(main?"":" other"),href:PAGINE[k],target:"_blank",rel:"noopener"},
     el("span",{class:"scard-img"}, el("img",{src:c.img[1],alt:"",loading:"lazy"})),
     el("span",{class:"scard-body"},
       el("span",{class:"tag"},c.tag),
@@ -1159,8 +1157,8 @@ function solutions(){
   else if(R.m){ keys=["m"]; title="Il tuo ostacolo è il mutuo. Ecco come lo superi."; }
   else if(R.v){ keys=["v"]; title="Il tuo ostacolo sono i tempi della vendita. Ecco come li superi."; }
   else if(R.r){ keys=["r"]; title="Il tuo pensiero è la ristrutturazione. Ecco come la affrontiamo."; }
-  else { keys=[]; title="Sei già sulla buona strada."; }
-  const others = R.noCash ? ["m","v"].filter(k=>R[k]) : ["m","v","r"].filter(k=>!keys.includes(k));
+  else { keys=["r"]; title="Sei già sulla buona strada."; }
+  const gia = !(R.noCash||R.m||R.v||R.r);
   const forse = R.noCash ? el("p",{class:"personal center"},"Qui sotto trovi le soluzioni più adatte a te. Leggile con calma, poi lasciaci i tuoi contatti: le approfondiamo insieme e troviamo la strada migliore per arrivare alla casa che desideri.")
     : (R.m && !R.v && A.m_banca!=="pre" && A.liquidita!=="si") ? el("p",{class:"personal center"},"Con il nostro metodo la banca calcola il mutuo sulla casa già ristrutturata, di solito fino all'80% del suo valore. Il primo passo è chiedere in banca la pre-delibera; la caparra la valutiamo insieme a te. Lasciaci i tuoi contatti: facciamo i conti nero su bianco, prima di qualsiasi firma.")
     : A.liquidita==="forse" ? el("p",{class:"personal center"},"I conti li facciamo insieme, nero su bianco, prima di qualsiasi firma.")
@@ -1170,12 +1168,10 @@ function solutions(){
   stage.append(el("section",{class:"screen"},
     el("p",{class:"kicker"},"HOUSETOHOME realizza il tuo sogno."),
     el("h1",{},title),
-    keys.length ? el("p",{class:"lead"}, keys.length>1 ? "Tocca la soluzione che vuoi approfondire." : "Tocca la soluzione per vedere come funziona, passo per passo.")
+    !gia ? el("p",{class:"lead"}, keys.length>1 ? "Tocca la soluzione che vuoi approfondire." : "Tocca la soluzione per vedere come funziona, passo per passo.")
                 : el("p",{class:"lead"},"Hai le risorse, non devi vendere e i lavori non ti spaventano. Per progettare e seguire la ristrutturazione, ci siamo noi."),
     forse,
     el("div",{class:"scards"}, keys.map(k=>cardButton(k,true))),
-    others.length ? el("h3",{class:"others-title"}, R.noCash ? "Le altre strade del nostro metodo" : keys.length ? "Vuoi conoscere anche le altre strade?" : "Le strade possibili") : null,
-    others.length ? el("div",{class:"scards"}, others.map(k=>cardButton(k,false))) : null,
     contactBlock(),
     el("button",{class:"btn ghost",type:"button",onclick:()=>{for(const k in A)delete A[k];showSolutions=false;detail=null;pos=-1;render();}},"Ricomincia")
   ));
