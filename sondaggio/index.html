@@ -1200,7 +1200,7 @@ function modoMutuo(m){
     stage.append(el("section",{class:"screen"},
       el("p",{class:"kicker"},"Il mutuo sulla casa finita"),
       el("h1",{},"Hai la caparra per la casa che vuoi?"),
-      el("p",{class:"lead"},"Dicci la casa, i lavori e i tuoi risparmi: calcoliamo il prezzo della casa finita e la caparra da versare."),
+      el("p",{class:"lead"},"Inserisci qui sotto la casa, i lavori e i tuoi risparmi: calcoliamo il prezzo della casa finita e la caparra da versare."),
       calcCasa({risparmi:true,
         onYes:()=>apriContatti("- ho fatto il calcolo: ho la caparra per la casa che voglio, partiamo"),
         onTalk:(q)=>apriContatti(q==="lontano" ? "- ho fatto il calcolo per il mutuo sulla casa finita e vorrei parlarne" : "- ho fatto il calcolo: per la caparra ci arrivo vicino, vorrei parlarne"),
