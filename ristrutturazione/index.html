@@ -98,6 +98,8 @@ section .wrap{padding-block:44px;display:flex;flex-direction:column;gap:20px}
 .pay div{background:var(--card);border-radius:16px;padding:16px 10px;text-align:center;display:flex;flex-direction:column;gap:4px}
 .pay b{font-family:var(--display);font-size:clamp(28px,7vw,40px);line-height:1}
 .pay span{font-size:14px;font-weight:600}
+.pay div{min-width:0}
+@media (max-width:380px){.pay{grid-template-columns:1fr}}
 .house{display:flex;flex-direction:column;gap:12px}
 .house h3{font-size:22px}
 .house .meta{color:var(--ink-soft);font-size:15px;margin-top:-6px}
@@ -134,6 +136,10 @@ footer a{color:var(--ink)}
 }
 .cases{display:flex;flex-direction:column;gap:16px}
 @media (min-width:720px){.cases{display:grid}}
+
+@media (min-width:1100px){.wrap.wide{max-width:1040px}}
+/* titoli centrati su tutti i dispositivi */
+h2,.eyebrow{text-align:center!important;text-wrap:balance;margin-left:auto;margin-right:auto}
 </style>
 </head>
 <body>
@@ -203,7 +209,7 @@ footer a{color:var(--ink)}
 </section>
 
 <section class="band" style="background:var(--card)">
-  <div class="wrap">
+  <div class="wrap wide">
     <h2>I nostri lavori.</h2>
     <div class="houses">
       <article class="house reveal">
