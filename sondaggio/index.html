@@ -1168,7 +1168,7 @@ function solutions(){
   stage.append(el("section",{class:"screen"},
     el("p",{class:"kicker"},"HOUSETOHOME realizza il tuo sogno."),
     el("h1",{},title),
-    !gia ? (keys.length>1 ? null : el("p",{class:"lead"},"Tocca la soluzione per vedere come funziona, passo per passo."))
+    !gia ? null
                 : el("p",{class:"lead"},"Hai le risorse, non devi vendere e i lavori non ti spaventano. Per progettare e seguire la ristrutturazione, ci siamo noi."),
     forse,
     el("div",{class:"scards"}, keys.map(k=>cardButton(k,true))),
