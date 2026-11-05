@@ -65,6 +65,18 @@ section .wrap{padding-block:44px;display:flex;flex-direction:column;gap:20px}
 .reveal.on{opacity:1;transform:none}
 @media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}}
 
+/* casa vera */
+.real{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.real figure{margin:0;position:relative;border-radius:16px;overflow:hidden;aspect-ratio:4/3;max-width:100%;background:#EFEADA}
+.real img{width:100%;height:100%;object-fit:cover;display:block}
+.real .tag{position:absolute;left:10px;top:10px;font:700 11px var(--body);letter-spacing:.12em;text-transform:uppercase;background:var(--card);padding:4px 10px;border-radius:999px}
+.real .tag.dopo{background:var(--yellow)}
+.real-cap{font-size:14px;color:var(--ink-soft);text-align:center}
+.faq{background:var(--card);border:2px solid var(--ink);border-radius:20px;padding:22px;display:flex;flex-direction:column;gap:10px}
+.faq .qq{font-family:var(--display);font-style:italic;font-size:clamp(18px,4.2vw,22px);line-height:1.4}
+.faq .yes{font-family:var(--display);font-weight:700;font-size:20px;background:var(--yellow);align-self:flex-start;padding:2px 12px;border-radius:8px}
+.time{display:flex;align-items:center;gap:14px;background:var(--azzurro);border-radius:16px;padding:14px 18px;font-weight:600}
+.time b{font-family:var(--display);font-size:clamp(26px,6vw,34px);line-height:1;white-space:nowrap}
 /* finale */
 .final{background:var(--azzurro);border-radius:20px;padding:24px;display:flex;flex-direction:column;gap:12px;text-align:center;align-items:center}
 .final p.big{font-family:var(--display);font-weight:700;font-size:clamp(19px,4.4vw,24px);line-height:1.4;max-width:30ch}
@@ -101,6 +113,11 @@ footer a{color:var(--ink)}
   <div class="wrap">
     <p class="eyebrow">L'esempio</p>
     <h2>Una casa da ristrutturare, due strade.</h2>
+    <div class="real reveal">
+      <figure><img src="../assets/media/lavori/b-orti-soggiorno-prima.jpg" alt="Via degli Orti prima dei lavori: zona giorno da ristrutturare" loading="lazy"><span class="tag">Prima</span></figure>
+      <figure><img src="../assets/media/lavori/b-orti-soggiorno-dopo.jpg" alt="Via degli Orti dopo i lavori: zona giorno con cucina bianca e tavolo apparecchiato" loading="lazy"><span class="tag dopo">Dopo</span></figure>
+    </div>
+    <p class="real-cap">Una casa vera: via degli Orti, Bologna. Prima e dopo il nostro lavoro.</p>
     <div class="cases">
       <article class="case senza reveal">
         <p class="tit">Senza di noi</p>
@@ -133,6 +150,7 @@ footer a{color:var(--ink)}
   <div class="wrap">
     <p class="eyebrow">Passo dopo passo</p>
     <h2>Dalla prima telefonata alle chiavi.</h2>
+    <div class="time reveal"><b>60 giorni</b><span>Con una ristrutturazione completa, la casa è pronta. I tempi li fissiamo per iscritto alla firma del preliminare.</span></div>
     <ol class="timeline">
       <li class="step reveal"><span class="n">1</span><div class="box"><h3>Chiami HOUSETOHOME</h3><p>Ci racconti la casa che hai trovato, da solo oppure insieme alla tua agenzia immobiliare: cosa ti piace, cosa cambieresti, i tuoi tempi. Ti ascoltiamo e ti spieghiamo come funziona, senza impegno.</p></div></li>
       <li class="step reveal"><span class="n">2</span><div class="box"><h3>Vediamo la casa insieme</h3><p>Andiamo a vederla con te. Verifichiamo struttura, impianti, spazi e luce di ogni ambiente, e valutiamo i lavori che servono per trasformarla nella casa che desideri.</p></div></li>
@@ -159,6 +177,11 @@ footer a{color:var(--ink)}
     <div class="sum reveal"><div><small>Mutuo</small>232.000</div><span class="op">+</span><div><small>Liquidità</small>60.000</div><span class="op">=</span><div class="tot"><small>Totale</small>292.000 €</div></div>
     <div class="final reveal">
       <p class="big">Con la stessa liquidità di partenza hai acquistato, con il mutuo, una casa da ristrutturare completamente. E ora hai la casa come la sognavi.</p>
+    </div>
+    <div class="faq reveal">
+      <p class="qq">«E se il perito valuta la casa meno di 290.000 €?»</p>
+      <p>È la domanda che ci fanno tutti, ed è giusta. La risposta sta nel passo 4, la conferma della fattibilità: prima di iniziare, insieme ai nostri professionisti, valutiamo la zona, la ristrutturazione e i valori al metro quadro delle case finite. Il valore della casa lo stabiliamo così, con numeri reali, ed è solo dopo questa verifica che partiamo.</p>
+      <p class="yes">Non è un sogno. È la realtà.</p>
     </div>
     <p class="note">Numeri di esempio. Il mutuo lo decide la banca, in base al tuo reddito. A parte servono il notaio e le imposte.</p>
   </div>
