@@ -770,7 +770,7 @@ function calcCasa(opts){
             el("dt",{},"Mutuo della pre-delibera + i tuoi risparmi"), el("dd",{},eur(MU)+" + "+eur(L)),
             el("dt",{},"Caparra alla firma del preliminare ("+(Math.round(capMU/V*1000)/10).toLocaleString("it-IT")+"%)"), el("dd",{},eur(capMU)),
             el("dt",{},"Al rogito, con il mutuo"+(V-capMU>MU?" e i risparmi che ti restano":"")), el("dd",{},eur(V-capMU))),
-          L < V*CAPARRA ? el("p",{class:"fine"},"La caparra che chiediamo è il 20%, cioè "+eur(V*CAPARRA)+". Hai "+eur(L)+": non ti preoccupare, ne parliamo insieme.") : ""
+          L < V*CAPARRA ? el("p",{class:"fine"},"La caparra che chiediamo è il 20%, cioè "+eur(V*CAPARRA)+". Hai "+eur(L)+": i conti li facciamo insieme.") : ""
         ] : [
           righeConti(V),
           spiegaConti(V),
@@ -869,7 +869,7 @@ function pianoSoldi(){
     else if(mutuo > V*LTV) msgs.push(el("p",{class:"calc-warn"},"Ti servirebbe un mutuo di "+eur(mutuo)+", cioè il "+pc(mutuo,V)+" della casa nuova: è più dell'80% che le banche finanziano di solito. I conti li facciamo insieme e troviamo la soluzione giusta."));
     else msgs.push(el("p",{class:"calc-ok-box"},"Ti serve un mutuo di "+eur(mutuo)+", il "+pc(mutuo,V)+" della casa nuova. Verifica con la pre-delibera che la rata sia sostenibile per il tuo reddito."));
     if(S < firma) msgs.push(el("p",{class:"calc-warn"},"Alla firma del preliminare serve il 15%, cioè "+eur(firma)+": oggi hai "+eur(S)+", ne mancano "+eur(firma-S)+". Con i tuoi risparmi di oggi puoi fermare una casa finita fino a "+eur(Math.floor(S/0.15/1000)*1000)+". I conti li facciamo insieme: scrivici e troviamo la strada."));
-    else if(S - firma < integra) msgs.push(el("p",{class:"calc-warn"},"Al compromesso versi il 10%, cioè "+eur(seconda)+". La caparra che ricevi è "+eur(capInc)+": i "+eur(integra)+" che mancano li metti dai risparmi. Dopo la firma te ne restano "+eur(S-firma)+": ne mancano "+eur(integra-(S-firma))+": non ti preoccupare, ne parliamo insieme."));
+    else if(S - firma < integra) msgs.push(el("p",{class:"calc-warn"},"Al compromesso versi il 10%, cioè "+eur(seconda)+". La caparra che ricevi è "+eur(capInc)+": i "+eur(integra)+" che mancano li metti dai risparmi. Dopo la firma te ne restano "+eur(S-firma)+": ne mancano "+eur(integra-(S-firma))+": i conti li facciamo insieme."));
     o.append(
       ...msgs,
       el("p",{class:"calc-how-t"},"Da dove arrivano i soldi"),
@@ -943,7 +943,7 @@ function calcolatore(){
         el("li",{},"Alla firma del preliminare versi la caparra: ",el("b",{},fmt(cap)+" ("+pc(cap,P)+")"),"."),
         el("li",{},"Al rogito paghi il resto, ",el("b",{},fmt(rog)),", con il mutuo"+(rog>M?" e i risparmi che ti restano.":"."))
       ),
-      sotto ? el("p",{class:"calc-note"},"La caparra che chiediamo è il 20%, cioè "+fmt(P*CAPARRA)+". Hai "+fmt(S)+": non ti preoccupare, ne parliamo insieme.") : "",
+      sotto ? el("p",{class:"calc-note"},"La caparra che chiediamo è il 20%, cioè "+fmt(P*CAPARRA)+". Hai "+fmt(S)+": i conti li facciamo insieme.") : "",
       el("p",{class:"calc-note"},"Il prezzo della casa finita lo conosci dal primo giorno ed è scritto nel preliminare: nessuna sorpresa."),
       el("p",{class:"calc-note"},"È la cifra della casa che sogni: scrivici qui sotto e partiamo.")
     );
