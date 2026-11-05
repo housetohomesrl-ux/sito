@@ -230,7 +230,6 @@ const QS = {
   ]},
   v_trovata:{ title:"Hai già trovato la casa che vorresti?", hint:"Puoi sceglierne più di una", multi:true, opts:[
     {v:"paura", t:"Sì, e ho paura che qualcun altro la compri prima di me"},
-    {v:"venditore", t:"Sì, e ho paura che il venditore non mi aspetti"},
     {v:"rallenta", t:"Sì, e dover vendere la mia rallenta tutto: sia la vendita sia l'acquisto"},
     {v:"tempi", t:"Sì, e ho paura di aspettare mesi di lavori prima di entrarci"},
     {v:"no", t:"Non ancora, sto cercando", only:true}
@@ -451,7 +450,7 @@ function solMutuo(){
 function solVendita(){
   let personal = null;
   const vt = A.v_trovata || [];
-  const perdi = vt.includes("paura")||vt.includes("venditore"), entra = vt.includes("tempi"), calma = vt.includes("rallenta");
+  const perdi = vt.includes("paura"), entra = vt.includes("tempi"), calma = vt.includes("rallenta");
   if(perdi||entra||calma){
     const pz = [];
     if(perdi) pz.push("Con noi non la perdi: la acquistiamo noi e la teniamo per te.");
@@ -1030,7 +1029,7 @@ function messaggioWA(nome){
     const st = {no:"non l'ho ancora messa in vendita", invendita:"è già in vendita", acquirente:"ho già un acquirente"}[A.v_stato];
     const vt = A.v_trovata||[];
     r.push("- devo prima vendere la mia casa" + (st ? " ("+st+")" : ""));
-    const vm = {paura:"ho paura che qualcun altro la compri prima di me", venditore:"ho paura che il venditore non mi aspetti", rallenta:"dover vendere la mia rallenta sia la vendita sia l'acquisto", tempi:"vorrei entrarci appena vendo la mia, senza aspettare mesi di lavori"};
+    const vm = {paura:"ho paura che qualcun altro la compri prima di me", rallenta:"dover vendere la mia rallenta sia la vendita sia l'acquisto", tempi:"vorrei entrarci appena vendo la mia, senza aspettare mesi di lavori"};
     const vp = vt.map(x=>vm[x]).filter(Boolean);
     if(vp.length) r.push("- ho già trovato la casa che vorrei: " + vp.join("; "));
   }
