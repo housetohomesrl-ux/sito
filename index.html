@@ -275,7 +275,11 @@ html{scroll-padding-top:60px}
 
 .mail-listino{margin:14px auto 0;max-width:520px}
 .mail-listino summary{text-align:center}
-.mail-listino summary{cursor:pointer;font-weight:600;text-decoration:underline;text-underline-offset:3px;padding:6px 0}
+.mail-listino{text-align:center;margin-top:-14px}
+.mail-listino summary{cursor:pointer;list-style:none;display:inline-flex;margin:0 auto}
+.mail-listino summary::-webkit-details-marker{display:none}
+.mail-listino[open] summary{margin-bottom:14px}
+.mail-listino form{text-align:left}
 #form-listino{display:flex;flex-direction:column;gap:12px;margin-top:12px;background:var(--card);border:1px solid var(--rule);border-radius:16px;padding:18px}
 #form-listino label{display:flex;flex-direction:column;gap:4px;font:600 14px var(--body);min-width:0;flex:1}
 #form-listino input:not([type=checkbox]){font:16px var(--body);padding:12px;border:1px solid #C9CDD2;border-radius:10px;min-width:0}
@@ -533,9 +537,9 @@ h2,.eyebrow{text-align:center!important;text-wrap:balance;margin-left:auto;margi
       <div class="pair"><figure class="shot"><img src="assets/media/lavori/b-staging-1.jpg" alt="Camera matrimoniale vuota" loading="lazy"><span class="tag">Prima</span></figure><figure class="shot"><img src="assets/media/lavori/b-staging-4.jpg" alt="La stessa camera allestita con letto matrimoniale e comodini" loading="lazy"><span class="tag dopo">Dopo</span></figure></div>
       <div class="pair"><figure class="shot"><img src="assets/media/lavori/b-staging-2.jpg" alt="Camera singola vuota" loading="lazy"><span class="tag">Prima</span></figure><figure class="shot"><img src="assets/media/lavori/b-staging-5.jpg" alt="La stessa camera allestita con letto singolo e cassettiera" loading="lazy"><span class="tag dopo">Dopo</span></figure></div>
     </div>
-    <div class="ctas center"><a class="btn matt-btn" href="https://wa.me/393395829835?text=Salve%2C%20vorrei%20ricevere%20il%20listino%20home%20staging%20di%20HOUSETOHOME%3A%20https%3A%2F%2Fhousetohomesrl.it%2Flistino" target="_blank" rel="noopener">Richiedi il listino</a></div>
+    <div class="ctas center"><a class="btn matt-btn" href="https://wa.me/393395829835?text=Salve%2C%20vorrei%20ricevere%20il%20listino%20home%20staging%20di%20HOUSETOHOME%3A%20https%3A%2F%2Fhousetohomesrl.it%2Flistino" target="_blank" rel="noopener">Richiedi il listino tramite WhatsApp</a></div>
     <details class="mail-listino">
-      <summary>Preferisce ricevere il listino via mail? Clicchi qui</summary>
+      <summary class="btn matt-btn">Richiedi il listino tramite mail</summary>
       <form id="form-listino" novalidate>
         <div class="fl-row"><label>Nome<input name="nome" autocomplete="given-name" required></label><label>Cognome<input name="cognome" autocomplete="family-name" required></label></div>
         <label>E-mail<input name="email" type="email" autocomplete="email" required></label>
