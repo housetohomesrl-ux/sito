@@ -8,7 +8,7 @@
 <style>
 /* Layout: una domanda diretta per schermata su fondo giallo; il logo HOUSETOHOME si disegna a ogni risposta; alla fine solo le soluzioni che servono */
 :root{
-  --yellow:#F8E07E; --ink:#3F4042; --ink-soft:#5E5F62;
+  --yellow:#FAE89E; --ink:#3F4042; --ink-soft:#5E5F62;
   --paper:#FFFFFF; --paper-hover:#FFFBE3; --line:#4A4B4D; --soft:#FFF6C4; --rule:#E7E1C2;
   --display:'Merriweather', Georgia, 'Times New Roman', serif;
   --body:'Open Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
@@ -647,7 +647,7 @@ function confetti(){
   if(reduce) return;
   const c = document.createElement("canvas"); c.className = "confetti"; document.body.append(c);
   const ctx = c.getContext("2d"); const W = c.width = innerWidth, H = c.height = innerHeight;
-  const colors = ["#F8E07E","#3F4042","#FFFFFF","#E8C200","#8A8B8E"];
+  const colors = ["#FAE89E","#3F4042","#FFFFFF","#E8C200","#8A8B8E"];
   const ps = Array.from({length:140},()=>({x:W/2+(Math.random()-.5)*W*.3, y:H*.35, vx:(Math.random()-.5)*12, vy:-Math.random()*13-4, r:Math.random()*6+4, a:Math.random()*6, va:(Math.random()-.5)*.3, c:colors[Math.floor(Math.random()*colors.length)]}));
   let t = 0;
   (function f(){
