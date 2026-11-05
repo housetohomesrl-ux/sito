@@ -563,7 +563,7 @@ function solAltraStrada(){
 }
 
 const K_L = 11e2;
-const CAPARRA = 0.20, LTV = 0.80;
+const CAPARRA = 0.20, LTV = 0.80, VICINO = 0.80; // "vicino": risparmi da 80% della caparra in su
 const devoVendere = () => A.vendere === "si";
 const capIniziale = () => devoVendere() ? 0.15 : CAPARRA;
 const SECONDA = 0.10;
@@ -698,6 +698,7 @@ function calcCasa(opts){
   const out = el("div",{class:"calc-out","aria-live":"polite"});
   const rev = el("div",{class:"calc-rev",hidden:""});
   const lp = lavoriPicker("cc-",()=>update());
+  const risp = opts.risparmi ? el("input",{id:"cc-risp",inputmode:"numeric",placeholder:"es. 60.000",autocomplete:"off"}) : null;
 
   let trovata = "si";
   const prezzo = el("input",{id:"cc-prezzo",inputmode:"numeric",placeholder:"es. 220.000",autocomplete:"off"});
@@ -721,6 +722,7 @@ function calcCasa(opts){
     if(Q===0){ out.append(el("p",{class:"calc-empty"},"Scegli i lavori che vuoi fare per vedere il risultato.")); return; }
     const V = trovata==="si" ? vic(PA*0.97 + M*K_L*Q) : vic(valoreMq(Z,Q)*M);
     LAST.casa = {zona: trovata==="si" ? "" : Z, dove: trovata==="si" ? dove.value.trim() : "", prezzo: trovata==="si" ? PA : 0, mq:M, lavori: Q>=1 ? "completa" : "parziale", V};
+    if(opts.risparmi) return esitoCaparra(V, M);
     const yes = el("button",{class:"btn",type:"button"},"Ho questa cifra: partiamo");
     const msg = el("p",{class:"calc-ok",hidden:""},"Perfetto: hai la base per realizzare il tuo sogno.");
     yes.addEventListener("click",()=>{ confetti(); msg.hidden=false; yes.disabled=true; if(opts.onYes) setTimeout(opts.onYes, reduce?300:1800); else msg.textContent += " Lasciaci il tuo contatto qui sotto e partiamo."; });
@@ -788,7 +790,37 @@ function calcCasa(opts){
     );
   }
 
-  zona.addEventListener("change",update); mq.addEventListener("input",update); prezzo.addEventListener("input",update); dove.addEventListener("input",update); update();
+  // esito per chi arriva dalla pagina del mutuo: confronta i risparmi con la caparra del 20%
+  function esitoCaparra(V, M){
+    const S = num(risp.value), need = V*CAPARRA;
+    out.append(
+      el("p",{class:"calc-label"},"Prezzo della casa finita"),
+      el("p",{class:"calc-big"},eur(V)),
+      el("p",{class:"calc-time"},"Casa pronta in "+giorniLavori(M,lp.completa())+" giorni."),
+      el("dl",{class:"calc-rows"},
+        el("dt",{},"Caparra alla firma del preliminare (20%)"), el("dd",{},eur(need)),
+        el("dt",{},"Mutuo da chiedere in banca (80%)"), el("dd",{},eur(V*LTV)))
+    );
+    if(!S){ out.append(el("p",{class:"calc-empty"},"Scrivi i tuoi risparmi per sapere se hai la caparra.")); return; }
+    LAST.risparmi = S;
+    const parla = (testo, cls) => { const b = el("button",{class:"btn "+(cls||"ghost"),type:"button"},testo); b.addEventListener("click",()=>opts.onTalk(S>=need?"vicino":(S>=need*VICINO?"vicino":"lontano"))); return b; };
+    if(S >= need){
+      const yes = el("button",{class:"btn",type:"button"},"Ho i soldi: partiamo");
+      const msg = el("p",{class:"calc-ok",hidden:""},"Perfetto: hai la caparra per la casa che vuoi. Lasciaci i tuoi dati e partiamo.");
+      yes.addEventListener("click",()=>{ confetti(); msg.hidden=false; yes.disabled=true; setTimeout(()=>opts.onYes(), reduce?300:1600); });
+      out.append(el("p",{class:"calc-ok"},"I tuoi risparmi coprono la caparra."), el("div",{class:"calc-actions"}, yes, msg, parla("Ci arrivo vicino: parliamone comunque")));
+    } else if(S >= need*VICINO){
+      out.append(el("p",{class:"personal"},"Ci sei quasi. Contattaci: troviamo insieme la soluzione per arrivare alla casa che desideri."),
+        el("div",{class:"calc-actions"}, parla("Ci arrivo vicino: parliamone","")));
+    } else {
+      const ristr = el("a",{class:"btn",href:"#ristrutturazione"},"Scopri la sola ristrutturazione");
+      ristr.addEventListener("click",e=>{ e.preventDefault(); opts.onRistr(); });
+      out.append(el("p",{class:"personal"},"Per questa casa c'è una strada più adatta a te: la compri tu e noi la ristrutturiamo come la desideri, con un prezzo fissato prima di iniziare. Oppure parliamone: troviamo insieme la soluzione."),
+        el("div",{class:"calc-actions"}, ristr, parla("Parliamone comunque")));
+    }
+  }
+
+  zona.addEventListener("change",update); mq.addEventListener("input",update); prezzo.addEventListener("input",update); dove.addEventListener("input",update); if(risp) risp.addEventListener("input",update); update();
   return el("div",{class:"calc-wrap"},
     el("div",{class:"calc"},
       el("h4",{},"Quanto ti serve davvero"),
@@ -797,6 +829,7 @@ function calcCasa(opts){
       boxSi, boxNo,
       el("label",{for:"cc-mq"},"Metri quadri", mq),
       lp.node,
+      risp ? el("label",{for:"cc-risp"},"I tuoi risparmi per la caparra (€)", risp) : null,
       out
     ),
     rev
@@ -956,7 +989,10 @@ const zonaBreve = z => z.split(" – ").slice(-1)[0].replace(/(^|, )[Zz]ona /g,"
 function messaggioWA(nome){
   const R = route(), r = [];
   r.push("Ciao HOUSETOHOME" + (nome ? ", sono "+nome : "") + "!");
-  r.push("Ho fatto il vostro sondaggio e vorrei parlarvi di:");
+  if(A.origine){
+    r.push("Ho letto la pagina del mutuo sulla casa finita.");
+    r.push(A.origine);
+  } else r.push("Ho fatto il vostro sondaggio e vorrei parlarvi di:");
   // il mutuo è un problema solo se i conti lo dicono: la banca finanzia fino all'80% del valore della casa
   const pv = LAST.piano && LAST.piano.V ? LAST.piano : null;
   const quota = pv && pv.mutuo ? Math.round(pv.mutuo/pv.V*100) : 0;
@@ -984,7 +1020,8 @@ function messaggioWA(nome){
     const rc = {mia:"la casa è già mia", compro:"la sto comprando", cerco:"sto ancora cercando la casa"}[A.r_casa];
     if(rc) r.push("- "+rc);
   }
-  if(R.none) r.push("- una consulenza per la casa che sto cercando");
+  if(R.none && !A.origine) r.push("- una consulenza per la casa che sto cercando");
+  if(A.origine && LAST.risparmi) r.push("I miei risparmi per la caparra: "+eur(LAST.risparmi)+".");
   if(LAST.casa){
     const c=LAST.casa, w=[];
     if(c.dove) w.push(c.dove); else if(c.zona) w.push("zona "+zonaBreve(c.zona));
@@ -1032,7 +1069,7 @@ function contactBlock(){
   const salva = (modo)=>{
     if(inviato===modo) return; inviato = modo;
     const R = route();
-    const problema = [R.m?"Mutuo":"", R.v?"Casa da vendere":"", R.r?"Ristrutturazione":""].filter(Boolean).join(", ") || "Altra strada";
+    const problema = A.origine ? "Mutuo sulla casa finita" : ([R.m?"Mutuo":"", R.v?"Casa da vendere":"", R.r?"Ristrutturazione":""].filter(Boolean).join(", ") || "Altra strada");
     const dati = { nome:nome.value.trim(), cognome:cognome.value.trim(), cellulare:tel.value.trim(), email:email.value.trim(),
       problema, risposte:"Contatto: "+modo+"\n"+messaggioWA(full()), privacy:privacy.checked };
     try{ fetch(SHEET_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(dati),keepalive:true}).catch(()=>{}); }catch(err){}
@@ -1055,6 +1092,7 @@ function contactBlock(){
     prev, note, waBtn, callBtn, mailBtn
   );
   upd();
+  if(A.origine) return [form, thanks, el("div",{class:"cta-box"}, el("a",{class:"btn ghost btn-small",href:"/",target:"_blank",rel:"noopener"},"Visita il sito"))];
   return [
     form, thanks,
     el("div",{class:"cta-box"},
@@ -1145,12 +1183,40 @@ function detailView(k){
   top0();
 }
 
+// modalità aperte dalla pagina del mutuo: #inizia (contatto diretto) e #calcola (caparra)
+function modoMutuo(m){
+  stage.replaceChildren(); backBtn.hidden = true; drawHouse(STEPS);
+  for(const k in A) delete A[k];
+  const slot = el("div",{class:"contact-slot"});
+  const apriContatti = (testo)=>{ A.origine = testo; slot.replaceChildren(...contactBlock()); slot.scrollIntoView({behavior:reduce?"auto":"smooth",block:"start"}); };
+  if(m==="inizia"){
+    A.origine = "- vorrei iniziare: ho già i soldi per la caparra, per il mutuo mi affido a voi";
+    stage.append(el("section",{class:"screen"},
+      el("p",{class:"kicker"},"Il mutuo sulla casa finita"),
+      el("h1",{},"Partiamo dalla casa che desideri."),
+      el("p",{class:"lead"},"Hai già i soldi per la caparra: al mutuo ci pensa HOUSETOHOME. Lasciaci i tuoi dati e scegli come vuoi essere contattato."),
+      ...contactBlock()));
+  } else {
+    stage.append(el("section",{class:"screen"},
+      el("p",{class:"kicker"},"Il mutuo sulla casa finita"),
+      el("h1",{},"Hai la caparra per la casa che vuoi?"),
+      el("p",{class:"lead"},"Dicci la casa, i lavori e i tuoi risparmi: calcoliamo il prezzo della casa finita e la caparra da versare."),
+      calcCasa({risparmi:true,
+        onYes:()=>apriContatti("- ho fatto il calcolo: ho la caparra per la casa che voglio, partiamo"),
+        onTalk:(q)=>apriContatti(q==="lontano" ? "- ho fatto il calcolo per il mutuo sulla casa finita e vorrei parlarne" : "- ho fatto il calcolo: per la caparra ci arrivo vicino, vorrei parlarne"),
+        onRistr:()=>{ stage.replaceChildren(); A.origine=""; delete A.origine; detailView("r"); }}),
+      slot));
+  }
+  top0();
+}
+
 backBtn.addEventListener("click",()=>{
   if(detail){ detail=null; render(); return; }
   if(showSolutions){ showSolutions=false; render(); return; }
   if(pos>=0){ pos--; render(); }
 });
-render();
+const MODO = location.hash.replace("#","");
+if(MODO==="calcola" || MODO==="inizia") modoMutuo(MODO); else render();
 </script>
 
 </body>

@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Il mutuo sulla casa finita · HOUSETOHOME</title>
+<meta name="description" content="Un solo prezzo, un solo mutuo: sulla casa finita. Scopri ogni passo, con un esempio concreto, di come acquisti con HOUSETOHOME la casa da ristrutturare che desideri.">
+<link rel="stylesheet" href="../assets/fonts.css">
+<style>
+:root{
+  --yellow:#F8E07E; --yellow-soft:#FCF0BE; --azzurro:#A9D3EE; --mattone:#E3A68A; --blu:#A7BCE3;
+  --paper:#FFFDF4; --card:#FFFFFF; --ink:#3F4042; --ink-soft:#5B5C5F; --rule:#E4DFC6;
+  --display:'Merriweather', Georgia, 'Times New Roman', serif;
+  --body:'Open Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  color-scheme: light;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.6}
+.band{padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px))}
+.wrap{max-width:720px;margin:0 auto}
+.yellow{background:var(--yellow)}
+p{margin:0}
+h1,h2,h3{font-family:var(--display);font-weight:700;color:var(--ink);text-wrap:balance;margin:0}
+h1{font-size:clamp(28px,6.6vw,44px);line-height:1.18}
+h2{font-size:clamp(22px,4.8vw,30px);line-height:1.25}
+h3{font-size:18px;line-height:1.35}
+.eyebrow{font:700 12px var(--body);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)}
+.lead{font-size:18px;max-width:40ch}
+header .wrap{padding-block:26px 44px;display:flex;flex-direction:column;gap:16px;align-items:center;text-align:center}
+.logo{width:180px;height:auto;display:block}
+.back{align-self:flex-start;font:600 14px var(--body);color:var(--ink);text-decoration:none}
+section .wrap{padding-block:44px;display:flex;flex-direction:column;gap:20px}
+.center{text-align:center;align-items:center}
+
+/* esempio: senza di noi / con noi */
+.case{border-radius:20px;padding:22px;display:flex;flex-direction:column;gap:14px}
+.case.senza{background:#F3F1EA;border:1px solid var(--rule)}
+.case.con{background:var(--yellow-soft);border:1px solid #EED98A}
+.case .tit{font:700 13px var(--body);letter-spacing:.12em;text-transform:uppercase}
+.rows{display:flex;flex-direction:column;gap:6px}
+.row{display:flex;justify-content:space-between;gap:12px;align-items:baseline;border-bottom:1px dashed rgba(63,64,66,.2);padding-bottom:6px}
+.row span:last-child{font-weight:700;white-space:nowrap}
+.sum{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:6px 10px;font-family:var(--display);font-weight:700;font-size:clamp(15px,4vw,24px);background:var(--card);border-radius:14px;padding:14px}
+.sum small{display:block;font:600 11px var(--body);letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);text-align:center}
+.sum .op{color:var(--ink-soft)}
+.sum .tot{background:var(--yellow);border-radius:10px;padding:2px 10px;white-space:nowrap}
+@media (max-width:480px){.sum .op:nth-of-type(2){display:none}.sum .tot{flex-basis:100%;text-align:center;margin-top:4px}}
+.case .q{font-family:var(--display);font-style:italic;font-size:18px}
+.case .warn{font-weight:700}
+
+/* linea del tempo */
+.timeline{list-style:none;margin:0;padding:0;position:relative}
+.timeline::before{content:"";position:absolute;left:21px;top:10px;bottom:10px;width:3px;border-radius:3px;background:linear-gradient(var(--yellow),var(--azzurro),var(--mattone),var(--blu))}
+.step{position:relative;padding:0 0 22px 64px}
+.step:last-child{padding-bottom:0}
+.step .n{position:absolute;left:0;top:0;width:45px;height:45px;border-radius:50%;display:grid;place-items:center;font:700 18px var(--display);background:var(--yellow);border:3px solid var(--paper)}
+.step:nth-child(4n+2) .n{background:var(--azzurro)}
+.step:nth-child(4n+3) .n{background:var(--mattone)}
+.step:nth-child(4n+4) .n{background:var(--blu)}
+.step .box{background:var(--card);border:1px solid var(--rule);border-radius:16px;padding:16px 18px;display:flex;flex-direction:column;gap:6px;box-shadow:0 4px 14px rgba(63,64,66,.06)}
+.step .box p{color:var(--ink-soft)}
+.step .box p strong{color:var(--ink)}
+.step.go .box{background:var(--yellow-soft);border-color:#EED98A}
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease}
+.reveal.on{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}}
+
+/* finale */
+.final{background:var(--azzurro);border-radius:20px;padding:24px;display:flex;flex-direction:column;gap:12px;text-align:center;align-items:center}
+.final p.big{font-family:var(--display);font-weight:700;font-size:clamp(19px,4.4vw,24px);line-height:1.4;max-width:30ch}
+.note{font-size:13px;color:var(--ink-soft)}
+.ctas{display:flex;flex-direction:column;gap:12px;width:100%;max-width:520px}
+.btn{display:flex;align-items:center;justify-content:center;gap:10px;text-align:center;min-height:62px;padding:12px 24px;border-radius:999px;font:700 16px/1.35 var(--body);text-decoration:none;box-shadow:0 4px 12px rgba(63,64,66,.14);transition:transform .15s ease}
+.btn:hover{transform:translateY(-2px)}
+.btn:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+.btn.main{background:var(--ink);color:var(--yellow)}
+.btn.alt{background:var(--card);color:var(--ink);border:2px solid var(--ink)}
+footer .wrap{padding-block:36px 44px;display:flex;flex-direction:column;gap:10px;align-items:center;text-align:center}
+footer a{color:var(--ink)}
+.small{font-size:13px}
+@media (min-width:720px){
+  .cases{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}
+}
+.cases{display:flex;flex-direction:column;gap:16px}
+@media (min-width:720px){.cases{display:grid}}
+</style>
+</head>
+<body>
+
+<header class="band yellow">
+  <div class="wrap">
+    <a class="back" href="/#metodo">← Torna al sito</a>
+    <img class="logo" src="../assets/logo.png" alt="HOUSETOHOME S.r.l.">
+    <p class="eyebrow">Un solo prezzo, un solo mutuo: sulla casa finita</p>
+    <h1>Scopri ogni passo: come lo affrontiamo insieme.</h1>
+    <p class="lead">Ti mostriamo con un esempio concreto cosa cambia quando acquisti con noi la casa da ristrutturare che desideri.</p>
+  </div>
+</header>
+
+<section class="band">
+  <div class="wrap">
+    <p class="eyebrow">L'esempio</p>
+    <h2>Una casa da ristrutturare, due strade.</h2>
+    <div class="cases">
+      <article class="case senza reveal">
+        <p class="tit">Senza di noi</p>
+        <div class="rows">
+          <div class="row"><span>Casa da ristrutturare</span><span>200.000 €</span></div>
+          <div class="row"><span>La tua liquidità</span><span>60.000 €</span></div>
+        </div>
+        <p>Il perito della banca valuta la casa com'è oggi. Nella maggior parte dei casi la banca propone un mutuo dell'80%: 160.000 €.</p>
+        <div class="sum"><div><small>Mutuo</small>160.000</div><span class="op">+</span><div><small>Liquidità</small>60.000</div><span class="op">=</span><div class="tot"><small>Totale</small>220.000 €</div></div>
+        <p>Con questa cifra copri l'acquisto, il notaio e l'agenzia, forse.</p>
+        <p class="q">E i soldi per la ristrutturazione, da dove arrivano?</p>
+        <p class="warn">Da un prestito, con tassi che arrivano al 7-8%.</p>
+      </article>
+      <article class="case con reveal">
+        <p class="tit">Con HOUSETOHOME</p>
+        <div class="rows">
+          <div class="row"><span>La stessa casa, ristrutturata</span><span>290.000 €</span></div>
+          <div class="row"><span>La tua liquidità</span><span>60.000 €</span></div>
+        </div>
+        <p>Il perito valuta la casa già ristrutturata. La banca propone l'80% di 290.000 €: 232.000 €.</p>
+        <div class="sum"><div><small>Mutuo</small>232.000</div><span class="op">+</span><div><small>Liquidità</small>60.000</div><span class="op">=</span><div class="tot"><small>Totale</small>292.000 €</div></div>
+        <p class="warn">La ristrutturazione è già nel prezzo: nessun prestito, un solo mutuo.</p>
+        <p>Qui sotto ti spieghiamo come ci arriviamo, passo dopo passo.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="band" style="background:var(--card)">
+  <div class="wrap">
+    <p class="eyebrow">Passo dopo passo</p>
+    <h2>Dalla prima telefonata alle chiavi.</h2>
+    <ol class="timeline">
+      <li class="step reveal"><span class="n">1</span><div class="box"><h3>Chiami HOUSETOHOME</h3><p>Ci racconti la casa che hai trovato, da solo oppure insieme alla tua agenzia immobiliare: cosa ti piace, cosa cambieresti, i tuoi tempi. Ti ascoltiamo e ti spieghiamo come funziona, senza impegno.</p></div></li>
+      <li class="step reveal"><span class="n">2</span><div class="box"><h3>Vediamo la casa insieme</h3><p>Andiamo a vederla con te. Verifichiamo struttura, impianti, spazi e luce di ogni ambiente, e valutiamo i lavori che servono per trasformarla nella casa che desideri.</p></div></li>
+      <li class="step reveal"><span class="n">3</span><div class="box"><h3>Verifichiamo i conti</h3><p>Mettiamo nero su bianco la liquidità che hai a disposizione e il mutuo da richiedere, e ti diciamo cosa chiedere in banca. Arrivi già con la pre-delibera della tua banca? <strong>Così velocizziamo i tempi.</strong></p></div></li>
+      <li class="step reveal go"><span class="n">4</span><div class="box"><h3>Ti confermiamo la fattibilità</h3><p>Ti confermiamo che l'operazione si può fare e ti comunichiamo il prezzo della casa finita, lavori compresi. Nel nostro esempio: <strong>290.000 €</strong>. È il prezzo che firmi, e non cambia. Si parte!</p></div></li>
+      <li class="step reveal"><span class="n">5</span><div class="box"><h3>Firmiamo il contratto preliminare</h3><p>Firmiamo un contratto preliminare trascritto, con la caparra che abbiamo già definito insieme. Il tuo assegno resta in deposito dal notaio fino al rogito tra HOUSETOHOME e il proprietario della casa che hai scelto. <strong>Solo quando ci siamo aggiudicati la tua casa, HOUSETOHOME riceve il tuo assegno.</strong></p></div></li>
+      <li class="step reveal"><span class="n">6</span><div class="box"><h3>Partiamo con il progetto</h3><p>Ti mettiamo a disposizione il nostro team al completo, per seguirti in ogni scelta: materiali, rivestimenti, colori e disposizione degli ambienti, pensati sulle tue priorità e sulle tue abitudini. Prima di aprire il cantiere vedi la casa in 3D, con colori, luce e arredi.</p></div></li>
+      <li class="step reveal"><span class="n">7</span><div class="box"><h3>Il cantiere</h3><p>Al cantiere pensa HOUSETOHOME, con la nostra squadra e un programma preciso, giorno per giorno. Tu non hai pensieri, perché abbiamo già definito tutto insieme. E quando vuoi, puoi già entrare a vedere casa tua.</p></div></li>
+      <li class="step reveal"><span class="n">8</span><div class="box"><h3>Verifichiamo i lavori insieme</h3><p>A lavori finiti la visitiamo insieme, stanza per stanza, e controlli che tutto sia come l'abbiamo deciso.</p></div></li>
+      <li class="step reveal go"><span class="n">9</span><div class="box"><h3>Andiamo al rogito</h3><p>Fissiamo il rogito dal notaio. E i soldi della ristrutturazione? <strong>Non ti servono: sono già nel prezzo della casa finita, ci abbiamo pensato noi.</strong> Ricevi le chiavi, e per un anno dalla fine dei lavori ti seguiamo noi.</p></div></li>
+    </ol>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap">
+    <p class="eyebrow">Il momento del perito</p>
+    <h2>Perché il mutuo sale.</h2>
+    <ol class="timeline">
+      <li class="step reveal"><span class="n">A</span><div class="box"><h3>Il perito vede una casa nuova</h3><p>Il perito della banca non valuta più una casa da 200.000 €: ristrutturandola insieme abbiamo creato valore, ed è già la casa che sognavi.</p></div></li>
+      <li class="step reveal"><span class="n">B</span><div class="box"><h3>Un valore che conosci già</h3><p>Ancora prima di iniziare, con la conferma della fattibilità, a questa casa abbiamo già dato un valore: 290.000 €. Il perito la valuta per com'è in quel momento, finita, e comunica il valore alla banca.</p></div></li>
+      <li class="step reveal"><span class="n">C</span><div class="box"><h3>La banca ti comunica il mutuo</h3><p>Nella maggior parte dei casi la banca propone l'80% del valore: l'80% di 290.000 €, cioè <strong>232.000 €</strong>.</p></div></li>
+    </ol>
+    <div class="sum reveal"><div><small>Mutuo</small>232.000</div><span class="op">+</span><div><small>Liquidità</small>60.000</div><span class="op">=</span><div class="tot"><small>Totale</small>292.000 €</div></div>
+    <div class="final reveal">
+      <p class="big">Con la stessa liquidità di partenza hai acquistato, con il mutuo, una casa da ristrutturare completamente. E ora hai la casa come la sognavi.</p>
+    </div>
+    <p class="note">Numeri di esempio. Il mutuo lo decide la banca, in base al tuo reddito. A parte servono il notaio e le imposte.</p>
+  </div>
+</section>
+
+<section class="band yellow" id="inizia">
+  <div class="wrap center">
+    <h2>Da dove vuoi partire?</h2>
+    <div class="ctas">
+      <a class="btn main" href="../sondaggio/#inizia">Voglio iniziare: ho già i soldi per la caparra, al mutuo ci pensa HOUSETOHOME</a>
+      <a class="btn alt" href="../sondaggio/#calcola">Voglio calcolare se ho la caparra per la casa che voglio</a>
+    </div>
+  </div>
+</section>
+
+<footer class="band">
+  <div class="wrap">
+    <p><strong>HOUSETOHOME S.r.l.</strong></p>
+    <p class="small">Tel: +39 339 582 9835 · E-mail: info@housetohomesrl.it</p>
+    <p class="small"><a href="/">Torna al sito</a> · <a href="../privacy/">Privacy</a></p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var els=document.querySelectorAll(".reveal");
+  if(!("IntersectionObserver" in window)){els.forEach(function(e){e.classList.add("on")});return;}
+  var io=new IntersectionObserver(function(en){en.forEach(function(x){if(x.isIntersecting){x.target.classList.add("on");io.unobserve(x.target);}})},{threshold:.15});
+  els.forEach(function(e){io.observe(e)});
+})();
+</script>
+</body>
+</html>
