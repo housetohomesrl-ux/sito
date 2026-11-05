@@ -527,7 +527,7 @@ function stepsAcquisto(R){
   steps.push(["Conosci il prezzo finale","Ti diciamo quanto costerà la casa finita. Quel prezzo non cambia di un centesimo."]);
   if(R.v){
     steps.push(["Firmi il contratto preliminare con HOUSETOHOME","Alla firma versi il 15% del prezzo della casa ristrutturata. Tutto è scritto in un contratto preliminare trascritto: casa, progetto, prezzo e tempi del rogito, che fissiamo insieme in base alla vendita della tua casa. A parte servono solo le spese di notaio e le imposte."]);
-    steps.push(["Vendi la tua casa senza pensieri","Intanto noi lavoriamo: nei tempi fissati la casa è pronta e ti aspetta. Quando firmi il compromesso della tua casa e incassi la caparra del tuo acquirente, versi la seconda parte della caparra: il 10%. Al rogito paghi il restante 75%."]);
+    steps.push(["Vendi la tua casa senza pensieri","Intanto noi lavoriamo: nei tempi fissati la casa è pronta e ti aspetta. Quando firmi il compromesso della tua casa e ricevi la caparra del tuo acquirente, versi la seconda parte della caparra: il 10%. Al rogito paghi il restante 75%."]);
     steps.push(["Fai il rogito ed entri","Il giorno in cui consegni le chiavi della tua casa, ricevi quelle della nuova."]);
   } else {
     steps.push(["Firmi il contratto preliminare con HOUSETOHOME","Versi una caparra del 20% del prezzo della casa ristrutturata. Tutto è scritto in un contratto preliminare trascritto: casa, progetto e prezzo. A parte servono solo le spese di notaio e le imposte."]);
@@ -689,7 +689,7 @@ function righeConti(V){
 function spiegaConti(V){
   return el("p",{class:"calc-note"},
     (devoVendere()
-      ? "Come funziona: alla firma del preliminare versi il 15%, cioè "+eur(V*0.15)+". Quando firmi il compromesso della tua casa e incassi la caparra del tuo acquirente, versi il 10%, cioè "+eur(V*SECONDA)+". Il restante 75%, cioè "+eur(V*0.75)+", lo paghi al rogito con il mutuo o con il ricavato della vendita. Con il mutuo, la banca valuta la casa già ristrutturata."
+      ? "Come funziona: alla firma del preliminare versi il 15%, cioè "+eur(V*0.15)+". Quando firmi il compromesso della tua casa e ricevi la caparra del tuo acquirente, versi il 10%, cioè "+eur(V*SECONDA)+". Il restante 75%, cioè "+eur(V*0.75)+", lo paghi al rogito con il mutuo o con il ricavato della vendita. Con il mutuo, la banca valuta la casa già ristrutturata."
       : "Come funziona: versi il 20% di caparra, cioè "+eur(V*CAPARRA)+". La banca valuta la casa già ristrutturata e ti finanzia l'80%, cioè "+eur(V*LTV)+": con il mutuo paghi il resto al rogito. Usi tutto il mutuo a cui hai diritto, per una casa già finita come la vuoi tu."));
 }
 
@@ -869,7 +869,7 @@ function pianoSoldi(){
     else if(mutuo > V*LTV) msgs.push(el("p",{class:"calc-warn"},"Ti servirebbe un mutuo di "+eur(mutuo)+", cioè il "+pc(mutuo,V)+" della casa nuova: è più dell'80% che le banche finanziano di solito. Non ti preoccupare, ne parliamo insieme e troviamo la soluzione giusta."));
     else msgs.push(el("p",{class:"calc-ok-box"},"Ti serve un mutuo di "+eur(mutuo)+", il "+pc(mutuo,V)+" della casa nuova. Verifica con la pre-delibera che la rata sia sostenibile per il tuo reddito."));
     if(S < firma) msgs.push(el("p",{class:"calc-warn"},"Alla firma del preliminare serve il 15%, cioè "+eur(firma)+": oggi hai "+eur(S)+", ne mancano "+eur(firma-S)+". Con i tuoi risparmi di oggi puoi fermare una casa finita fino a "+eur(Math.floor(S/0.15/1000)*1000)+". Non ti preoccupare, ne parliamo: scrivici e troviamo insieme la strada."));
-    else if(S - firma < integra) msgs.push(el("p",{class:"calc-warn"},"Al compromesso versi il 10%, cioè "+eur(seconda)+". La caparra che incassi è "+eur(capInc)+": i "+eur(integra)+" che mancano li metti dai risparmi. Dopo la firma te ne restano "+eur(S-firma)+": ne mancano "+eur(integra-(S-firma))+": non ti preoccupare, ne parliamo insieme."));
+    else if(S - firma < integra) msgs.push(el("p",{class:"calc-warn"},"Al compromesso versi il 10%, cioè "+eur(seconda)+". La caparra che ricevi è "+eur(capInc)+": i "+eur(integra)+" che mancano li metti dai risparmi. Dopo la firma te ne restano "+eur(S-firma)+": ne mancano "+eur(integra-(S-firma))+": non ti preoccupare, ne parliamo insieme."));
     o.append(
       ...msgs,
       el("p",{class:"calc-how-t"},"Da dove arrivano i soldi"),
@@ -881,7 +881,7 @@ function pianoSoldi(){
       el("p",{class:"calc-how-t"},"Quando paghi"),
       el("dl",{class:"calc-rows"},
         el("dt",{},"Alla firma del preliminare, dai risparmi"), el("dd",{},eur(firma)+" · 15%"),
-        el("dt",{},"Al compromesso della tua casa"+(integra?" (caparra incassata + "+eur(integra)+" dai risparmi)":", con la caparra che incassi")), el("dd",{},eur(seconda)+" · "+pc(seconda,V)),
+        el("dt",{},"Al compromesso della tua casa"+(integra?" (caparra ricevuta + "+eur(integra)+" dai risparmi)":", con la caparra che ricevi")), el("dd",{},eur(seconda)+" · "+pc(seconda,V)),
         el("dt",{},"Al rogito"+(mutuo?", con il resto della vendita e il mutuo":", con il resto della vendita")), el("dd",{},eur(rogito)+" · "+pc(rogito,V))
       ),
       el("p",{class:"fine"},"Caparra totale prima del rogito: "+eur(firma+seconda)+" ("+pc(firma+seconda,V)+")."),
@@ -898,7 +898,7 @@ function pianoSoldi(){
     el("label",{for:"ps-vendo"},"A quanto vendi la tua casa (€)", vendo),
     el("label",{for:"ps-residuo"},"Quanto devi ancora alla banca sulla tua casa (€)", residuo),
     el("label",{for:"ps-risp"},"I tuoi risparmi di oggi (€)", risp),
-    el("label",{for:"ps-cap"},"Caparra che incasserai al compromesso (% del prezzo di vendita)", capPct),
+    el("label",{for:"ps-cap"},"Caparra che riceverai al compromesso (% del prezzo di vendita)", capPct),
     o
   );
 }
