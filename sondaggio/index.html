@@ -793,14 +793,14 @@ function calcCasa(opts){
 
   // esito per chi arriva dalla pagina del mutuo: confronta i risparmi con la caparra del 20%
   function esitoCaparra(V, M){
-    const S = num(risp.value), need = V*CAPARRA;
+    const S = num(risp.value), need = V*capIniziale(), pc = Math.round(capIniziale()*100);
     out.append(
       el("p",{class:"calc-label"},"Prezzo della casa finita"),
       el("p",{class:"calc-big"},eur(V)),
       el("p",{class:"calc-time"},"Casa pronta in "+giorniLavori(M,lp.completa())+" giorni."),
       el("dl",{class:"calc-rows"},
-        el("dt",{},"Caparra alla firma del preliminare (20%)"), el("dd",{},eur(need)),
-        el("dt",{},"Mutuo da chiedere in banca (80%)"), el("dd",{},eur(V*LTV)))
+        el("dt",{},"Caparra alla firma del preliminare ("+pc+"%)"), el("dd",{},eur(need)),
+        ...(devoVendere() ? [el("dt",{},"Al compromesso della tua casa (10%)"), el("dd",{},eur(V*SECONDA))] : [el("dt",{},"Mutuo da chiedere in banca (80%)"), el("dd",{},eur(V*LTV))]))
     );
     if(!S){ out.append(el("p",{class:"calc-empty"},"Scrivi i tuoi risparmi per sapere se hai la caparra.")); return; }
     LAST.risparmi = S;
@@ -1206,8 +1206,10 @@ function modoMutuo(m){
       el("p",{class:"lead"},"Hai già i soldi per la caparra: al mutuo ci pensa HOUSETOHOME. Lasciaci i tuoi dati e scegli come vuoi essere contattato."),
       ...contactBlock()));
   } else {
+    const vend = m==="calcola-vendita";
+    if(vend){ A.vendere="si"; A.pagina="Ho letto la pagina della casa pronta quando vendi."; A.tema="Casa da vendere"; }
     stage.append(el("section",{class:"screen"},
-      el("p",{class:"kicker"},"Il mutuo sulla casa finita"),
+      el("p",{class:"kicker"}, vend ? "La casa pronta quando vendi" : "Il mutuo sulla casa finita"),
       el("h1",{},"Hai la caparra per la casa che vuoi?"),
       el("p",{class:"lead"},"Inserisci qui sotto la casa, i lavori e i tuoi risparmi: calcoliamo il prezzo della casa finita e la caparra da versare."),
       calcCasa({risparmi:true,
@@ -1228,7 +1230,7 @@ backBtn.addEventListener("click",()=>{
   if(pos>=0){ pos--; render(); }
 });
 const MODO = location.hash.replace("#","");
-if(MODO==="calcola" || MODO==="inizia" || MODO==="vendita") modoMutuo(MODO); else render();
+if(["calcola","calcola-vendita","inizia","vendita"].includes(MODO)) modoMutuo(MODO); else render();
 </script>
 
 </body>
