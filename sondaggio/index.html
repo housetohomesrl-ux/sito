@@ -192,7 +192,6 @@ textarea{min-height:84px;resize:vertical}
 </div>
 
 <script>
-const METODO_URL = "/metodo/";
 const PAGINE = { m:"/mutuo/", v:"/vendita/", r:"/ristrutturazione/", a:"/ristrutturazione/" };
 const PRIVACY_URL = "/privacy/";
 
@@ -1169,7 +1168,7 @@ function solutions(){
   else { keys=["r"]; title="Sei già sulla buona strada."; }
   const gia = !(R.noCash||R.m||R.v||R.r);
   const forse = R.noCash ? el("p",{class:"personal center"},"Qui sotto trovi le soluzioni più adatte a te. Leggile con calma, poi lasciaci i tuoi contatti: le approfondiamo insieme e troviamo la strada migliore per arrivare alla casa che desideri.")
-    : (R.m && !R.v && A.m_banca!=="pre" && A.liquidita!=="si") ? el("p",{class:"personal center"},"Con il nostro metodo la banca calcola il mutuo sulla casa già ristrutturata, di solito fino all'80% del suo valore. Il primo passo è chiedere in banca la pre-delibera; la caparra la valutiamo insieme a te. Lasciaci i tuoi contatti: facciamo i conti nero su bianco, prima di qualsiasi firma.")
+    : (R.m && !R.v && A.m_banca!=="pre" && A.liquidita!=="si") ? el("p",{class:"personal center"},"Con noi la banca calcola il mutuo sulla casa già ristrutturata, di solito fino all'80% del suo valore. Il primo passo è chiedere in banca la pre-delibera; la caparra la valutiamo insieme a te. Lasciaci i tuoi contatti: facciamo i conti nero su bianco, prima di qualsiasi firma.")
     : A.liquidita==="forse" ? el("p",{class:"personal center"},"I conti li facciamo insieme, nero su bianco, prima di qualsiasi firma.")
     : A.liquidita==="nonso" ? el("p",{class:"personal center"},"Non hai ancora fatto i conti? Scrivici qui sotto la zona e i metri quadri della casa che ti piace: li facciamo insieme.")
     : null;
