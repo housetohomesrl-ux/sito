@@ -991,7 +991,7 @@ function messaggioWA(nome){
   const R = route(), r = [];
   r.push("Ciao HOUSETOHOME" + (nome ? ", sono "+nome : "") + "!");
   if(A.origine){
-    r.push("Ho letto la pagina del mutuo sulla casa finita.");
+    r.push(A.pagina || "Ho letto la pagina del mutuo sulla casa finita.");
     r.push(A.origine);
   } else r.push("Ho fatto il vostro sondaggio e vorrei parlarvi di:");
   // il mutuo è un problema solo se i conti lo dicono: la banca finanzia fino all'80% del valore della casa
@@ -1070,7 +1070,7 @@ function contactBlock(){
   const salva = (modo)=>{
     if(inviato===modo) return; inviato = modo;
     const R = route();
-    const problema = A.origine ? "Mutuo sulla casa finita" : ([R.m?"Mutuo":"", R.v?"Casa da vendere":"", R.r?"Ristrutturazione":""].filter(Boolean).join(", ") || "Altra strada");
+    const problema = A.origine ? (A.tema || "Mutuo sulla casa finita") : ([R.m?"Mutuo":"", R.v?"Casa da vendere":"", R.r?"Ristrutturazione":""].filter(Boolean).join(", ") || "Altra strada");
     const dati = { nome:nome.value.trim(), cognome:cognome.value.trim(), cellulare:tel.value.trim(), email:email.value.trim(),
       problema, risposte:"Contatto: "+modo+"\n"+messaggioWA(full()), privacy:privacy.checked };
     try{ fetch(SHEET_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(dati),keepalive:true}).catch(()=>{}); }catch(err){}
@@ -1190,7 +1190,15 @@ function modoMutuo(m){
   for(const k in A) delete A[k];
   const slot = el("div",{class:"contact-slot"});
   const apriContatti = (testo)=>{ A.origine = testo; slot.replaceChildren(...contactBlock()); slot.scrollIntoView({behavior:reduce?"auto":"smooth",block:"start"}); };
-  if(m==="inizia"){
+  if(m==="vendita"){
+    A.origine = "- devo vendere la mia casa e vorrei parlarvi della casa pronta quando vendo";
+    A.pagina = "Ho letto la pagina della casa pronta quando vendi."; A.tema = "Casa da vendere";
+    stage.append(el("section",{class:"screen"},
+      el("p",{class:"kicker"},"La casa pronta quando vendi"),
+      el("h1",{},"Partiamo dalla casa che desideri."),
+      el("p",{class:"lead"},"Lasciaci i tuoi dati e scegli come vuoi essere contattato: ti spieghiamo come vendere la tua casa con calma ed entrare in quella nuova già pronta."),
+      ...contactBlock()));
+  } else if(m==="inizia"){
     A.origine = "- vorrei iniziare: ho già i soldi per la caparra, per il mutuo mi affido a voi";
     stage.append(el("section",{class:"screen"},
       el("p",{class:"kicker"},"Il mutuo sulla casa finita"),
@@ -1220,7 +1228,7 @@ backBtn.addEventListener("click",()=>{
   if(pos>=0){ pos--; render(); }
 });
 const MODO = location.hash.replace("#","");
-if(MODO==="calcola" || MODO==="inizia") modoMutuo(MODO); else render();
+if(MODO==="calcola" || MODO==="inizia" || MODO==="vendita") modoMutuo(MODO); else render();
 </script>
 
 </body>
