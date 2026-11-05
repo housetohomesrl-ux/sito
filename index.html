@@ -12,7 +12,7 @@
 /* Layout: fasce piene (giallo, azzurro, mattone, blu) che si alternano, contenuto in colonna centrale; il nome HOUSE → HOME è il momento tipografico */
 :root{
   --pl-wall:#3F4042; --pl-old:#ECE7DA; --pl-live:#F8E07E; --pl-bed:#CBE8FA; --pl-bath:#F9DCCB; --pl-door:#ECE7DA; --pl-win:#8FCBEA;
-  --yellow:#F8E07E; --yellow-soft:#F8E07E; --yellow-deep:#E9CC5A; --azzurro:#A9D5EF; --azzurro-soft:#E3F1FA; --mattone:#EBAE93; --mattone-soft:#FBE6DC; --blu:#A7BCE3; --blu-2:#2A4E8A; --paper:#FFFFFF; --beige:#F4EEE2; --salvia:#BFD8B8; --card:#FFFFFF; --ink:#3F4042; --ink-soft:#5B5C5F; --rule:#E6E6E3; --ph:#EFEADA;
+  --yellow:#F8E07E; --yellow-soft:#F8E07E; --yellow-deep:#E9CC5A; --azzurro:#A9D5EF; --azzurro-soft:#E3F1FA; --mattone:#EBAE93; --mattone-soft:#FBE6DC; --blu:#A7BCE3; --blu-2:#2A4E8A; --paper:#FFFFFF; --beige:#F4EEE2; --salvia:#BFD8B8; --pastello:#FCF0BE; --card:#FFFFFF; --ink:#3F4042; --ink-soft:#5B5C5F; --rule:#E6E6E3; --ph:#EFEADA;
   --display:'Merriweather', Georgia, 'Times New Roman', serif;
   --body:'Open Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
   color-scheme: light;
@@ -149,7 +149,7 @@ header .wrap{padding-bottom:30px}
 .three i{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;grid-row:1/3;grid-column:2;align-self:center;font-style:normal;font-size:22px}
 .three .go{grid-column:1/-1;justify-self:start;margin-top:6px;display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 20px;border-radius:999px;background:var(--ink);color:#fff;font:700 15px var(--body);font-style:normal}
 .three .go span{color:#fff;grid-column:auto}
-.three a:nth-child(1){background:var(--yellow)}.three a:nth-child(2){background:var(--beige)}.three a:nth-child(3){background:var(--azzurro-soft)}
+.three a:nth-child(1){background:var(--pastello)}.three a:nth-child(2){background:var(--beige)}.three a:nth-child(3){background:var(--azzurro-soft)}
 .three a:hover b{text-decoration:underline;text-underline-offset:4px}
 
 /* come: passaggi reali in sequenza */
@@ -354,7 +354,7 @@ h2,.eyebrow{text-align:center!important;text-wrap:balance;margin-left:auto;margi
   </div>
 </section>
 
-<section class="band yellow" id="metodo">
+<section class="band" id="metodo" style="background:var(--pastello)">
   <div class="wrap">
     <h2 class="sec-title">Scopri come ti aiutiamo</h2>
     <p class="quote center-q">Ogni giorno vediamo famiglie che trovano la casa giusta e poi si fermano, piene di domande:</p>
