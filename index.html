@@ -589,7 +589,7 @@ html{scroll-padding-top:60px}
 <footer class="band dark">
   <div class="wrap">
     <span>HOUSETOHOME S.r.l. · P.IVA e C.F. 04269211209</span>
-    <a href="https://cambielli.it/" target="_blank" rel="noopener">Scopri dove scegliere le tue personalizzazioni</a>
+    <a id="personalizza" href="https://cambielli.it/" target="_blank" rel="noopener">Scopri dove scegliere le tue personalizzazioni</a>
     <a href="privacy/">Informativa privacy</a>
   </div>
 </footer>
@@ -608,18 +608,21 @@ new IntersectionObserver(function(e){var on=!e[0].isIntersecting;b.classList.tog
 <script>
 // i link interni ricalcolano la posizione mentre le foto si caricano, così si arriva sempre al punto giusto
 (function(){
-  document.addEventListener("click",function(e){
-    var a=e.target.closest&&e.target.closest('a[href^="#"]'); if(!a) return;
-    var id=a.getAttribute("href").slice(1); if(!id) return;
-    var t=document.getElementById(id); if(!t) return;
-    e.preventDefault();
+  function go(id,smooth){
+    var t=document.getElementById(id); if(!t) return false;
     var off=function(){return t.getBoundingClientRect().top+window.scrollY-70;};
     t.querySelectorAll('img[loading="lazy"]').forEach(function(i){i.loading="eager";});
     document.querySelectorAll('img[loading="lazy"]').forEach(function(i){ if(i.getBoundingClientRect().top+window.scrollY < off()+200) i.loading="eager"; });
-    window.scrollTo({top:off(),behavior:"smooth"});
-    var n=0, iv=setInterval(function(){ n++; var d=Math.abs(t.getBoundingClientRect().top-70); if(d>4) window.scrollTo({top:off(),behavior:n<6?"smooth":"auto"}); if(n>12) clearInterval(iv); },350);
-    history.replaceState(null,"","#"+id);
+    window.scrollTo({top:off(),behavior:smooth?"smooth":"auto"});
+    var n=0, iv=setInterval(function(){ n++; var d=Math.abs(t.getBoundingClientRect().top-70); if(d>4) window.scrollTo({top:off(),behavior:(smooth&&n<6)?"smooth":"auto"}); if(n>12) clearInterval(iv); },350);
+    return true;
+  }
+  document.addEventListener("click",function(e){
+    var a=e.target.closest&&e.target.closest('a[href^="#"]'); if(!a) return;
+    var id=a.getAttribute("href").slice(1); if(!id) return;
+    if(go(id,true)){ e.preventDefault(); history.replaceState(null,"","#"+id); }
   });
+  if(location.hash.length>1){ var h=decodeURIComponent(location.hash.slice(1)); window.addEventListener("load",function(){ go(h,false); }); setTimeout(function(){ go(h,false); },300); }
 })();
 </script>
 </body>

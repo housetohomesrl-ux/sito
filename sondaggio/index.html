@@ -1061,6 +1061,10 @@ function contactBlock(){
   const callBtn = el("button",{class:"btn ghost",type:"button"},"Vorrei essere richiamato");
   const mailBtn = el("button",{class:"btn ghost",type:"button"},"Vorrei essere contattato per mail");
   const thanks = el("p",{class:"thanks",hidden:""});
+  const pers = el("div",{class:"cta-box",hidden:""},
+    el("p",{class:"cta-lead"},"Scopri dove potrai personalizzare ogni tua scelta, con una persona dedicata solo a te."),
+    el("a",{class:"btn btn-big",href:"/#personalizza",target:"_blank",rel:"noopener"},"Scopri dove scegliere"));
+  const mostraPers = ()=>{ pers.hidden=false; };
   const full = ()=> (nome.value.trim()+" "+cognome.value.trim()).trim();
   const upd = ()=>{ const t = messaggioWA(full()); prev.textContent = t; waBtn.href = "https://wa.me/"+WA_NUM+"?text="+encodeURIComponent(t); };
   const valido = ()=>{
@@ -1087,9 +1091,9 @@ function contactBlock(){
     try{ fetch(SHEET_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(dati),keepalive:true}).catch(()=>{}); }catch(err){}
   };
   [nome,cognome].forEach(i=>i.addEventListener("input",upd));
-  waBtn.addEventListener("click",e=>{ upd(); if(!valido()){ e.preventDefault(); } else { salva("WhatsApp"); note.textContent="Si apre WhatsApp con il messaggio pronto: premi invia. Ti arriva anche una mail di conferma.";} });
-  callBtn.addEventListener("click",()=>{ if(valido()){ salva("Da richiamare"); thanks.textContent="Grazie! Abbiamo ricevuto la tua richiesta e ti abbiamo inviato una mail di conferma. Ti richiamiamo noi, senza impegno."; form.hidden=true; thanks.hidden=false; } });
-  mailBtn.addEventListener("click",()=>{ if(valido()){ salva("Risposta via mail"); thanks.textContent="Grazie! Abbiamo ricevuto la tua richiesta e ti abbiamo inviato una mail di conferma. Ti rispondiamo noi via mail, senza impegno. Controlla anche nella posta indesiderata."; form.hidden=true; thanks.hidden=false; } });
+  waBtn.addEventListener("click",e=>{ upd(); if(!valido()){ e.preventDefault(); } else { salva("WhatsApp"); mostraPers(); note.textContent="Si apre WhatsApp con il messaggio pronto: premi invia. Ti arriva anche una mail di conferma.";} });
+  callBtn.addEventListener("click",()=>{ if(valido()){ salva("Da richiamare"); thanks.textContent="Grazie! Abbiamo ricevuto la tua richiesta e ti abbiamo inviato una mail di conferma. Ti richiamiamo noi, senza impegno."; form.hidden=true; thanks.hidden=false; mostraPers(); } });
+  mailBtn.addEventListener("click",()=>{ if(valido()){ salva("Risposta via mail"); thanks.textContent="Grazie! Abbiamo ricevuto la tua richiesta e ti abbiamo inviato una mail di conferma. Ti rispondiamo noi via mail, senza impegno. Controlla anche nella posta indesiderata."; form.hidden=true; thanks.hidden=false; mostraPers(); } });
   const form = el("div",{class:"wa-box"},
     el("h3",{},"Parliamone subito"),
     el("p",{},"Lasciaci i tuoi dati e scegli come preferisci: su WhatsApp il messaggio è già pronto con le tue risposte, devi solo premere invia. Preferisci una telefonata o una mail? Ti contattiamo noi. In tutti i casi ti arriva subito una mail di conferma."),
@@ -1104,9 +1108,9 @@ function contactBlock(){
     prev, note, waBtn, callBtn, mailBtn
   );
   upd();
-  if(A.origine) return [form, thanks, el("div",{class:"cta-box"}, el("a",{class:"btn ghost btn-small",href:"/",target:"_blank",rel:"noopener"},"Visita il sito"))];
+  if(A.origine) return [form, thanks, pers, el("div",{class:"cta-box"}, el("a",{class:"btn ghost btn-small",href:"/",target:"_blank",rel:"noopener"},"Visita il sito"))];
   return [
-    form, thanks,
+    form, thanks, pers,
     el("div",{class:"cta-box"},
       el("p",{class:"cta-lead"},"Le soluzioni che hai appena visto sono il nostro metodo: scoprilo passo per passo."),
       el("a",{class:"btn btn-big",href:METODO_URL,target:"_blank",rel:"noopener"},"Il nostro metodo nel dettaglio"),
