@@ -1090,9 +1090,9 @@ function contactBlock(){
     try{ fetch(SHEET_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(dati),keepalive:true}).catch(()=>{}); }catch(err){}
   };
   [nome,cognome].forEach(i=>i.addEventListener("input",upd));
-  waBtn.addEventListener("click",e=>{ upd(); if(!valido()){ e.preventDefault(); } else { salva("WhatsApp"); mostraPers(); note.textContent="Si apre WhatsApp con il messaggio pronto: premi invia. Ti arriva anche una mail di conferma.";} });
-  callBtn.addEventListener("click",()=>{ if(valido()){ salva("Da richiamare"); thanks.textContent="Grazie per averci scritto! Abbiamo ricevuto la tua richiesta e ti abbiamo inviato una mail di conferma. Ti richiamiamo noi, senza impegno."; form.hidden=true; thanks.hidden=false; mostraPers(); } });
-  mailBtn.addEventListener("click",()=>{ if(valido()){ salva("Risposta via mail"); thanks.textContent="Grazie per averci scritto! Abbiamo ricevuto la tua richiesta e ti abbiamo inviato una mail di conferma. Ti rispondiamo noi via mail, senza impegno. Controlla anche nella posta indesiderata."; form.hidden=true; thanks.hidden=false; mostraPers(); } });
+  waBtn.addEventListener("click",e=>{ upd(); if(!valido()){ e.preventDefault(); } else { salva("WhatsApp"); mostraPers(); note.textContent="Si apre WhatsApp con il messaggio pronto: premi invia. Ti arriva anche una mail di conferma: controlla anche nella cartella spam.";} });
+  callBtn.addEventListener("click",()=>{ if(valido()){ salva("Da richiamare"); thanks.textContent="Grazie per averci scritto! Ti abbiamo inviato una mail di conferma: controlla anche nella cartella spam. Ti richiamiamo noi, senza impegno."; form.hidden=true; thanks.hidden=false; mostraPers(); } });
+  mailBtn.addEventListener("click",()=>{ if(valido()){ salva("Risposta via mail"); thanks.textContent="Grazie per averci scritto! Ti abbiamo inviato una mail di conferma: controlla anche nella cartella spam. Ti rispondiamo noi via mail, senza impegno."; form.hidden=true; thanks.hidden=false; mostraPers(); } });
   const form = el("div",{class:"wa-box"},
     el("h3",{},"Parliamone subito"),
     el("p",{},"Lasciaci i tuoi dati e scegli come preferisci: su WhatsApp il messaggio è già pronto con le tue risposte, devi solo premere invia. Preferisci una telefonata o una mail? Ti contattiamo noi. In tutti i casi ti arriva subito una mail di conferma."),
