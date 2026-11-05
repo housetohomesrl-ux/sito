@@ -13,7 +13,7 @@
 /* Layout: fasce piene (giallo, azzurro, mattone, blu) che si alternano, contenuto in colonna centrale; il nome HOUSE → HOME è il momento tipografico */
 :root{
   --pl-wall:#3F4042; --pl-old:#ECE7DA; --pl-live:#FAE89E; --pl-bed:#CBE8FA; --pl-bath:#F9DCCB; --pl-door:#ECE7DA; --pl-win:#8FCBEA;
-  --yellow:#FAE89E; --yellow-soft:#FAE89E; --yellow-deep:#E9CC5A; --azzurro:#A9D5EF; --azzurro-soft:#E3F1FA; --mattone:#EBAE93; --mattone-soft:#FBE6DC; --blu:#A7BCE3; --blu-2:#2A4E8A; --paper:#FFFFFF; --beige:#F4EEE2; --salvia:#BFD8B8; --pastello:#FAE89E; --card:#FFFFFF; --ink:#3F4042; --ink-soft:#5B5C5F; --rule:#E6E6E3; --ph:#EFEADA;
+  --yellow:#FAE89E; --yellow-soft:#FAE89E; --yellow-deep:#E9CC5A; --azzurro:#A9D5EF; --azzurro-soft:#E3F1FA; --mattone:#EBAE93; --mattone-soft:#FBE6DC; --blu:#A7BCE3; --blu-2:#2A4E8A; --paper:#FFFFFF; --beige:#F4EEE2; --salvia:#CFE0C3; --pesca:#F3C9AE; --lilla:#DAD2EE; --petrolio:#2F4858; --pastello:#FAE89E; --card:#FFFFFF; --ink:#3F4042; --ink-soft:#5B5C5F; --rule:#E6E6E3; --ph:#EFEADA;
   --display:'Merriweather', Georgia, 'Times New Roman', serif;
   --body:'Open Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
   color-scheme: light;
@@ -196,10 +196,12 @@ header .wrap{padding-bottom:30px}
 .thoughts li{font:400 italic 17px/1.5 var(--display);color:var(--ink);background:var(--blu);border-radius:12px;padding:12px 16px}
 @media (min-width:720px){.thoughts{grid-template-columns:repeat(3,1fr)}}
 .ways{display:grid;grid-template-columns:1fr;gap:14px}
-.way{border-radius:18px;padding:22px;display:flex;flex-direction:column;gap:10px;background:var(--salvia);color:var(--ink);box-shadow:0 2px 0 rgba(63,64,66,.12)}
-.way:nth-child(2){background:var(--mattone)}
-.way:nth-child(3){background:var(--blu)}
-#metodo .ctas .btn.solid{background:var(--ink);color:#fff;border-color:var(--ink)}
+#metodo{background:var(--petrolio)}
+#metodo .sec-title,#metodo .quote,#metodo .prose p{color:#fff}
+.way{border-radius:18px;padding:22px;display:flex;flex-direction:column;gap:10px;background:var(--pesca);color:var(--ink)}
+.way:nth-child(2){background:var(--salvia)}
+.way:nth-child(3){background:var(--lilla)}
+#metodo .ctas .btn.solid{background:#fff;color:var(--petrolio);border-color:#fff}
 .way .q{font:400 italic 16px/1.5 var(--display);opacity:.85}
 .way .problem{font:400 italic clamp(19px,2.2vw,22px)/1.4 var(--display);margin:0 0 4px;padding-bottom:12px;border-bottom:1px solid rgba(63,64,66,.2)}
 .way .you{font-weight:700}
@@ -354,7 +356,7 @@ h2,.eyebrow{text-align:center!important;text-wrap:balance;margin-left:auto;margi
   </div>
 </section>
 
-<section class="band" id="metodo" style="background:var(--pastello)">
+<section class="band" id="metodo">
   <div class="wrap">
     <h2 class="sec-title">Scopri come ti aiutiamo</h2>
     <p class="quote center-q">Ogni giorno vediamo famiglie che trovano la casa giusta e poi si fermano, piene di domande:</p>
