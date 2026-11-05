@@ -1069,10 +1069,8 @@ function contactBlock(){
   const callBtn = el("button",{class:"btn ghost",type:"button"},"Vorrei essere richiamato");
   const mailBtn = el("button",{class:"btn ghost",type:"button"},"Vorrei essere contattato per mail");
   const thanks = el("p",{class:"thanks",hidden:""});
-  const pers = el("div",{class:"cta-box",hidden:""},
-    el("a",{class:"btn btn-big",style:"height:auto;min-height:64px;padding:14px 26px;line-height:1.3;text-align:center",href:"/#personalizza",target:"_blank",rel:"noopener"},"Scopri dove scegliere le tue personalizzazioni con una professionista dedicata"));
   const visita = el("a",{class:"btn ghost btn-small",href:"/",target:"_blank",rel:"noopener",hidden:""},"Visita il sito");
-  const mostraPers = ()=>{ pers.hidden=false; visita.hidden=false; };
+  const mostraPers = ()=>{ visita.hidden=false; };
   const full = ()=> (nome.value.trim()+" "+cognome.value.trim()).trim();
   const upd = ()=>{ const t = messaggioWA(full()); prev.textContent = t; waBtn.href = "https://wa.me/"+WA_NUM+"?text="+encodeURIComponent(t); };
   const valido = ()=>{
@@ -1116,9 +1114,9 @@ function contactBlock(){
     prev, note, waBtn, callBtn, mailBtn
   );
   upd();
-  if(A.origine) return [form, thanks, pers, el("div",{class:"cta-box"}, visita)];
+  if(A.origine) return [form, thanks, el("div",{class:"cta-box"}, visita)];
   return [
-    form, thanks, pers,
+    form, thanks,
     el("div",{class:"cta-box"}, visita)
   ];
 }
