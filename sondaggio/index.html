@@ -1172,8 +1172,7 @@ function solutions(){
                 : el("p",{class:"lead"},"Hai le risorse, non devi vendere e i lavori non ti spaventano. Per progettare e seguire la ristrutturazione, ci siamo noi."),
     forse,
     el("div",{class:"scards"}, keys.map(k=>cardButton(k,true))),
-    contactBlock(),
-    el("button",{class:"btn ghost",type:"button",onclick:()=>{for(const k in A)delete A[k];showSolutions=false;detail=null;pos=-1;render();}},"Ricomincia")
+    contactBlock()
   ));
   top0();
 }
@@ -1189,8 +1188,7 @@ function detailView(k){
     ),
     el("p",{class:"small"},"Un lavoro reale di HOUSETOHOME: "+c.where+"."),
     c.body(R),
-    contactBlock(),
-    el("button",{class:"btn ghost",type:"button",onclick:()=>{detail=null;render();}},"Torna alle soluzioni")
+    contactBlock()
   ));
   top0();
 }
