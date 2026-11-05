@@ -700,6 +700,16 @@ function calcCasa(opts){
   const rev = el("div",{class:"calc-rev",hidden:""});
   const lp = lavoriPicker("cc-",()=>update());
   const risp = opts.risparmi ? el("input",{id:"cc-risp",inputmode:"numeric",placeholder:"es. 60.000",autocomplete:"off"}) : null;
+  // per chi deve prima vendere: caparra divisa (15% alla firma + 10% al compromesso della sua casa)
+  let segV = null;
+  if(opts.risparmi){
+    segV = el("div",{class:"seg",role:"group","aria-label":"Devi vendere la tua casa?"});
+    [["no","No"],["si","Sì"]].forEach(([v,t])=>{
+      const b = el("button",{type:"button",class:"seg-b","aria-pressed":(A.vendere==="si")===(v==="si")?"true":"false"},t);
+      b.addEventListener("click",()=>{ A.vendere = v; segV.querySelectorAll(".seg-b").forEach(x=>x.setAttribute("aria-pressed","false")); b.setAttribute("aria-pressed","true"); update(); });
+      segV.append(b);
+    });
+  }
 
   let trovata = "si";
   const prezzo = el("input",{id:"cc-prezzo",inputmode:"numeric",placeholder:"es. 220.000",autocomplete:"off"});
@@ -830,6 +840,7 @@ function calcCasa(opts){
       boxSi, boxNo,
       el("label",{for:"cc-mq"},"Metri quadri", mq),
       lp.node,
+      segV ? el("div",{class:"sv-tipo"}, el("span",{class:"sv-lab"},"Devi vendere la tua casa per comprare quella nuova?"), segV) : null,
       risp ? el("label",{for:"cc-risp"},"I tuoi risparmi per la caparra (€)", risp) : null,
       out
     ),
