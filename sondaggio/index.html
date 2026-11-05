@@ -1201,7 +1201,15 @@ function modoMutuo(m){
   for(const k in A) delete A[k];
   const slot = el("div",{class:"contact-slot"});
   const apriContatti = (testo)=>{ A.origine = testo; slot.replaceChildren(...contactBlock()); slot.scrollIntoView({behavior:reduce?"auto":"smooth",block:"start"}); };
-  if(m==="vendita"){
+  if(m==="ristrutturazione"){
+    A.origine = "- vorrei ristrutturare casa con voi";
+    A.pagina = "Ho letto la pagina della ristrutturazione."; A.tema = "Ristrutturazione";
+    stage.append(el("section",{class:"screen"},
+      el("p",{class:"kicker"},"Il prezzo fissato subito"),
+      el("h1",{},"Partiamo dalla casa che desideri."),
+      el("p",{class:"lead"},"Lasciaci i tuoi dati e scegli come vuoi essere contattato: il progetto lo decidi tu, il prezzo lo fissiamo insieme prima di iniziare."),
+      ...contactBlock()));
+  } else if(m==="vendita"){
     A.origine = "- devo vendere la mia casa e vorrei parlarvi della casa pronta quando vendo";
     A.pagina = "Ho letto la pagina della casa pronta quando vendi."; A.tema = "Casa da vendere";
     stage.append(el("section",{class:"screen"},
@@ -1241,7 +1249,7 @@ backBtn.addEventListener("click",()=>{
   if(pos>=0){ pos--; render(); }
 });
 const MODO = location.hash.replace("#","");
-if(["calcola","calcola-vendita","inizia","vendita"].includes(MODO)) modoMutuo(MODO); else render();
+if(["calcola","calcola-vendita","inizia","vendita","ristrutturazione"].includes(MODO)) modoMutuo(MODO); else render();
 </script>
 
 </body>
