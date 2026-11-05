@@ -149,7 +149,6 @@ select{font:400 16px var(--body);color:var(--ink);border:2px solid #D9D6C8;borde
 .wa-box .btn.ghost{align-self:stretch}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 @media (max-width:360px){.two{grid-template-columns:1fr}}
-.link-mini{font-size:13px;color:inherit;opacity:.7;text-decoration:underline}
 .cta-box{display:flex;flex-direction:column;gap:12px;align-items:center;padding-top:6px}
 input.err{border-color:#C0392B!important;box-shadow:0 0 0 3px rgba(192,57,43,.18)}
 input[type=checkbox].err{outline:3px solid #C0392B;outline-offset:2px}
@@ -1064,8 +1063,8 @@ function contactBlock(){
   const thanks = el("p",{class:"thanks",hidden:""});
   const pers = el("div",{class:"cta-box",hidden:""},
     el("a",{class:"btn btn-big",style:"height:auto;min-height:64px;padding:14px 26px;line-height:1.3;text-align:center",href:"/#personalizza",target:"_blank",rel:"noopener"},"Scopri dove scegliere le tue personalizzazioni con una professionista dedicata"));
-  const visita = el("a",{class:"link-mini",href:"/",target:"_blank",rel:"noopener"},"Visita il sito");
-  const mostraPers = ()=>{ pers.hidden=false; visita.className="btn ghost btn-small"; };
+  const visita = el("a",{class:"btn ghost btn-small",href:"/",target:"_blank",rel:"noopener",hidden:""},"Visita il sito");
+  const mostraPers = ()=>{ pers.hidden=false; visita.hidden=false; };
   const full = ()=> (nome.value.trim()+" "+cognome.value.trim()).trim();
   const upd = ()=>{ const t = messaggioWA(full()); prev.textContent = t; waBtn.href = "https://wa.me/"+WA_NUM+"?text="+encodeURIComponent(t); };
   const valido = ()=>{
