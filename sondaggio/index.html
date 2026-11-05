@@ -1152,7 +1152,7 @@ function solutions(){
   const R = route();
   let keys, title;
   if(R.noCash){ keys=["a","r"]; title="Per la tua casa c'è una strada su misura."; }
-  else if(R.m && R.v){ keys=["v","m"]; title="Hai due ostacoli. Li risolviamo entrambi."; }
+  else if(R.m && R.v){ keys=["v","m"]; title="La casa che devi vendere ti ostacola e rallenta, e il mutuo potrebbe essere un problema? Troviamo insieme la soluzione per te!"; }
   else if(R.m && A.m_banca!=="pre" && A.liquidita!=="si"){ keys=["m"]; title="Tra mutuo e risparmi, abbiamo una soluzione."; }
   else if(R.m){ keys=["m"]; title="Il tuo ostacolo è il mutuo. Ecco come lo superi."; }
   else if(R.v){ keys=["v"]; title="Il tuo ostacolo sono i tempi della vendita. Ecco come li superi."; }
