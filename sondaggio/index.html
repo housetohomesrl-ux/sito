@@ -569,6 +569,7 @@ function solAltraStrada(){
 }
 
 const K_L = 11e2;
+const AUMENTO_TROVATA = 1.02; // +2% (05/11 sera) sul prezzo della casa già individuata
 const K_T = 13e2; // casa già individuata: costo lavori al m² usato nel calcolo (non mostrato)
 const CAPARRA = 0.20, LTV = 0.80, VICINO = 0.80; // "vicino": risparmi da 80% della caparra in su
 const devoVendere = () => A.vendere === "si";
@@ -737,7 +738,7 @@ function calcCasa(opts){
     if(trovata==="si" ? (!PA || !M) : (!Z || !M)){ out.append(el("p",{class:"calc-empty"}, trovata==="si" ? "Scrivi il prezzo dell'annuncio e i metri quadri per vedere il risultato." : "Scegli la zona e scrivi i metri quadri per vedere il risultato.")); return; }
     if(trovata!=="si" && DA_VALUTARE.has(Z)){ out.append(boxInsieme(Z)); return; }
     if(Q===0){ out.append(el("p",{class:"calc-empty"},"Scegli i lavori che vuoi fare per vedere il risultato.")); return; }
-    const V = trovata==="si" ? vic(PA*0.97 + M*K_T*Q) : vic(valoreMq(Z,Q)*M);
+    const V = trovata==="si" ? vic((PA*0.97 + M*K_T*Q)*AUMENTO_TROVATA) : vic(valoreMq(Z,Q)*M);
     LAST.casa = {zona: trovata==="si" ? "" : Z, dove: trovata==="si" ? dove.value.trim() : "", prezzo: trovata==="si" ? PA : 0, mq:M, lavori: Q>=1 ? "completa" : "parziale", V};
     if(opts.risparmi) return esitoCaparra(V, M);
     const yes = el("button",{class:"btn",type:"button"},"Ho questa cifra: partiamo");
