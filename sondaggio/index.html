@@ -165,7 +165,9 @@ textarea{min-height:84px;resize:vertical}
 .check{flex-direction:row;align-items:flex-start;gap:10px;font-weight:400;font-size:13px;line-height:1.45}
 .check input{width:22px;height:22px;min-height:0;flex:none;margin:1px 0 0;accent-color:var(--ink)}
 .note{font-size:12px;color:var(--ink-soft)}
-.thanks{text-align:center;font-size:16px}
+.thanks{text-align:center;background:var(--paper,#fff);border-radius:16px;padding:22px 20px;box-shadow:0 2px 0 rgba(63,64,66,.10)}
+.thanks h3{margin:0 0 8px;font-family:var(--display,Merriweather,Georgia,serif);font-size:22px;line-height:1.3}
+.thanks p{margin:0;font-size:17px;line-height:1.55}
 @media (prefers-reduced-motion: reduce){
   .screen{animation:none}
   .house .lp,.opt,.btn{transition:none}
@@ -1068,7 +1070,8 @@ function contactBlock(){
   const waBtn = el("a",{class:"btn wa",href:"https://wa.me/"+WA_NUM,target:"_blank",rel:"noopener"}, waIcon(), "Invia su WhatsApp");
   const callBtn = el("button",{class:"btn ghost",type:"button"},"Vorrei essere richiamato");
   const mailBtn = el("button",{class:"btn ghost",type:"button"},"Vorrei essere contattato per mail");
-  const thanks = el("p",{class:"thanks",hidden:""});
+  const thanks = el("div",{class:"thanks",hidden:"",role:"status"});
+  const grazie = (t)=>{ thanks.replaceChildren(el("h3",{},"Grazie per averci scritto!"), el("p",{},"Ti abbiamo inviato una mail di conferma: controlla anche nella cartella spam."), el("p",{},t)); document.querySelectorAll(".cta-scrivici").forEach(x=>x.hidden=true); };
   const visita = el("a",{class:"btn ghost btn-small",href:"/",target:"_blank",rel:"noopener",hidden:""},"Visita il sito");
   const mostraPers = ()=>{ visita.hidden=false; };
   const full = ()=> (nome.value.trim()+" "+cognome.value.trim()).trim();
@@ -1098,8 +1101,8 @@ function contactBlock(){
   };
   [nome,cognome].forEach(i=>i.addEventListener("input",upd));
   waBtn.addEventListener("click",e=>{ upd(); if(!valido()){ e.preventDefault(); } else { salva("WhatsApp"); mostraPers(); note.textContent="Si apre WhatsApp con il messaggio pronto: premi invia. Ti arriva anche una mail di conferma: controlla anche nella cartella spam.";} });
-  callBtn.addEventListener("click",()=>{ if(valido()){ salva("Da richiamare"); thanks.textContent="Grazie per averci scritto! Ti abbiamo inviato una mail di conferma: controlla anche nella cartella spam. Ti richiamiamo noi, senza impegno."; form.hidden=true; thanks.hidden=false; mostraPers(); } });
-  mailBtn.addEventListener("click",()=>{ if(valido()){ salva("Risposta via mail"); thanks.textContent="Grazie per averci scritto! Ti abbiamo inviato una mail di conferma: controlla anche nella cartella spam. Ti rispondiamo noi via mail, senza impegno."; form.hidden=true; thanks.hidden=false; mostraPers(); } });
+  callBtn.addEventListener("click",()=>{ if(valido()){ salva("Da richiamare"); grazie("Ti richiamiamo noi, senza impegno."); form.hidden=true; thanks.hidden=false; mostraPers(); } });
+  mailBtn.addEventListener("click",()=>{ if(valido()){ salva("Risposta via mail"); grazie("Ti rispondiamo noi via mail, senza impegno."); form.hidden=true; thanks.hidden=false; mostraPers(); } });
   const form = el("div",{class:"wa-box"},
     el("h3",{},"Parliamone subito"),
     el("p",{},"Lasciaci i tuoi dati e scegli come preferisci: su WhatsApp il messaggio è già pronto con le tue risposte, devi solo premere invia. Preferisci una telefonata o una mail? Ti contattiamo noi. In tutti i casi ti arriva subito una mail di conferma."),
@@ -1203,7 +1206,7 @@ function modoMutuo(m){
   stage.replaceChildren(); backBtn.hidden = true; drawHouse(STEPS);
   for(const k in A) delete A[k];
   const slot = el("div",{class:"contact-slot"});
-  const apriContatti = (testo)=>{ A.origine = testo; slot.replaceChildren(...contactBlock()); slot.scrollIntoView({behavior:reduce?"auto":"smooth",block:"start"}); };
+  const apriContatti = (testo)=>{ A.origine = testo; document.querySelectorAll(".cta-scrivici").forEach(x=>x.hidden=true); slot.replaceChildren(...contactBlock()); slot.scrollIntoView({behavior:reduce?"auto":"smooth",block:"start"}); };
   if(m.indexOf("scrivici")===0){
     A.origine = m==="scrivici-calcolo" ? "- ho fatto i miei conti e vorrei parlarne con voi, senza impegno" : m==="scrivici-sondaggio" ? "- ho fatto il sondaggio e vorrei parlarne con voi, senza impegno" : "- ho visitato il sito e vorrei parlarne con voi, senza impegno";
     A.tema = "Contatto dal sito";
@@ -1259,7 +1262,7 @@ function modoMutuo(m){
         onParziale:()=>apriContatti("- non vorrei una ristrutturazione completa: vorrei valutare insieme i lavori"),
         onTalk:(q)=>apriContatti(q==="lontano" ? "- ho fatto il calcolo per il mutuo sulla casa finita e vorrei parlarne" : "- ho fatto il calcolo: per la caparra ci arrivo vicino, vorrei parlarne"),
         onRistr:()=>{ stage.replaceChildren(); A.origine=""; delete A.origine; detailView("r"); }}),
-      el("div",{class:"cta-box"},
+      el("div",{class:"cta-box cta-scrivici"},
         el("p",{class:"cta-lead"},"Scrivici: troviamo insieme la strada per la tua casa."),
         el("button",{class:"btn",type:"button",onclick:()=>apriContatti("- vorrei parlarvi del mutuo sulla casa finita")},"Scrivici subito")),
       slot));
