@@ -21,13 +21,13 @@
     },
     calcolo: {
       t: "Hai fatto i tuoi conti",
-      p: ["Le cifre ti sembrano alte? Considera che, acquistando una casa da ristrutturare, i soli lavori costano almeno 1.000 €/m².",
-          "Con noi hai un servizio completo, con professionisti che ti seguono in ogni aspetto: non dovrai cercare un geometra per il progetto, un'impresa per i lavori o un architetto che ti consigli come ottimizzare gli spazi e dove scegliere i materiali. E con noi puoi ottenere il mutuo che ti serve per realizzare la casa che desideri.",
+      p: ["Le cifre ti sembrano alte? Considera che, acquistando una casa da ristrutturare, dovrai aggiungere almeno 1.000 €/m² per i soli lavori, e occuparti di tutto da solo.",
+          "Con noi hai un servizio completo e un team di professionisti al tuo fianco: progetto, lavori, ottimizzazione degli spazi e scelta dei materiali. E puoi ottenere il mutuo che ti serve per realizzare la casa che desideri.",
           "Non fermarti alla cifra che vedi: pensa a quello che avrai."]
     },
     visita: {
       t: "Ti interessa quello che facciamo?",
-      p: ["Abbiamo notato che stai scoprendo come realizziamo i desideri dei nostri clienti. Scrivici oggi, senza impegno: ti spieghiamo come possiamo aiutarti."]
+      p: ["Abbiamo notato che stai scoprendo come realizziamo i desideri dei nostri clienti. Scrivici oggi, senza impegno, anche solo per chiarirti le idee sulle tue scelte o su quello che facciamo."]
     }
   };
 
