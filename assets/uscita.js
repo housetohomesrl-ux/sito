@@ -62,7 +62,6 @@
     box.setAttribute("aria-labelledby", "h2h-exit-t");
     box.innerHTML =
       '<div class="h2h-exit-card">' +
-        '<button class="h2h-exit-x" type="button" aria-label="Chiudi">×</button>' +
         '<p class="h2h-exit-k">Prima di andare</p>' +
         '<h2 id="h2h-exit-t"></h2>' +
         '<div class="h2h-exit-p"></div>' +
@@ -72,7 +71,6 @@
     box.querySelector("h2").textContent = T.t;
     var pp = box.querySelector(".h2h-exit-p");
     T.p.forEach(function(x){ var p = document.createElement("p"); p.textContent = x; pp.appendChild(p); });
-    box.querySelector(".h2h-exit-x").onclick = chiudi;
     box.querySelector(".h2h-exit-no").onclick = chiudi;
     box.querySelector(".h2h-exit-go").onclick = function(){ vaiAiDati(tipo); };
     box.addEventListener("click", function(e){ if(e.target === box) chiudi(); });
@@ -91,7 +89,6 @@
     ".h2h-exit-p p{margin:0 0 10px;font-size:15.5px;line-height:1.55;color:#E6ECEF}" +
     ".h2h-exit-go{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:52px;margin-top:10px;border:0;border-radius:999px;background:#FAE89E;color:#3F4042;font-weight:700;font-size:16px;font-family:inherit;cursor:pointer}" +
     ".h2h-exit-no{display:block;width:100%;margin-top:10px;padding:10px;border:0;background:none;color:#C9D3D8;font-size:14px;font-family:inherit;cursor:pointer;text-decoration:underline;text-underline-offset:3px}" +
-    ".h2h-exit-x{position:absolute;top:10px;right:12px;width:40px;height:40px;border:0;background:none;color:#C9D3D8;font-size:26px;line-height:1;cursor:pointer}" +
     "@keyframes h2hIn{from{opacity:0}to{opacity:1}}";
   document.head.appendChild(css);
 
