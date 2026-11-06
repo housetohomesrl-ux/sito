@@ -610,7 +610,7 @@ const ZONE = [
   {g:"Altri comuni della provincia", z:[["Castenaso",3200,"f"],["Castel Maggiore",3100,"f"],["Granarolo dell\'Emilia",3100,"f"],["Anzola dell\'Emilia",2850,"f"],["Calderara di Reno",2800,"f"],["Ozzano dell\'Emilia",2800,"f"],["Pianoro",2700,"f"],["Sasso Marconi",2650,"f"],["Castel San Pietro Terme",2650,"f"],["Argelato",2450,"f"],["Monte San Pietro",2350,"f"],["Bentivoglio",2300,"f"],["San Giovanni in Persiceto",2250,"f"],["Valsamoggia",2200,"f"],["Sala Bolognese",2200,"f"],["Budrio",2150,"f"],["Imola",2150,"f"],["Minerbio",2150,"f"],["San Pietro in Casale",2100,"f"],["Medicina",1750,"f"],["Molinella",1400,"f"]]}
 ];
 const AUTO = { d:{posto:25000, garage:40000}, p:{posto:15000, garage:25000}, f:{posto:10000, garage:20000} };
-const PRUDENZA = 1.02 * 1.01 * 1.01 * 1.02 * 1.04 * 1.04 * 1.02; // +2% (02/11), +1% e +1% (05/11), +2%, +4%, +4% e +2% (05/11 sera) sui valori di zona
+const PRUDENZA = 1.02 * 1.01 * 1.01 * 1.02 * 1.04 * 1.04 * 1.02 * 1.02; // +2% (02/11), +1% e +1% (05/11), +2%, +4%, +4% e +2% (05/11 sera), +2% (06/11) sui valori di zona
 // tempi dei lavori: ristrutturazione parziale 30 giorni; completa 60 giorni fino a 110 m², 90 giorni oltre
 const giorniLavori = (m, completa) => !completa ? 30 : (m > 110 ? 90 : 60);
 const ZONA = {}, FASCIA = {};
