@@ -409,7 +409,7 @@ function solMutuo(){
     el("h4",{},"Come funziona"),
     el("p",{},"Tu scegli la casa che ti piace, anche se oggi è da ristrutturare. HOUSETOHOME la acquista e la ristruttura secondo il progetto che decidi tu. Poi tu la compri direttamente da noi, finita, al prezzo che conosci fin dal primo giorno."),
     el("h4",{},"Perché il tuo mutuo sarà più alto"),
-    el("p",{},"La base di tutto è la rata. La banca verifica prima di tutto che, con il tuo reddito, puoi sostenere la rata del mutuo: lo mette per iscritto in una pre-delibera. Solo dopo guarda la casa: il perito la valuta e la banca presta, di solito, fino all'80% di quel valore."),
+    el("p",{},"La base di tutto è la rata. La banca verifica prima di tutto che, con il tuo reddito, tu possa sostenere la rata del mutuo: lo mette per iscritto in una pre-delibera. Solo dopo guarda la casa: il perito la valuta e la banca presta, di solito, fino all'80% di quel valore."),
     el("p",{},"La tua rata può darti accesso a un mutuo alto. Su una casa da ristrutturare il perito dà un valore basso, il mutuo si ferma all'80% di quel valore e i lavori li paghi tu a parte. Su una casa già ristrutturata il valore è più alto, e il mutuo lo segue."),
     el("p",{},"Ecco come cambiano i conti, in percentuale:"),
     el("div",{class:"cmp-wrap"},
@@ -432,11 +432,11 @@ function solMutuo(){
     el("h4",{},"Prima di firmare, verifichiamo tutto"),
     el("p",{},"Il contratto preliminare non è legato all'ottenimento del mutuo. Per questo non si firma nulla finché i conti non tornano. Facciamo tre verifiche, insieme:"),
     el("ol",{class:"todo"},
-      todo(1,"La rata: la base di tutto","Ci porti la pre-delibera della banca, cioè il documento in cui la banca verifica che con il tuo reddito puoi sostenere la rata. Senza questa, non si parte."),
+      todo(1,"La rata: la base di tutto","Ci porti la pre-delibera della banca, cioè il documento in cui la banca verifica che con il tuo reddito tu possa sostenere la rata. Senza questa, non si parte."),
       todo(2,"Il valore","Prima di fare i conti verifichiamo quanto vale, in quella zona, una casa ristrutturata con quelle caratteristiche. Così, quando il perito arriva, la valutazione è quella attesa."),
       todo(3,"I tuoi risparmi","La caparra è il 20% del prezzo della casa finita. Non hai il 20%? I conti li facciamo insieme. E c'è anche un'altra strada: compri tu la casa da ristrutturare e noi la trasformiamo come la desideri.")
     ),
-    el("p",{},"I conti li verifichiamo insieme prima di firmare, così parti sicuro. E la casa la acquistiamo noi: ci mettiamo la faccia e i nostri soldi."),
+    el("p",{},"I conti li verifichiamo insieme prima di firmare, così parti sicuro. E la casa la acquistiamo noi: con i nostri capitali, ed è il nostro impegno concreto."),
     el("h4",{},"Cosa ottieni"),
     el("ul",{class:"plus"},
       ["Compri la casa che sogni, con conti verificati prima di firmare",
@@ -480,14 +480,14 @@ function solVendita(){
         el("li",{},"Nei tempi fissati la casa è pronta e ti aspetta"),
         el("li",{},"Quando hai venduto, entri subito")))
     ),
-    el("p",{},"I tempi li decidi tu, oppure sono soltanto quelli della vendita della tua casa. Nel frattempo HOUSETOHOME lavora per te."),
+    el("p",{},"I tempi sono quelli della vendita della tua casa: nel frattempo HOUSETOHOME lavora per te."),
     pianoSoldi(),
     el("h4",{},"Cosa ottieni"),
     el("ul",{class:"plus"},
       ["Non perdi la casa che hai scelto mentre vendi la tua",
        "Non fai aspettare chi ha comprato la tua casa",
        "Nessun periodo in affitto o in casa d'altri tra un trasloco e l'altro",
-       "Ti godi la vendita senza pensieri, e magari porti un caffè all'impresa che sta realizzando il tuo sogno"].map(t=>el("li",{},tick(),el("span",{},t))))
+       "Vendi con serenità e, quando vuoi, vedi la tua nuova casa prendere forma"].map(t=>el("li",{},tick(),el("span",{},t))))
   );
 }
 
@@ -548,7 +548,7 @@ function stepsAcquisto(R){
       R.v ? el("p",{},el("b",{},"Perché la caparra in due parti?"),"Perché sappiamo che i tuoi soldi sono ancora nella casa che devi vendere. Alla firma ti chiediamo il 15%: noi abbiamo già comprato la casa e avviato i lavori per te, e la caparra conferma che quella casa è tua. La seconda parte, il 10%, la versi quando firmi il compromesso della tua casa, con la caparra che ricevi dal tuo acquirente. Così, prima del rogito, la caparra è il 25%: 15% alla firma e 10% al compromesso.")
           : el("p",{},el("b",{},"Perché una caparra del 20%?"),"Perché siamo noi ad acquistare la casa e a pagare i lavori per te. Il 20% è la parte che la banca non finanzia: la versi alla firma e il resto lo copre il mutuo. La caparra conferma, per iscritto, che quella casa è tua e nessun altro può comprarla."),
       el("p",{},el("b",{},"Quando si fa il rogito?"), R.v ? "Da quando la acquistiamo, la casa è pronta nei tempi fissati per iscritto e ti aspetta, a prescindere dai tuoi tempi. Il rogito lo fissiamo insieme nel preliminare, in base a dove sei con la vendita della tua casa: appena messa in vendita, con una proposta o con un acquirente. Nessuna fretta: i tempi li decidiamo insieme, in base alla tua vendita." : "Da quando la acquistiamo, la casa è pronta nei tempi fissati per iscritto. Quando la banca ti ha deliberato il mutuo, noi siamo già pronti per il rogito."),
-      R.m ? el("p",{},el("b",{},"Come sono sicuro di avere il mutuo?"),"Per questo si parte dalla pre-delibera: prima di tutto la banca verifica, per iscritto, che con il tuo reddito puoi sostenere la rata. È la base di tutto. Poi noi verifichiamo il valore reale della casa finita in quella zona, così la perizia conferma i conti, e tu verifichi i tuoi risparmi per la caparra. Il preliminare non è vincolato al mutuo: per questo firmiamo solo con tutte e tre le verifiche fatte. Così parti sicuro.") : null,
+      R.m ? el("p",{},el("b",{},"Come sono sicuro di avere il mutuo?"),"Per questo si parte dalla pre-delibera: prima di tutto la banca verifica, per iscritto, che con il tuo reddito tu possa sostenere la rata. È la base di tutto. Poi noi verifichiamo il valore reale della casa finita in quella zona, così la perizia conferma i conti, e tu verifichi i tuoi risparmi per la caparra. Il preliminare non è vincolato al mutuo: per questo firmiamo solo con tutte e tre le verifiche fatte. Così parti sicuro.") : null,
       el("p",{},el("b",{},"Come sono tutelato?"),"Tutto è scritto in un contratto preliminare trascritto, cioè registrato nei registri immobiliari: la casa è prenotata a tuo nome e nessuno può venderla ad altri o metterci sopra un'ipoteca. Casa, progetto, prezzo e tempi sono nero su bianco."),
       el("p",{},el("b",{},"E dopo la consegna?"),"Non sei da solo: per un anno dalla fine dei lavori ti seguiamo noi."),
       el("p",{},el("b",{},"Quali imposte pago?"),"Le stesse di quando compri casa da un privato: con le agevolazioni prima casa, se ne hai diritto, oppure quelle per la seconda casa. Nei rari casi in cui i lavori toccano parti strutturali dell'edificio, te lo diciamo prima e ti mostriamo i conti nel dettaglio, prima di qualsiasi firma."),
@@ -751,8 +751,8 @@ function calcCasa(opts){
       el("p",{class:"calc-time"},"Casa pronta in "+giorniLavori(M,lp.completa())+" giorni."),
       spiegaConti(V),
       el("p",{class:"fine"}, trovata==="si"
-        ? "Prezzo della casa finita, lavori compresi. Escluso garage e posto auto. Questi sono i tuoi conti, chiari dal primo giorno. Da qui partiamo insieme."
-        : "Prezzo di una casa finita con cantina nella zona che hai scelto, lavori compresi. Escluso garage e posto auto. Questi sono i tuoi conti, chiari dal primo giorno. Da qui partiamo insieme."),
+        ? "Prezzo della casa finita, lavori compresi. Esclusi garage e posto auto. Questi sono i tuoi conti, chiari dal primo giorno. Da qui partiamo insieme."
+        : "Prezzo di una casa finita con cantina nella zona che hai scelto, lavori compresi. Esclusi garage e posto auto. Questi sono i tuoi conti, chiari dal primo giorno. Da qui partiamo insieme."),
       speseNotaio(),
       el("div",{class:"calc-actions"}, yes, msg, no)
     );
@@ -1210,7 +1210,7 @@ function modoMutuo(m){
     stage.append(el("section",{class:"screen"},
       el("p",{class:"kicker"},"Senza impegno"),
       el("h1",{},"Parliamone insieme."),
-      el("p",{class:"lead"},"Lasciaci i tuoi dati e scegli come preferisci essere contattato: ascoltiamo cosa desideri e ti spieghiamo come possiamo aiutarti."),
+      el("p",{class:"lead"},"Lasciaci i tuoi dati e scegli come preferisci essere contattato: ascoltiamo cosa desideri e ti aiutiamo a chiarirti le idee."),
       ...contactBlock()));
     top0(); return;
   }
