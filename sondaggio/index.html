@@ -623,7 +623,7 @@ const valoreMq = (zona,q) => ZONA[zona] - (1-q)*K_L;
 const DA_VALUTARE = new Set(["Casalecchio di Reno – Meridiana"]);
 function boxInsieme(Z){
   const nome = Z.split(" – ").pop();
-  const t = "Ciao, sto cercando casa in zona "+nome+" a Casalecchio di Reno. Vorrei capire insieme a voi quanto vale la casa con i lavori che desidero.";
+  const t = "Salve Fabrizio, sto cercando casa in zona "+nome+" a Casalecchio di Reno. Vorrei capire insieme a voi quanto vale la casa con i lavori che desidero.";
   return el("div",{class:"calc-ok-box"},
     el("p",{},el("b",{},"In "+nome+" la vediamo insieme.")),
     el("p",{},"Qui le case sono costruzioni recenti: ognuna è diversa, per piano, finiture e lavori che vuoi fare. Per questo ti diamo la cifra giusta per la tua casa, non una media."),
@@ -1008,7 +1008,7 @@ const LAST = {};
 const zonaBreve = z => z.split(" – ").slice(-1)[0].replace(/(^|, )[Zz]ona /g,"$1") + (z.startsWith("Bologna") ? ", Bologna" : ", "+z.split(" – ")[0]);
 function messaggioWA(nome){
   const R = route(), r = [];
-  r.push("Salve" + (nome ? ", sono "+nome : "") + ".");
+  r.push("Salve Fabrizio" + (nome ? ", sono "+nome : "") + ".");
   if(A.origine){
     r.push(A.pagina || "Ho letto la pagina del mutuo sulla casa finita.");
     r.push(A.origine);
