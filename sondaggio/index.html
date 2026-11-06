@@ -1008,7 +1008,7 @@ const LAST = {};
 const zonaBreve = z => z.split(" – ").slice(-1)[0].replace(/(^|, )[Zz]ona /g,"$1") + (z.startsWith("Bologna") ? ", Bologna" : ", "+z.split(" – ")[0]);
 function messaggioWA(nome){
   const R = route(), r = [];
-  r.push("Ciao HOUSETOHOME" + (nome ? ", sono "+nome : "") + "!");
+  r.push("Salve" + (nome ? ", sono "+nome : "") + ".");
   if(A.origine){
     r.push(A.pagina || "Ho letto la pagina del mutuo sulla casa finita.");
     r.push(A.origine);
