@@ -557,7 +557,7 @@ h2,.eyebrow{text-align:center!important;text-wrap:balance;margin-left:auto;margi
     if(!d.privacy){m.textContent="Per inviarle il listino ci serve la conferma dell'informativa privacy.";return;}
     try{fetch(URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(d),keepalive:true}).catch(function(){});}catch(err){}
     f.querySelectorAll("input,button").forEach(function(x){x.disabled=true;});
-    m.textContent="Fatto! Le abbiamo inviato il listino all'indirizzo "+d.email+". Controlli anche nella posta indesiderata.";});})();
+    m.textContent="Grazie. Le abbiamo inviato il listino all'indirizzo "+d.email+". Controlli anche nella cartella spam.";});})();
     </script>
   </div>
 </section>
