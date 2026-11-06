@@ -28,6 +28,7 @@ h3{font-size:18px;line-height:1.35}
 .lead{font-size:18px;max-width:40ch}
 header .wrap{padding-block:26px 44px;display:flex;flex-direction:column;gap:16px;align-items:center;text-align:center}
 .logo{width:180px;height:auto;display:block}
+.backs{align-self:stretch;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}.backs .back:only-child,.backs .back[hidden]+.back{margin-left:auto}
 .back{align-self:flex-start;font:600 14px var(--body);color:var(--ink);text-decoration:none}
 section .wrap{padding-block:44px;display:flex;flex-direction:column;gap:20px}
 .center{text-align:center;align-items:center}
@@ -111,7 +112,10 @@ h2,.eyebrow{text-align:center!important;text-wrap:balance;margin-left:auto;margi
 
 <header class="band yellow">
   <div class="wrap">
-    <a class="back" href="/#ti-aiutiamo">← Torna al sito</a>
+    <nav class="backs" aria-label="Navigazione">
+      <a class="back" id="indietro" href="/#ti-aiutiamo" hidden>← Torna indietro</a>
+      <a class="back" href="/">Vai al sito →</a>
+    </nav>
     <img class="logo" src="../assets/logo.png" alt="HOUSETOHOME S.r.l.">
     <p class="eyebrow">Un solo prezzo, un solo mutuo: sulla casa finita</p>
     <h1>Scopri ogni passo: come lo affrontiamo insieme.</h1>
@@ -227,5 +231,6 @@ h2,.eyebrow{text-align:center!important;text-wrap:balance;margin-left:auto;margi
 })();
 </script>
 <script src="/assets/uscita.js" defer></script>
+<script>(function(){var b=document.getElementById('indietro');try{if(history.length>1&&document.referrer&&new URL(document.referrer).origin===location.origin){b.hidden=false;b.addEventListener('click',function(e){e.preventDefault();history.back();});}}catch(e){}})();</script>
 </body>
 </html>
