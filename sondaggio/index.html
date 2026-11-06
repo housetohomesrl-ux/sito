@@ -321,7 +321,7 @@ function render(){
   backBtn.hidden = pos < 0;
   const P = path();
   if(pos < 0) return welcome();
-  if(pos >= P.length) return showSolutions ? solutions() : finale();
+  if(pos >= P.length){ if(window.H2H_segna) H2H_segna("sondaggio"); return showSolutions ? solutions() : finale(); }
   question(P[pos], P);
 }
 
@@ -737,6 +737,7 @@ function calcCasa(opts){
     if(lp.parziale()){ LAST.casa = {zona: trovata==="si" ? "" : Z, dove: trovata==="si" ? dove.value.trim() : "", prezzo: trovata==="si" ? PA : 0, mq:M, lavori:"parziale", V:0}; out.append(boxParziale(opts)); return; }
     const V = trovata==="si" ? vic((PA*0.98 + M*K_T*Q)*AUMENTO_TROVATA) : vic(valoreMq(Z,Q)*M);
     LAST.casa = {zona: trovata==="si" ? "" : Z, dove: trovata==="si" ? dove.value.trim() : "", prezzo: trovata==="si" ? PA : 0, mq:M, lavori: Q>=1 ? "completa" : "parziale", V};
+    if(window.H2H_segna) H2H_segna("calcolo");
     if(opts.risparmi) return esitoCaparra(V, M);
     const yes = el("button",{class:"btn",type:"button"},"Ho questa cifra: partiamo");
     const msg = el("p",{class:"calc-ok",hidden:""},"Perfetto: hai la base per realizzare il tuo sogno.");
@@ -944,6 +945,7 @@ function calcolatore(){
     out.replaceChildren();
     if(!M || !S){ out.append(el("p",{class:"calc-empty"},"Inserisci i due importi per vedere il risultato.")); return; }
 
+    if(window.H2H_segna) H2H_segna("calcolo");
     const P = Math.floor((M + S)/1000)*1000;
     const cap = Math.min(S, P*CAPARRA);
     const sotto = S < P*CAPARRA;
@@ -1087,7 +1089,7 @@ function contactBlock(){
   [nome,cognome,tel,email,privacy].forEach(i=>i.addEventListener("input",()=>i.classList.remove("err")));
   let inviato = "";
   const salva = (modo)=>{
-    if(inviato===modo) return; inviato = modo;
+    if(inviato===modo) return; inviato = modo; if(window.H2H_segna) H2H_segna("inviato");
     const R = route();
     const problema = A.origine ? (A.tema || "Mutuo sulla casa finita") : ([R.m?"Mutuo":"", R.v?"Casa da vendere":"", R.r?"Ristrutturazione":""].filter(Boolean).join(", ") || "Altra strada");
     const dati = { nome:nome.value.trim(), cognome:cognome.value.trim(), cellulare:tel.value.trim(), email:email.value.trim(),
@@ -1202,6 +1204,16 @@ function modoMutuo(m){
   for(const k in A) delete A[k];
   const slot = el("div",{class:"contact-slot"});
   const apriContatti = (testo)=>{ A.origine = testo; slot.replaceChildren(...contactBlock()); slot.scrollIntoView({behavior:reduce?"auto":"smooth",block:"start"}); };
+  if(m.indexOf("scrivici")===0){
+    A.origine = m==="scrivici-calcolo" ? "- ho fatto i miei conti e vorrei parlarne con voi, senza impegno" : m==="scrivici-sondaggio" ? "- ho fatto il sondaggio e vorrei parlarne con voi, senza impegno" : "- ho visitato il sito e vorrei parlarne con voi, senza impegno";
+    A.tema = "Contatto dal sito";
+    stage.append(el("section",{class:"screen"},
+      el("p",{class:"kicker"},"Senza impegno"),
+      el("h1",{},"Parliamone insieme."),
+      el("p",{class:"lead"},"Lasciaci i tuoi dati e scegli come preferisci essere contattato: ascoltiamo cosa desideri e ti spieghiamo come possiamo aiutarti."),
+      ...contactBlock()));
+    top0(); return;
+  }
   if(m==="lavori"){
     A.origine = "- non vorrei una ristrutturazione completa: vorrei valutare insieme i lavori";
     A.tema = "Lavori parziali";
@@ -1262,9 +1274,11 @@ backBtn.addEventListener("click",()=>{
 });
 const MODO = location.hash.replace("#","");
 const MODI = ["calcola","calcola-vendita","inizia","vendita","ristrutturazione","lavori"];
-if(MODI.includes(MODO)) modoMutuo(MODO); else render();
-window.addEventListener("hashchange",()=>{ const m = location.hash.replace("#",""); if(MODI.includes(m)) modoMutuo(m); });
+const okModo = m => MODI.includes(m) || m.indexOf("scrivici-")===0;
+if(okModo(MODO)) modoMutuo(MODO); else render();
+window.addEventListener("hashchange",()=>{ const m = location.hash.replace("#",""); if(okModo(m)) modoMutuo(m); });
 </script>
 
+<script src="/assets/uscita.js" defer></script>
 </body>
 </html>
