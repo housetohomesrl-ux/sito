@@ -198,7 +198,7 @@ const PRIVACY_URL = "/privacy/";
 const QS = {
   soldi:{ title:"Tra mutuo e risparmi, arrivi al prezzo della casa che vuoi?", opts:[
     {v:"si", t:"Sì, ci arrivo"},
-    {v:"no", t:"No, non ci arrivo"},
+    {v:"no", t:"Non ancora: vorrei capire come arrivarci"},
     {v:"nonso", t:"Non lo so ancora"}
   ]},
   vendere:{ title:"Per comprare la casa nuova, devi prima vendere quella in cui vivi?", opts:[
@@ -216,12 +216,12 @@ const QS = {
     {v:"no", t:"No, non ancora"}
   ]},
   liquidita:{ title:()=>"Hai da parte il "+(devoVendere()?"15":"20")+"% del prezzo della casa finita, cioè acquisto più ristrutturazione?",
-    hint:()=>devoVendere() ? "È la prima parte della caparra, alla firma del preliminare. La seconda parte la versi quando firmi il compromesso della tua casa. A parte servono solo le spese di notaio e le imposte. Non hai il 15%? I conti li facciamo insieme." : "È la caparra del contratto preliminare. A parte servono solo le spese di notaio e le imposte. Non hai il 20%? I conti li facciamo insieme.",
+    hint:()=>devoVendere() ? "È la prima parte della caparra, alla firma del preliminare. La seconda parte la versi quando firmi il compromesso della tua casa. A parte servono solo le spese di notaio e le imposte. Ti serve un aiuto con la caparra? I conti li facciamo insieme." : "È la caparra del contratto preliminare. A parte servono solo le spese di notaio e le imposte. Ti serve un aiuto con la caparra? I conti li facciamo insieme.",
     opts:[
       {v:"si", t:"Sì"},
       {v:"forse", t:"Più o meno, devo fare bene i conti"},
       {v:"nonso", t:"Non lo so: voglio calcolarlo", opens:true},
-      {v:"no", t:"No"}
+      {v:"no", t:"Non ancora"}
     ]},
   v_stato:{ title:"A che punto è la vendita della tua casa?", opts:[
     {v:"no", t:"Non l'ho ancora messa in vendita"},
@@ -404,7 +404,7 @@ function solMutuo(){
   return el("article",{class:"sol"},
     el("p",{class:"tag"},"Il mutuo"),
     el("h3",{},"Un mutuo all'altezza della casa che sogni"),
-    el("p",{class:"doubt"},"«Con il mutuo e i miei risparmi non ci arrivo.»"),
+    el("p",{class:"doubt"},"«Il mutuo e i miei risparmi basteranno per la casa che desidero?»"),
     personal ? el("p",{class:"personal"},personal) : null,
     el("h4",{},"Come funziona"),
     el("p",{},"Tu scegli la casa che ti piace, anche se oggi è da ristrutturare. HOUSETOHOME la acquista e la ristruttura secondo il progetto che decidi tu. Poi tu la compri direttamente da noi, finita, al prezzo che conosci fin dal primo giorno."),
@@ -434,7 +434,7 @@ function solMutuo(){
     el("ol",{class:"todo"},
       todo(1,"La rata: la base di tutto","Ci porti la pre-delibera della banca, cioè il documento in cui la banca verifica che con il tuo reddito tu possa sostenere la rata. Senza questa, non si parte."),
       todo(2,"Il valore","Prima di fare i conti verifichiamo quanto vale, in quella zona, una casa ristrutturata con quelle caratteristiche. Così, quando il perito arriva, la valutazione è quella attesa."),
-      todo(3,"I tuoi risparmi","La caparra è il 20% del prezzo della casa finita. Non hai il 20%? I conti li facciamo insieme. E c'è anche un'altra strada: compri tu la casa da ristrutturare e noi la trasformiamo come la desideri.")
+      todo(3,"I tuoi risparmi","La caparra è il 20% del prezzo della casa finita. Ti serve un aiuto con la caparra? I conti li facciamo insieme. E c'è anche un'altra strada: compri tu la casa da ristrutturare e noi la trasformiamo come la desideri.")
     ),
     el("p",{},"I conti li verifichiamo insieme prima di firmare, così parti sicuro. E la casa la acquistiamo noi: con i nostri capitali, ed è il nostro impegno concreto."),
     el("h4",{},"Cosa ottieni"),
@@ -675,7 +675,7 @@ function boxParziale(opts){
     el("button",{class:"btn",type:"button",onclick:go},"Scrivici subito"));
 }
 
-const notaPerc = () => "Non hai il "+(devoVendere()?"15":"20")+"%? I conti li facciamo insieme.";
+const notaPerc = () => "Ti serve un aiuto con la caparra? I conti li facciamo insieme.";
 const notaQuindici = () => el("p",{class:"fine"},notaPerc());
 function righeConti(V){
   const dl = el("dl",{class:"calc-rows"},
@@ -978,7 +978,7 @@ function calcolatore(){
 
 const CARDS = {
   m:{ tag:"Il mutuo", title:"Un mutuo all'altezza della casa che sogni",
-      doubt:"«Con il mutuo e i miei risparmi non ci arrivo.»",
+      doubt:"«Il mutuo e i miei risparmi basteranno per la casa che desidero?»",
       sum:"La banca valuta la casa già ristrutturata: il mutuo segue il valore della casa finita, e i lavori sono già nel prezzo.",
       img:["../assets/media/orti-soggiorno-prima.jpg","../assets/media/orti-soggiorno-dopo.jpg"], where:"Via degli Orti, Bologna",
       body:R=>[solMutuo(), stepsAcquisto(R)] },
@@ -1156,7 +1156,7 @@ function solutions(){
   if(detail) return detailView(detail);
   const R = route();
   let keys, title;
-  if(R.noCash){ keys=["a","r"]; title="Per la tua casa c'è una strada su misura."; }
+  if(R.noCash){ keys=["a"]; title="Per la tua casa c'è una strada su misura."; }
   else if(R.m && R.v){ keys=["v","m"]; title="La casa che devi vendere ti ostacola e rallenta, e il mutuo potrebbe essere un problema? Troviamo insieme la soluzione per te!"; }
   else if(R.m && A.m_banca!=="pre" && A.liquidita!=="si"){ keys=["m"]; title="Tra mutuo e risparmi, abbiamo una soluzione."; }
   else if(R.m){ keys=["m"]; title="Il tuo ostacolo è il mutuo. Ecco come lo superi."; }
@@ -1164,7 +1164,7 @@ function solutions(){
   else if(R.r){ keys=["r"]; title="Il tuo pensiero è la ristrutturazione. Ecco come la affrontiamo."; }
   else { keys=["r"]; title="Sei già sulla buona strada."; }
   const gia = !(R.noCash||R.m||R.v||R.r);
-  const forse = R.noCash ? el("p",{class:"personal center"},"Qui sotto trovi le soluzioni più adatte a te. Leggile con calma, poi lasciaci i tuoi contatti: le approfondiamo insieme e troviamo la strada migliore per arrivare alla casa che desideri.")
+  const forse = R.noCash ? el("p",{class:"personal center"},"Qui sotto trovi la soluzione più adatta a te. Leggila con calma, poi lasciaci i tuoi contatti: la approfondiamo insieme e troviamo la strada migliore per arrivare alla casa che desideri.")
     : (R.m && !R.v && A.m_banca!=="pre" && A.liquidita!=="si") ? el("p",{class:"personal center"},"Con noi la banca calcola il mutuo sulla casa già ristrutturata, di solito fino all'80% del suo valore. Il primo passo è chiedere in banca la pre-delibera; la caparra la valutiamo insieme a te. Lasciaci i tuoi contatti: facciamo i conti nero su bianco, prima di qualsiasi firma.")
     : A.liquidita==="forse" ? el("p",{class:"personal center"},"I conti li facciamo insieme, nero su bianco, prima di qualsiasi firma.")
     : A.liquidita==="nonso" ? el("p",{class:"personal center"},"Non hai ancora fatto i conti? Scrivici qui sotto la zona e i metri quadri della casa che ti piace: li facciamo insieme.")
